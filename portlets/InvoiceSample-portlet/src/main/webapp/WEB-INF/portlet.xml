@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" version="2.0">
+ <portlet>
+ 	<portlet-name>invoice</portlet-name>
+ 	<display-name>Invoice</display-name>
+ 	<portlet-class>
+ 		com.covisint.papi.sample.portlet.InvoicePortlet
+ 	</portlet-class>
+        <init-param>
+            <name>login-template</name>
+            <value>/html/login/login.jsp</value>
+        </init-param>
+        <init-param>
+            <name>list-template</name>
+            <value>/html/purchase/list.jsp</value>
+        </init-param>
+        <init-param>
+            <name>purchase-template</name>
+            <value>/html/purchase/purchase.jsp</value>
+        </init-param>
+        <init-param>
+            <name>display-invoice-template</name>
+            <value>/html/purchase/displayinvoice.jsp</value>
+        </init-param>
+ 	<expiration-cache>0</expiration-cache>
+ 	<supports>
+ 		<mime-type>text/html</mime-type>
+ 		<portlet-mode>view</portlet-mode>
+ 	</supports>
+ 	<resource-bundle>content.Language</resource-bundle>
+ 	<portlet-info>
+ 		<title>Invoice</title>
+ 		<short-title>Invoice</short-title>
+ 		<keywords></keywords>
+ 	</portlet-info>
+ 	<security-role-ref>
+ 		<role-name>administrator</role-name>
+ 	</security-role-ref>
+ 	<security-role-ref>
+ 		<role-name>guest</role-name>
+ 	</security-role-ref>
+ 	<security-role-ref>
+ 		<role-name>power-user</role-name>
+ 	</security-role-ref>
+ 	<security-role-ref>
+ 		<role-name>user</role-name>
+ 	</security-role-ref>
+
+	<container-runtime-option>
+		<name>javax.portlet.actionScopedRequestAttributes</name>
+		<value>true</value>
+	</container-runtime-option>
+ </portlet>
+</portlet-app>

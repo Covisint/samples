@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd">
+	<persistence-unit-metadata>
+		<xml-mapping-metadata-complete/>
+		<persistence-unit-defaults>
+			<access>PROPERTY</access>
+		</persistence-unit-defaults>
+	</persistence-unit-metadata>
+	<mapped-superclass class="com.covisint.papi.sample.portlet.model.impl.ConsumerModelImpl">
+		<attributes>
+			<id name="consumerId" />
+			<basic name="consumerName" />
+			<basic name="password">
+				<column name="PASSWORD_" />
+			</basic>
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.covisint.papi.sample.portlet.model.impl.InvoiceModelImpl">
+		<attributes>
+			<id name="invoiceId" />
+			<basic name="path">
+				<column name="PATH_" />
+			</basic>
+			<basic name="consumerId" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<entity class="com.covisint.papi.sample.portlet.model.impl.ConsumerImpl" name="Consumer">
+		<table name="Invoice_Consumer" />
+		<attributes />
+	</entity>
+	<entity class="com.covisint.papi.sample.portlet.model.impl.InvoiceImpl" name="Invoice">
+		<table name="Invoice_Invoice" />
+		<attributes />
+	</entity>
+</entity-mappings>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+	<service name="Plugin_Invoice_InvoiceService" provider="java:RPC" style="rpc" use="encoded">
+		<parameter name="allowedMethods" value="*" />
+		<parameter name="className" value="com.covisint.papi.sample.portlet.service.http.InvoiceServiceSoap" />
+		<parameter name="typeMappingVersion" value="1.2" />
+		<parameter name="wsdlPortType" value="InvoiceServiceSoap" />
+		<parameter name="wsdlServiceElement" value="InvoiceServiceSoapService" />
+		<parameter name="wsdlServicePort" value="Plugin_Invoice_InvoiceService" />
+		<parameter name="wsdlTargetNamespace" value="urn:http.service.portlet.sample.papi.covisint.com" />
+	</service>
+</deployment>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false" auto-import="false">
+	<import class="com.covisint.papi.sample.portlet.model.Consumer" />
+	<import class="com.covisint.papi.sample.portlet.model.Invoice" />
+	<class name="com.covisint.papi.sample.portlet.model.impl.ConsumerImpl" table="Invoice_Consumer">
+		<cache usage="read-write" />
+		<id name="consumerId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="consumerName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="password" type="com.liferay.portal.dao.orm.hibernate.StringType" column="password_" />
+	</class>
+	<class name="com.covisint.papi.sample.portlet.model.impl.InvoiceImpl" table="Invoice_Invoice">
+		<cache usage="read-write" />
+		<id name="invoiceId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="path" type="com.liferay.portal.dao.orm.hibernate.StringType" column="path_" />
+		<property name="consumerId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+</hibernate-mapping>
