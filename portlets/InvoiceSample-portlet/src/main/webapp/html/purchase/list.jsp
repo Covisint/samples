@@ -33,7 +33,7 @@
 	} else {
 %>
 <H4>Select item to purchase</H4>
-<ul>
+<ul style="list-style: none;">
 	<%
 		ArrayList<ResponseObject> responseObjects = findResponse
 					.getResponseObjects();
@@ -51,8 +51,17 @@
 							String title = titles.get(l);
 							String itemJson = new Gson().toJson(item);
 	%>
-	<li><a
-		href='<portlet:renderURL><portlet:param name="item" value="<%=itemJson%>"/></portlet:renderURL>'><%=title%></a></li>
+	<li>
+		<a
+		href='<portlet:renderURL><portlet:param name="item" value="<%=itemJson%>"/></portlet:renderURL>'>
+		<img alt="Picture" src="<%=item.getGalleryURL().get(0)%>">
+		</a>
+		<br/>
+		<a
+		href='<portlet:renderURL><portlet:param name="item" value="<%=itemJson%>"/></portlet:renderURL>'>
+		<%=title%>
+		</a>
+	</li>
 	<%
 		}
 					}
@@ -69,10 +78,12 @@
 		for (int i = 0; i < invoices.size(); i++) {
 					Invoice invoice = invoices.get(i);
 					String pdfPath = invoice.getPath();
-					String pdfName = pdfPath.substring(pdfPath.lastIndexOf('/')+1);
+					String pdfName = pdfPath.substring(pdfPath
+							.lastIndexOf('/') + 1);
 	%>
-	<a
+	<li><a
 		href='<portlet:renderURL><portlet:param name="pdfFilePath" value="<%=pdfPath%>"/></portlet:renderURL>'><%=pdfName%></a>
+	</li>
 	<%
 		}
 	%>
