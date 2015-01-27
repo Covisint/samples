@@ -98,7 +98,8 @@ public class InvoicePortlet extends MVCPortlet {
 					.getAttribute("token");
 			System.out.println("token = " + token);
 			if (token == null) {
-				getToken();
+				token = getToken();
+				renderRequest.getPortletSession().setAttribute("token", token);
 			}
 			String itemJson = renderRequest.getParameter("item");
 			System.out.println("itemJson = " + itemJson);
@@ -206,7 +207,7 @@ public class InvoicePortlet extends MVCPortlet {
 		}
 	}
 
-	private void getToken() throws ClientProtocolException, IOException {
+	private String getToken() throws ClientProtocolException, IOException {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		String tokenAPIUrl = PortletProps.get("tokenAPIUrl");
 		HttpGet tokenGet = new HttpGet(tokenAPIUrl);
@@ -239,7 +240,9 @@ public class InvoicePortlet extends MVCPortlet {
 			TokenResponse tokenResponse = gson.fromJson(responseString,
 					TokenResponse.class);
 			System.out.println(tokenResponse);
+			return tokenResponse.getAccess_token();
 		}
+		return null;
 	}
 
 	private String getBase64CodedKeys() {
@@ -249,12 +252,6 @@ public class InvoicePortlet extends MVCPortlet {
 		String encodedString = Base64.encodeBase64String(stringToEncode
 				.getBytes());
 		return encodedString;
-	}
-
-	public void processLogout(ActionRequest actionRequest,
-			ActionResponse actionResponse) {
-		actionRequest.getPortletSession().removeAttribute("token");
-		actionRequest.getPortletSession().removeAttribute("consumer");
 	}
 
 	public void processPurchase(ActionRequest actionRequest,
