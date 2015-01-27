@@ -9,6 +9,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
+import com.liferay.portal.util.PortalUtil;
 
 import java.io.Serializable;
 
@@ -21,7 +22,8 @@ import java.util.Map;
 public class InvoiceClp extends BaseModelImpl<Invoice> implements Invoice {
     private long _invoiceId;
     private String _path;
-    private long _consumerId;
+    private long _userId;
+    private String _userUuid;
     private BaseModel<?> _invoiceRemoteModel;
 
     public InvoiceClp() {
@@ -57,7 +59,7 @@ public class InvoiceClp extends BaseModelImpl<Invoice> implements Invoice {
 
         attributes.put("invoiceId", getInvoiceId());
         attributes.put("path", getPath());
-        attributes.put("consumerId", getConsumerId());
+        attributes.put("userId", getUserId());
 
         return attributes;
     }
@@ -76,10 +78,10 @@ public class InvoiceClp extends BaseModelImpl<Invoice> implements Invoice {
             setPath(path);
         }
 
-        Long consumerId = (Long) attributes.get("consumerId");
+        Long userId = (Long) attributes.get("userId");
 
-        if (consumerId != null) {
-            setConsumerId(consumerId);
+        if (userId != null) {
+            setUserId(userId);
         }
     }
 
@@ -123,24 +125,32 @@ public class InvoiceClp extends BaseModelImpl<Invoice> implements Invoice {
         }
     }
 
-    public long getConsumerId() {
-        return _consumerId;
+    public long getUserId() {
+        return _userId;
     }
 
-    public void setConsumerId(long consumerId) {
-        _consumerId = consumerId;
+    public void setUserId(long userId) {
+        _userId = userId;
 
         if (_invoiceRemoteModel != null) {
             try {
                 Class<?> clazz = _invoiceRemoteModel.getClass();
 
-                Method method = clazz.getMethod("setConsumerId", long.class);
+                Method method = clazz.getMethod("setUserId", long.class);
 
-                method.invoke(_invoiceRemoteModel, consumerId);
+                method.invoke(_invoiceRemoteModel, userId);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
         }
+    }
+
+    public String getUserUuid() throws SystemException {
+        return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
+    }
+
+    public void setUserUuid(String userUuid) {
+        _userUuid = userUuid;
     }
 
     public BaseModel<?> getInvoiceRemoteModel() {
@@ -215,7 +225,7 @@ public class InvoiceClp extends BaseModelImpl<Invoice> implements Invoice {
 
         clone.setInvoiceId(getInvoiceId());
         clone.setPath(getPath());
-        clone.setConsumerId(getConsumerId());
+        clone.setUserId(getUserId());
 
         return clone;
     }
@@ -266,8 +276,8 @@ public class InvoiceClp extends BaseModelImpl<Invoice> implements Invoice {
         sb.append(getInvoiceId());
         sb.append(", path=");
         sb.append(getPath());
-        sb.append(", consumerId=");
-        sb.append(getConsumerId());
+        sb.append(", userId=");
+        sb.append(getUserId());
         sb.append("}");
 
         return sb.toString();
@@ -289,8 +299,8 @@ public class InvoiceClp extends BaseModelImpl<Invoice> implements Invoice {
         sb.append(getPath());
         sb.append("]]></column-value></column>");
         sb.append(
-            "<column><column-name>consumerId</column-name><column-value><![CDATA[");
-        sb.append(getConsumerId());
+            "<column><column-name>userId</column-name><column-value><![CDATA[");
+        sb.append(getUserId());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

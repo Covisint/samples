@@ -2,32 +2,16 @@
 <service-builder package-path="com.covisint.papi.sample.portlet">
     <author>Nitin R. Khobragade</author>
     <namespace>Invoice</namespace>
-    <entity name="Consumer" local-service="true" remote-service="true">
-        <!-- PK Fields -->
-        <column name="consumerId" type="long" primary="true"/>
-        <!-- Other Fields -->
-        <column name="consumerName" type="String"/>
-        <column name="password" type="String"/>
-        
-        <order by="asc">
-            <order-column name="consumerId"/>
-        </order>
-        
-        <!-- Finder Methods -->
-        <finder return-type="Consumer" name="ConsumerName">
-            <finder-column name="consumerName"/>
-        </finder>
-	</entity>
 	<entity name="Invoice" local-service="true" remote-service="true">
 		<!-- PK Fields -->
 		<column name="invoiceId" type="long" primary="true"/>
 		<!-- Other fields -->
 		<column name="path" type="String"/>
-		<column name="consumerId" type="long"/>
+		<column name="userId" type="long"/>
 		
 		<!-- Finder Methods -->
-		<finder return-type="Collection" name="InvoiceForConsumer">
-			<finder-column name="consumerId"/>
+		<finder return-type="Collection" name="InvoiceForUser">
+			<finder-column name="userId"/>
 		</finder>
 	</entity>
 </service-builder>

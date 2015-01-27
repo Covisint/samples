@@ -26,7 +26,7 @@ public class InvoiceLocalServiceImpl extends InvoiceLocalServiceBaseImpl {
      *
      * Never reference this interface directly. Always use {@link com.covisint.papi.sample.portlet.service.InvoiceLocalServiceUtil} to access the invoice local service.
      */
-	public List<Invoice> getInvoicesForConsumer(long consumerId) throws SystemException {
-		return invoicePersistence.findByInvoiceForConsumer(consumerId);
+	public List<Invoice> getInvoicesForUser(long userId) throws SystemException {
+		return invoicePersistence.findByInvoiceForUser(userId);
 	}
 }

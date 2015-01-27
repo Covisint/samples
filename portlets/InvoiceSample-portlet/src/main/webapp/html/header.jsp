@@ -1,4 +1,5 @@
-<%@page import="com.covisint.papi.sample.portlet.model.Consumer"%>
+<%@page import="com.liferay.portal.service.UserServiceUtil"%>
+<%@page import="com.liferay.portal.model.User"%>
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui"%>
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet"%>
 
@@ -6,16 +7,16 @@
 <portlet:actionURL name="processLogout" var="logoutUrl">
 </portlet:actionURL>
 <%
-	Consumer consumer = (Consumer) portletSession
-			.getAttribute("consumer");
+	String remoteUser = renderRequest.getRemoteUser();
+	User user = UserServiceUtil.getUserById(Long.parseLong(remoteUser));
 %>
 <table width="100%">
 	<tr>
 		<%
-			if (consumer != null) {
+			if (user != null) {
 		%>
 		<td align="left"><a href="javascript: history.go(-1)">Back</a></td>
-		<td align="right"><%= consumer.getConsumerName()%><aui:a href="${ logoutUrl }">Logout</aui:a></td>
+		<td align="right">Welcome <%= user.getFullName()%></td>
 		<%
 			}
 		%>

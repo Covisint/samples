@@ -23,7 +23,7 @@ public class InvoiceServiceClp implements InvoiceService {
 
         _methodParameterTypes1 = new String[] { "java.lang.String" };
 
-        _methodName3 = "getInvoicesForConsumer";
+        _methodName3 = "getInvoicesForUser";
 
         _methodParameterTypes3 = new String[] { "long" };
     }
@@ -71,14 +71,13 @@ public class InvoiceServiceClp implements InvoiceService {
         throw new UnsupportedOperationException();
     }
 
-    public java.util.List<com.covisint.papi.sample.portlet.model.Invoice> getInvoicesForConsumer(
-        long consumerId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+    public java.util.List<com.covisint.papi.sample.portlet.model.Invoice> getInvoicesForUser(
+        long userId) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableService.invokeMethod(_methodName3,
-                    _methodParameterTypes3, new Object[] { consumerId });
+                    _methodParameterTypes3, new Object[] { userId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 

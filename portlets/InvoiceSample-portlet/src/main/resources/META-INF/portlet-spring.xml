@@ -1,9 +1,6 @@
 <?xml version="1.0"?>
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-	<bean id="com.covisint.papi.sample.portlet.service.ConsumerLocalService" class="com.covisint.papi.sample.portlet.service.impl.ConsumerLocalServiceImpl" />
-	<bean id="com.covisint.papi.sample.portlet.service.ConsumerService" class="com.covisint.papi.sample.portlet.service.impl.ConsumerServiceImpl" />
-	<bean id="com.covisint.papi.sample.portlet.service.persistence.ConsumerPersistence" class="com.covisint.papi.sample.portlet.service.persistence.ConsumerPersistenceImpl" parent="basePersistence" />
 	<bean id="com.covisint.papi.sample.portlet.service.InvoiceLocalService" class="com.covisint.papi.sample.portlet.service.impl.InvoiceLocalServiceImpl" />
 	<bean id="com.covisint.papi.sample.portlet.service.InvoiceService" class="com.covisint.papi.sample.portlet.service.impl.InvoiceServiceImpl" />
 	<bean id="com.covisint.papi.sample.portlet.service.persistence.InvoicePersistence" class="com.covisint.papi.sample.portlet.service.persistence.InvoicePersistenceImpl" parent="basePersistence" />

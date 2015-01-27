@@ -15,7 +15,7 @@ import java.util.List;
 public class InvoiceSoap implements Serializable {
     private long _invoiceId;
     private String _path;
-    private long _consumerId;
+    private long _userId;
 
     public InvoiceSoap() {
     }
@@ -25,7 +25,7 @@ public class InvoiceSoap implements Serializable {
 
         soapModel.setInvoiceId(model.getInvoiceId());
         soapModel.setPath(model.getPath());
-        soapModel.setConsumerId(model.getConsumerId());
+        soapModel.setUserId(model.getUserId());
 
         return soapModel;
     }
@@ -90,11 +90,11 @@ public class InvoiceSoap implements Serializable {
         _path = path;
     }
 
-    public long getConsumerId() {
-        return _consumerId;
+    public long getUserId() {
+        return _userId;
     }
 
-    public void setConsumerId(long consumerId) {
-        _consumerId = consumerId;
+    public void setUserId(long userId) {
+        _userId = userId;
     }
 }

@@ -1,6 +1,5 @@
 package com.covisint.papi.sample.portlet.service;
 
-import com.covisint.papi.sample.portlet.model.ConsumerClp;
 import com.covisint.papi.sample.portlet.model.InvoiceClp;
 
 import com.liferay.portal.kernel.exception.PortalException;
@@ -89,10 +88,6 @@ public class ClpSerializer {
 
         String oldModelClassName = oldModelClass.getName();
 
-        if (oldModelClassName.equals(ConsumerClp.class.getName())) {
-            return translateInputConsumer(oldModel);
-        }
-
         if (oldModelClassName.equals(InvoiceClp.class.getName())) {
             return translateInputInvoice(oldModel);
         }
@@ -110,16 +105,6 @@ public class ClpSerializer {
         }
 
         return newList;
-    }
-
-    public static Object translateInputConsumer(BaseModel<?> oldModel) {
-        ConsumerClp oldClpModel = (ConsumerClp) oldModel;
-
-        BaseModel<?> newModel = oldClpModel.getConsumerRemoteModel();
-
-        newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-        return newModel;
     }
 
     public static Object translateInputInvoice(BaseModel<?> oldModel) {
@@ -146,11 +131,6 @@ public class ClpSerializer {
         Class<?> oldModelClass = oldModel.getClass();
 
         String oldModelClassName = oldModelClass.getName();
-
-        if (oldModelClassName.equals(
-                    "com.covisint.papi.sample.portlet.model.impl.ConsumerImpl")) {
-            return translateOutputConsumer(oldModel);
-        }
 
         if (oldModelClassName.equals(
                     "com.covisint.papi.sample.portlet.model.impl.InvoiceImpl")) {
@@ -234,26 +214,11 @@ public class ClpSerializer {
         }
 
         if (className.equals(
-                    "com.covisint.papi.sample.portlet.NoSuchConsumerException")) {
-            return new com.covisint.papi.sample.portlet.NoSuchConsumerException();
-        }
-
-        if (className.equals(
                     "com.covisint.papi.sample.portlet.NoSuchInvoiceException")) {
             return new com.covisint.papi.sample.portlet.NoSuchInvoiceException();
         }
 
         return throwable;
-    }
-
-    public static Object translateOutputConsumer(BaseModel<?> oldModel) {
-        ConsumerClp newModel = new ConsumerClp();
-
-        newModel.setModelAttributes(oldModel.getModelAttributes());
-
-        newModel.setConsumerRemoteModel(oldModel);
-
-        return newModel;
     }
 
     public static Object translateOutputInvoice(BaseModel<?> oldModel) {

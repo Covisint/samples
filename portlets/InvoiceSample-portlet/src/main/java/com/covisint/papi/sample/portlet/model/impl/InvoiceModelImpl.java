@@ -5,6 +5,7 @@ import com.covisint.papi.sample.portlet.model.InvoiceModel;
 import com.covisint.papi.sample.portlet.model.InvoiceSoap;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -13,6 +14,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.util.PortalUtil;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
@@ -51,9 +53,9 @@ public class InvoiceModelImpl extends BaseModelImpl<Invoice>
     public static final Object[][] TABLE_COLUMNS = {
             { "invoiceId", Types.BIGINT },
             { "path_", Types.VARCHAR },
-            { "consumerId", Types.BIGINT }
+            { "userId", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table Invoice_Invoice (invoiceId LONG not null primary key,path_ VARCHAR(75) null,consumerId LONG)";
+    public static final String TABLE_SQL_CREATE = "create table Invoice_Invoice (invoiceId LONG not null primary key,path_ VARCHAR(75) null,userId LONG)";
     public static final String TABLE_SQL_DROP = "drop table Invoice_Invoice";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
@@ -67,7 +69,7 @@ public class InvoiceModelImpl extends BaseModelImpl<Invoice>
     public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
                 "value.object.column.bitmask.enabled.com.covisint.papi.sample.portlet.model.Invoice"),
             true);
-    public static long CONSUMERID_COLUMN_BITMASK = 1L;
+    public static long USERID_COLUMN_BITMASK = 1L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.covisint.papi.sample.portlet.model.Invoice"));
     private static ClassLoader _classLoader = Invoice.class.getClassLoader();
@@ -76,9 +78,10 @@ public class InvoiceModelImpl extends BaseModelImpl<Invoice>
         };
     private long _invoiceId;
     private String _path;
-    private long _consumerId;
-    private long _originalConsumerId;
-    private boolean _setOriginalConsumerId;
+    private long _userId;
+    private String _userUuid;
+    private long _originalUserId;
+    private boolean _setOriginalUserId;
     private long _columnBitmask;
     private Invoice _escapedModel;
 
@@ -100,7 +103,7 @@ public class InvoiceModelImpl extends BaseModelImpl<Invoice>
 
         model.setInvoiceId(soapModel.getInvoiceId());
         model.setPath(soapModel.getPath());
-        model.setConsumerId(soapModel.getConsumerId());
+        model.setUserId(soapModel.getUserId());
 
         return model;
     }
@@ -155,7 +158,7 @@ public class InvoiceModelImpl extends BaseModelImpl<Invoice>
 
         attributes.put("invoiceId", getInvoiceId());
         attributes.put("path", getPath());
-        attributes.put("consumerId", getConsumerId());
+        attributes.put("userId", getUserId());
 
         return attributes;
     }
@@ -174,10 +177,10 @@ public class InvoiceModelImpl extends BaseModelImpl<Invoice>
             setPath(path);
         }
 
-        Long consumerId = (Long) attributes.get("consumerId");
+        Long userId = (Long) attributes.get("userId");
 
-        if (consumerId != null) {
-            setConsumerId(consumerId);
+        if (userId != null) {
+            setUserId(userId);
         }
     }
 
@@ -204,24 +207,32 @@ public class InvoiceModelImpl extends BaseModelImpl<Invoice>
     }
 
     @JSON
-    public long getConsumerId() {
-        return _consumerId;
+    public long getUserId() {
+        return _userId;
     }
 
-    public void setConsumerId(long consumerId) {
-        _columnBitmask |= CONSUMERID_COLUMN_BITMASK;
+    public void setUserId(long userId) {
+        _columnBitmask |= USERID_COLUMN_BITMASK;
 
-        if (!_setOriginalConsumerId) {
-            _setOriginalConsumerId = true;
+        if (!_setOriginalUserId) {
+            _setOriginalUserId = true;
 
-            _originalConsumerId = _consumerId;
+            _originalUserId = _userId;
         }
 
-        _consumerId = consumerId;
+        _userId = userId;
     }
 
-    public long getOriginalConsumerId() {
-        return _originalConsumerId;
+    public String getUserUuid() throws SystemException {
+        return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
+    }
+
+    public void setUserUuid(String userUuid) {
+        _userUuid = userUuid;
+    }
+
+    public long getOriginalUserId() {
+        return _originalUserId;
     }
 
     public long getColumnBitmask() {
@@ -261,7 +272,7 @@ public class InvoiceModelImpl extends BaseModelImpl<Invoice>
 
         invoiceImpl.setInvoiceId(getInvoiceId());
         invoiceImpl.setPath(getPath());
-        invoiceImpl.setConsumerId(getConsumerId());
+        invoiceImpl.setUserId(getUserId());
 
         invoiceImpl.resetOriginalValues();
 
@@ -310,9 +321,9 @@ public class InvoiceModelImpl extends BaseModelImpl<Invoice>
     public void resetOriginalValues() {
         InvoiceModelImpl invoiceModelImpl = this;
 
-        invoiceModelImpl._originalConsumerId = invoiceModelImpl._consumerId;
+        invoiceModelImpl._originalUserId = invoiceModelImpl._userId;
 
-        invoiceModelImpl._setOriginalConsumerId = false;
+        invoiceModelImpl._setOriginalUserId = false;
 
         invoiceModelImpl._columnBitmask = 0;
     }
@@ -331,7 +342,7 @@ public class InvoiceModelImpl extends BaseModelImpl<Invoice>
             invoiceCacheModel.path = null;
         }
 
-        invoiceCacheModel.consumerId = getConsumerId();
+        invoiceCacheModel.userId = getUserId();
 
         return invoiceCacheModel;
     }
@@ -344,8 +355,8 @@ public class InvoiceModelImpl extends BaseModelImpl<Invoice>
         sb.append(getInvoiceId());
         sb.append(", path=");
         sb.append(getPath());
-        sb.append(", consumerId=");
-        sb.append(getConsumerId());
+        sb.append(", userId=");
+        sb.append(getUserId());
         sb.append("}");
 
         return sb.toString();
@@ -367,8 +378,8 @@ public class InvoiceModelImpl extends BaseModelImpl<Invoice>
         sb.append(getPath());
         sb.append("]]></column-value></column>");
         sb.append(
-            "<column><column-name>consumerId</column-name><column-value><![CDATA[");
-        sb.append(getConsumerId());
+            "<column><column-name>userId</column-name><column-value><![CDATA[");
+        sb.append(getUserId());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

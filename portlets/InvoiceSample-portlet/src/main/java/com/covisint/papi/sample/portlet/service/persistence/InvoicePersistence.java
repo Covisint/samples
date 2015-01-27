@@ -88,120 +88,119 @@ public interface InvoicePersistence extends BasePersistence<Invoice> {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns all the invoices where consumerId = &#63;.
+    * Returns all the invoices where userId = &#63;.
     *
-    * @param consumerId the consumer ID
+    * @param userId the user ID
     * @return the matching invoices
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.covisint.papi.sample.portlet.model.Invoice> findByInvoiceForConsumer(
-        long consumerId)
-        throws com.liferay.portal.kernel.exception.SystemException;
+    public java.util.List<com.covisint.papi.sample.portlet.model.Invoice> findByInvoiceForUser(
+        long userId) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns a range of all the invoices where consumerId = &#63;.
+    * Returns a range of all the invoices where userId = &#63;.
     *
     * <p>
     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
     * </p>
     *
-    * @param consumerId the consumer ID
+    * @param userId the user ID
     * @param start the lower bound of the range of invoices
     * @param end the upper bound of the range of invoices (not inclusive)
     * @return the range of matching invoices
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.covisint.papi.sample.portlet.model.Invoice> findByInvoiceForConsumer(
-        long consumerId, int start, int end)
+    public java.util.List<com.covisint.papi.sample.portlet.model.Invoice> findByInvoiceForUser(
+        long userId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns an ordered range of all the invoices where consumerId = &#63;.
+    * Returns an ordered range of all the invoices where userId = &#63;.
     *
     * <p>
     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
     * </p>
     *
-    * @param consumerId the consumer ID
+    * @param userId the user ID
     * @param start the lower bound of the range of invoices
     * @param end the upper bound of the range of invoices (not inclusive)
     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
     * @return the ordered range of matching invoices
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.covisint.papi.sample.portlet.model.Invoice> findByInvoiceForConsumer(
-        long consumerId, int start, int end,
+    public java.util.List<com.covisint.papi.sample.portlet.model.Invoice> findByInvoiceForUser(
+        long userId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the first invoice in the ordered set where consumerId = &#63;.
+    * Returns the first invoice in the ordered set where userId = &#63;.
     *
-    * @param consumerId the consumer ID
+    * @param userId the user ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching invoice
     * @throws com.covisint.papi.sample.portlet.NoSuchInvoiceException if a matching invoice could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.covisint.papi.sample.portlet.model.Invoice findByInvoiceForConsumer_First(
-        long consumerId,
+    public com.covisint.papi.sample.portlet.model.Invoice findByInvoiceForUser_First(
+        long userId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.covisint.papi.sample.portlet.NoSuchInvoiceException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the first invoice in the ordered set where consumerId = &#63;.
+    * Returns the first invoice in the ordered set where userId = &#63;.
     *
-    * @param consumerId the consumer ID
+    * @param userId the user ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching invoice, or <code>null</code> if a matching invoice could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.covisint.papi.sample.portlet.model.Invoice fetchByInvoiceForConsumer_First(
-        long consumerId,
+    public com.covisint.papi.sample.portlet.model.Invoice fetchByInvoiceForUser_First(
+        long userId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the last invoice in the ordered set where consumerId = &#63;.
+    * Returns the last invoice in the ordered set where userId = &#63;.
     *
-    * @param consumerId the consumer ID
+    * @param userId the user ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the last matching invoice
     * @throws com.covisint.papi.sample.portlet.NoSuchInvoiceException if a matching invoice could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.covisint.papi.sample.portlet.model.Invoice findByInvoiceForConsumer_Last(
-        long consumerId,
+    public com.covisint.papi.sample.portlet.model.Invoice findByInvoiceForUser_Last(
+        long userId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.covisint.papi.sample.portlet.NoSuchInvoiceException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the last invoice in the ordered set where consumerId = &#63;.
+    * Returns the last invoice in the ordered set where userId = &#63;.
     *
-    * @param consumerId the consumer ID
+    * @param userId the user ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the last matching invoice, or <code>null</code> if a matching invoice could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.covisint.papi.sample.portlet.model.Invoice fetchByInvoiceForConsumer_Last(
-        long consumerId,
+    public com.covisint.papi.sample.portlet.model.Invoice fetchByInvoiceForUser_Last(
+        long userId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the invoices before and after the current invoice in the ordered set where consumerId = &#63;.
+    * Returns the invoices before and after the current invoice in the ordered set where userId = &#63;.
     *
     * @param invoiceId the primary key of the current invoice
-    * @param consumerId the consumer ID
+    * @param userId the user ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the previous, current, and next invoice
     * @throws com.covisint.papi.sample.portlet.NoSuchInvoiceException if a invoice with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.covisint.papi.sample.portlet.model.Invoice[] findByInvoiceForConsumer_PrevAndNext(
-        long invoiceId, long consumerId,
+    public com.covisint.papi.sample.portlet.model.Invoice[] findByInvoiceForUser_PrevAndNext(
+        long invoiceId, long userId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.covisint.papi.sample.portlet.NoSuchInvoiceException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -250,12 +249,12 @@ public interface InvoicePersistence extends BasePersistence<Invoice> {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Removes all the invoices where consumerId = &#63; from the database.
+    * Removes all the invoices where userId = &#63; from the database.
     *
-    * @param consumerId the consumer ID
+    * @param userId the user ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByInvoiceForConsumer(long consumerId)
+    public void removeByInvoiceForUser(long userId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -267,13 +266,13 @@ public interface InvoicePersistence extends BasePersistence<Invoice> {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the number of invoices where consumerId = &#63;.
+    * Returns the number of invoices where userId = &#63;.
     *
-    * @param consumerId the consumer ID
+    * @param userId the user ID
     * @return the number of matching invoices
     * @throws SystemException if a system exception occurred
     */
-    public int countByInvoiceForConsumer(long consumerId)
+    public int countByInvoiceForUser(long userId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

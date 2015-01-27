@@ -18,7 +18,7 @@ import java.io.Serializable;
 public class InvoiceCacheModel implements CacheModel<Invoice>, Serializable {
     public long invoiceId;
     public String path;
-    public long consumerId;
+    public long userId;
 
     @Override
     public String toString() {
@@ -28,8 +28,8 @@ public class InvoiceCacheModel implements CacheModel<Invoice>, Serializable {
         sb.append(invoiceId);
         sb.append(", path=");
         sb.append(path);
-        sb.append(", consumerId=");
-        sb.append(consumerId);
+        sb.append(", userId=");
+        sb.append(userId);
         sb.append("}");
 
         return sb.toString();
@@ -46,7 +46,7 @@ public class InvoiceCacheModel implements CacheModel<Invoice>, Serializable {
             invoiceImpl.setPath(path);
         }
 
-        invoiceImpl.setConsumerId(consumerId);
+        invoiceImpl.setUserId(userId);
 
         invoiceImpl.resetOriginalValues();
 

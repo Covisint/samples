@@ -4,7 +4,6 @@ import com.covisint.papi.sample.portlet.NoSuchInvoiceException;
 import com.covisint.papi.sample.portlet.model.Invoice;
 import com.covisint.papi.sample.portlet.model.impl.InvoiceImpl;
 import com.covisint.papi.sample.portlet.model.impl.InvoiceModelImpl;
-import com.covisint.papi.sample.portlet.service.persistence.ConsumerPersistence;
 import com.covisint.papi.sample.portlet.service.persistence.InvoicePersistence;
 
 import com.liferay.portal.NoSuchModelException;
@@ -65,26 +64,26 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_INVOICEFORCONSUMER =
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_INVOICEFORUSER =
         new FinderPath(InvoiceModelImpl.ENTITY_CACHE_ENABLED,
             InvoiceModelImpl.FINDER_CACHE_ENABLED, InvoiceImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByInvoiceForConsumer",
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByInvoiceForUser",
             new String[] {
                 Long.class.getName(),
                 
             "java.lang.Integer", "java.lang.Integer",
                 "com.liferay.portal.kernel.util.OrderByComparator"
             });
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_INVOICEFORCONSUMER =
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_INVOICEFORUSER =
         new FinderPath(InvoiceModelImpl.ENTITY_CACHE_ENABLED,
             InvoiceModelImpl.FINDER_CACHE_ENABLED, InvoiceImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-            "findByInvoiceForConsumer", new String[] { Long.class.getName() },
-            InvoiceModelImpl.CONSUMERID_COLUMN_BITMASK);
-    public static final FinderPath FINDER_PATH_COUNT_BY_INVOICEFORCONSUMER = new FinderPath(InvoiceModelImpl.ENTITY_CACHE_ENABLED,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByInvoiceForUser",
+            new String[] { Long.class.getName() },
+            InvoiceModelImpl.USERID_COLUMN_BITMASK);
+    public static final FinderPath FINDER_PATH_COUNT_BY_INVOICEFORUSER = new FinderPath(InvoiceModelImpl.ENTITY_CACHE_ENABLED,
             InvoiceModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-            "countByInvoiceForConsumer", new String[] { Long.class.getName() });
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByInvoiceForUser",
+            new String[] { Long.class.getName() });
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(InvoiceModelImpl.ENTITY_CACHE_ENABLED,
             InvoiceModelImpl.FINDER_CACHE_ENABLED, InvoiceImpl.class,
             FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
@@ -98,7 +97,7 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
     private static final String _SQL_SELECT_INVOICE_WHERE = "SELECT invoice FROM Invoice invoice WHERE ";
     private static final String _SQL_COUNT_INVOICE = "SELECT COUNT(invoice) FROM Invoice invoice";
     private static final String _SQL_COUNT_INVOICE_WHERE = "SELECT COUNT(invoice) FROM Invoice invoice WHERE ";
-    private static final String _FINDER_COLUMN_INVOICEFORCONSUMER_CONSUMERID_2 = "invoice.consumerId = ?";
+    private static final String _FINDER_COLUMN_INVOICEFORUSER_USERID_2 = "invoice.userId = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "invoice.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Invoice exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Invoice exists with the key {";
@@ -123,8 +122,6 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
             }
         };
 
-    @BeanReference(type = ConsumerPersistence.class)
-    protected ConsumerPersistence consumerPersistence;
     @BeanReference(type = InvoicePersistence.class)
     protected InvoicePersistence invoicePersistence;
     @BeanReference(type = ResourcePersistence.class)
@@ -326,23 +323,21 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
         }
         else {
             if ((invoiceModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_INVOICEFORCONSUMER.getColumnBitmask()) != 0) {
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_INVOICEFORUSER.getColumnBitmask()) != 0) {
                 Object[] args = new Object[] {
-                        Long.valueOf(invoiceModelImpl.getOriginalConsumerId())
+                        Long.valueOf(invoiceModelImpl.getOriginalUserId())
                     };
 
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_INVOICEFORCONSUMER,
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_INVOICEFORUSER,
                     args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_INVOICEFORCONSUMER,
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_INVOICEFORUSER,
                     args);
 
-                args = new Object[] {
-                        Long.valueOf(invoiceModelImpl.getConsumerId())
-                    };
+                args = new Object[] { Long.valueOf(invoiceModelImpl.getUserId()) };
 
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_INVOICEFORCONSUMER,
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_INVOICEFORUSER,
                     args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_INVOICEFORCONSUMER,
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_INVOICEFORUSER,
                     args);
             }
         }
@@ -365,7 +360,7 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
 
         invoiceImpl.setInvoiceId(invoice.getInvoiceId());
         invoiceImpl.setPath(invoice.getPath());
-        invoiceImpl.setConsumerId(invoice.getConsumerId());
+        invoiceImpl.setUserId(invoice.getUserId());
 
         return invoiceImpl;
     }
@@ -466,62 +461,62 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
     }
 
     /**
-     * Returns all the invoices where consumerId = &#63;.
+     * Returns all the invoices where userId = &#63;.
      *
-     * @param consumerId the consumer ID
+     * @param userId the user ID
      * @return the matching invoices
      * @throws SystemException if a system exception occurred
      */
-    public List<Invoice> findByInvoiceForConsumer(long consumerId)
+    public List<Invoice> findByInvoiceForUser(long userId)
         throws SystemException {
-        return findByInvoiceForConsumer(consumerId, QueryUtil.ALL_POS,
+        return findByInvoiceForUser(userId, QueryUtil.ALL_POS,
             QueryUtil.ALL_POS, null);
     }
 
     /**
-     * Returns a range of all the invoices where consumerId = &#63;.
+     * Returns a range of all the invoices where userId = &#63;.
      *
      * <p>
      * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
      * </p>
      *
-     * @param consumerId the consumer ID
+     * @param userId the user ID
      * @param start the lower bound of the range of invoices
      * @param end the upper bound of the range of invoices (not inclusive)
      * @return the range of matching invoices
      * @throws SystemException if a system exception occurred
      */
-    public List<Invoice> findByInvoiceForConsumer(long consumerId, int start,
-        int end) throws SystemException {
-        return findByInvoiceForConsumer(consumerId, start, end, null);
+    public List<Invoice> findByInvoiceForUser(long userId, int start, int end)
+        throws SystemException {
+        return findByInvoiceForUser(userId, start, end, null);
     }
 
     /**
-     * Returns an ordered range of all the invoices where consumerId = &#63;.
+     * Returns an ordered range of all the invoices where userId = &#63;.
      *
      * <p>
      * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
      * </p>
      *
-     * @param consumerId the consumer ID
+     * @param userId the user ID
      * @param start the lower bound of the range of invoices
      * @param end the upper bound of the range of invoices (not inclusive)
      * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
      * @return the ordered range of matching invoices
      * @throws SystemException if a system exception occurred
      */
-    public List<Invoice> findByInvoiceForConsumer(long consumerId, int start,
-        int end, OrderByComparator orderByComparator) throws SystemException {
+    public List<Invoice> findByInvoiceForUser(long userId, int start, int end,
+        OrderByComparator orderByComparator) throws SystemException {
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_INVOICEFORCONSUMER;
-            finderArgs = new Object[] { consumerId };
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_INVOICEFORUSER;
+            finderArgs = new Object[] { userId };
         } else {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_INVOICEFORCONSUMER;
-            finderArgs = new Object[] { consumerId, start, end, orderByComparator };
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_INVOICEFORUSER;
+            finderArgs = new Object[] { userId, start, end, orderByComparator };
         }
 
         List<Invoice> list = (List<Invoice>) FinderCacheUtil.getResult(finderPath,
@@ -529,7 +524,7 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
 
         if ((list != null) && !list.isEmpty()) {
             for (Invoice invoice : list) {
-                if ((consumerId != invoice.getConsumerId())) {
+                if ((userId != invoice.getUserId())) {
                     list = null;
 
                     break;
@@ -549,7 +544,7 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
 
             query.append(_SQL_SELECT_INVOICE_WHERE);
 
-            query.append(_FINDER_COLUMN_INVOICEFORCONSUMER_CONSUMERID_2);
+            query.append(_FINDER_COLUMN_INVOICEFORUSER_USERID_2);
 
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
@@ -567,7 +562,7 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(consumerId);
+                qPos.add(userId);
 
                 list = (List<Invoice>) QueryUtil.list(q, getDialect(), start,
                         end);
@@ -590,19 +585,18 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
     }
 
     /**
-     * Returns the first invoice in the ordered set where consumerId = &#63;.
+     * Returns the first invoice in the ordered set where userId = &#63;.
      *
-     * @param consumerId the consumer ID
+     * @param userId the user ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching invoice
      * @throws com.covisint.papi.sample.portlet.NoSuchInvoiceException if a matching invoice could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Invoice findByInvoiceForConsumer_First(long consumerId,
+    public Invoice findByInvoiceForUser_First(long userId,
         OrderByComparator orderByComparator)
         throws NoSuchInvoiceException, SystemException {
-        Invoice invoice = fetchByInvoiceForConsumer_First(consumerId,
-                orderByComparator);
+        Invoice invoice = fetchByInvoiceForUser_First(userId, orderByComparator);
 
         if (invoice != null) {
             return invoice;
@@ -612,8 +606,8 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
 
         msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-        msg.append("consumerId=");
-        msg.append(consumerId);
+        msg.append("userId=");
+        msg.append(userId);
 
         msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -621,16 +615,16 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
     }
 
     /**
-     * Returns the first invoice in the ordered set where consumerId = &#63;.
+     * Returns the first invoice in the ordered set where userId = &#63;.
      *
-     * @param consumerId the consumer ID
+     * @param userId the user ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching invoice, or <code>null</code> if a matching invoice could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Invoice fetchByInvoiceForConsumer_First(long consumerId,
+    public Invoice fetchByInvoiceForUser_First(long userId,
         OrderByComparator orderByComparator) throws SystemException {
-        List<Invoice> list = findByInvoiceForConsumer(consumerId, 0, 1,
+        List<Invoice> list = findByInvoiceForUser(userId, 0, 1,
                 orderByComparator);
 
         if (!list.isEmpty()) {
@@ -641,19 +635,18 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
     }
 
     /**
-     * Returns the last invoice in the ordered set where consumerId = &#63;.
+     * Returns the last invoice in the ordered set where userId = &#63;.
      *
-     * @param consumerId the consumer ID
+     * @param userId the user ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the last matching invoice
      * @throws com.covisint.papi.sample.portlet.NoSuchInvoiceException if a matching invoice could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Invoice findByInvoiceForConsumer_Last(long consumerId,
+    public Invoice findByInvoiceForUser_Last(long userId,
         OrderByComparator orderByComparator)
         throws NoSuchInvoiceException, SystemException {
-        Invoice invoice = fetchByInvoiceForConsumer_Last(consumerId,
-                orderByComparator);
+        Invoice invoice = fetchByInvoiceForUser_Last(userId, orderByComparator);
 
         if (invoice != null) {
             return invoice;
@@ -663,8 +656,8 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
 
         msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-        msg.append("consumerId=");
-        msg.append(consumerId);
+        msg.append("userId=");
+        msg.append(userId);
 
         msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -672,19 +665,19 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
     }
 
     /**
-     * Returns the last invoice in the ordered set where consumerId = &#63;.
+     * Returns the last invoice in the ordered set where userId = &#63;.
      *
-     * @param consumerId the consumer ID
+     * @param userId the user ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the last matching invoice, or <code>null</code> if a matching invoice could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Invoice fetchByInvoiceForConsumer_Last(long consumerId,
+    public Invoice fetchByInvoiceForUser_Last(long userId,
         OrderByComparator orderByComparator) throws SystemException {
-        int count = countByInvoiceForConsumer(consumerId);
+        int count = countByInvoiceForUser(userId);
 
-        List<Invoice> list = findByInvoiceForConsumer(consumerId, count - 1,
-                count, orderByComparator);
+        List<Invoice> list = findByInvoiceForUser(userId, count - 1, count,
+                orderByComparator);
 
         if (!list.isEmpty()) {
             return list.get(0);
@@ -694,17 +687,17 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
     }
 
     /**
-     * Returns the invoices before and after the current invoice in the ordered set where consumerId = &#63;.
+     * Returns the invoices before and after the current invoice in the ordered set where userId = &#63;.
      *
      * @param invoiceId the primary key of the current invoice
-     * @param consumerId the consumer ID
+     * @param userId the user ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the previous, current, and next invoice
      * @throws com.covisint.papi.sample.portlet.NoSuchInvoiceException if a invoice with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public Invoice[] findByInvoiceForConsumer_PrevAndNext(long invoiceId,
-        long consumerId, OrderByComparator orderByComparator)
+    public Invoice[] findByInvoiceForUser_PrevAndNext(long invoiceId,
+        long userId, OrderByComparator orderByComparator)
         throws NoSuchInvoiceException, SystemException {
         Invoice invoice = findByPrimaryKey(invoiceId);
 
@@ -715,13 +708,13 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
 
             Invoice[] array = new InvoiceImpl[3];
 
-            array[0] = getByInvoiceForConsumer_PrevAndNext(session, invoice,
-                    consumerId, orderByComparator, true);
+            array[0] = getByInvoiceForUser_PrevAndNext(session, invoice,
+                    userId, orderByComparator, true);
 
             array[1] = invoice;
 
-            array[2] = getByInvoiceForConsumer_PrevAndNext(session, invoice,
-                    consumerId, orderByComparator, false);
+            array[2] = getByInvoiceForUser_PrevAndNext(session, invoice,
+                    userId, orderByComparator, false);
 
             return array;
         } catch (Exception e) {
@@ -731,8 +724,8 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
         }
     }
 
-    protected Invoice getByInvoiceForConsumer_PrevAndNext(Session session,
-        Invoice invoice, long consumerId, OrderByComparator orderByComparator,
+    protected Invoice getByInvoiceForUser_PrevAndNext(Session session,
+        Invoice invoice, long userId, OrderByComparator orderByComparator,
         boolean previous) {
         StringBundler query = null;
 
@@ -745,7 +738,7 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
 
         query.append(_SQL_SELECT_INVOICE_WHERE);
 
-        query.append(_FINDER_COLUMN_INVOICEFORCONSUMER_CONSUMERID_2);
+        query.append(_FINDER_COLUMN_INVOICEFORUSER_USERID_2);
 
         if (orderByComparator != null) {
             String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
@@ -806,7 +799,7 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        qPos.add(consumerId);
+        qPos.add(userId);
 
         if (orderByComparator != null) {
             Object[] values = orderByComparator.getOrderByConditionValues(invoice);
@@ -934,14 +927,13 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
     }
 
     /**
-     * Removes all the invoices where consumerId = &#63; from the database.
+     * Removes all the invoices where userId = &#63; from the database.
      *
-     * @param consumerId the consumer ID
+     * @param userId the user ID
      * @throws SystemException if a system exception occurred
      */
-    public void removeByInvoiceForConsumer(long consumerId)
-        throws SystemException {
-        for (Invoice invoice : findByInvoiceForConsumer(consumerId)) {
+    public void removeByInvoiceForUser(long userId) throws SystemException {
+        for (Invoice invoice : findByInvoiceForUser(userId)) {
             remove(invoice);
         }
     }
@@ -958,17 +950,16 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
     }
 
     /**
-     * Returns the number of invoices where consumerId = &#63;.
+     * Returns the number of invoices where userId = &#63;.
      *
-     * @param consumerId the consumer ID
+     * @param userId the user ID
      * @return the number of matching invoices
      * @throws SystemException if a system exception occurred
      */
-    public int countByInvoiceForConsumer(long consumerId)
-        throws SystemException {
-        Object[] finderArgs = new Object[] { consumerId };
+    public int countByInvoiceForUser(long userId) throws SystemException {
+        Object[] finderArgs = new Object[] { userId };
 
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_INVOICEFORCONSUMER,
+        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_INVOICEFORUSER,
                 finderArgs, this);
 
         if (count == null) {
@@ -976,7 +967,7 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
 
             query.append(_SQL_COUNT_INVOICE_WHERE);
 
-            query.append(_FINDER_COLUMN_INVOICEFORCONSUMER_CONSUMERID_2);
+            query.append(_FINDER_COLUMN_INVOICEFORUSER_USERID_2);
 
             String sql = query.toString();
 
@@ -989,7 +980,7 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(consumerId);
+                qPos.add(userId);
 
                 count = (Long) q.uniqueResult();
             } catch (Exception e) {
@@ -999,7 +990,7 @@ public class InvoicePersistenceImpl extends BasePersistenceImpl<Invoice>
                     count = Long.valueOf(0);
                 }
 
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_INVOICEFORCONSUMER,
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_INVOICEFORUSER,
                     finderArgs, count);
 
                 closeSession(session);

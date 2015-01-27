@@ -7,34 +7,19 @@
 			<access>PROPERTY</access>
 		</persistence-unit-defaults>
 	</persistence-unit-metadata>
-	<mapped-superclass class="com.covisint.papi.sample.portlet.model.impl.ConsumerModelImpl">
-		<attributes>
-			<id name="consumerId" />
-			<basic name="consumerName" />
-			<basic name="password">
-				<column name="PASSWORD_" />
-			</basic>
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
 	<mapped-superclass class="com.covisint.papi.sample.portlet.model.impl.InvoiceModelImpl">
 		<attributes>
 			<id name="invoiceId" />
 			<basic name="path">
 				<column name="PATH_" />
 			</basic>
-			<basic name="consumerId" />
+			<basic name="userId" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
-	<entity class="com.covisint.papi.sample.portlet.model.impl.ConsumerImpl" name="Consumer">
-		<table name="Invoice_Consumer" />
-		<attributes />
-	</entity>
 	<entity class="com.covisint.papi.sample.portlet.model.impl.InvoiceImpl" name="Invoice">
 		<table name="Invoice_Invoice" />
 		<attributes />

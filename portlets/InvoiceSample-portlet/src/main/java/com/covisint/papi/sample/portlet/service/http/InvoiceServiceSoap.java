@@ -53,11 +53,11 @@ import java.rmi.RemoteException;
 public class InvoiceServiceSoap {
     private static Log _log = LogFactoryUtil.getLog(InvoiceServiceSoap.class);
 
-    public static com.covisint.papi.sample.portlet.model.InvoiceSoap[] getInvoicesForConsumer(
-        long consumerId) throws RemoteException {
+    public static com.covisint.papi.sample.portlet.model.InvoiceSoap[] getInvoicesForUser(
+        long userId) throws RemoteException {
         try {
             java.util.List<com.covisint.papi.sample.portlet.model.Invoice> returnValue =
-                InvoiceServiceUtil.getInvoicesForConsumer(consumerId);
+                InvoiceServiceUtil.getInvoicesForUser(userId);
 
             return com.covisint.papi.sample.portlet.model.InvoiceSoap.toSoapModels(returnValue);
         } catch (Exception e) {

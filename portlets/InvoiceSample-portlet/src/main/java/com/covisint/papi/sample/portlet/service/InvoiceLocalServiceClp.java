@@ -136,7 +136,7 @@ public class InvoiceLocalServiceClp implements InvoiceLocalService {
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
 
-        _methodName19 = "getInvoicesForConsumer";
+        _methodName19 = "getInvoicesForUser";
 
         _methodParameterTypes19 = new String[] { "long" };
     }
@@ -631,14 +631,13 @@ public class InvoiceLocalServiceClp implements InvoiceLocalService {
         throw new UnsupportedOperationException();
     }
 
-    public java.util.List<com.covisint.papi.sample.portlet.model.Invoice> getInvoicesForConsumer(
-        long consumerId)
-        throws com.liferay.portal.kernel.exception.SystemException {
+    public java.util.List<com.covisint.papi.sample.portlet.model.Invoice> getInvoicesForUser(
+        long userId) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19, new Object[] { consumerId });
+                    _methodParameterTypes19, new Object[] { userId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 

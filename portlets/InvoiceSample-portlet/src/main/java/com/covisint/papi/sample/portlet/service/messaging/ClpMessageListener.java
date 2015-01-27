@@ -1,8 +1,6 @@
 package com.covisint.papi.sample.portlet.service.messaging;
 
 import com.covisint.papi.sample.portlet.service.ClpSerializer;
-import com.covisint.papi.sample.portlet.service.ConsumerLocalServiceUtil;
-import com.covisint.papi.sample.portlet.service.ConsumerServiceUtil;
 import com.covisint.papi.sample.portlet.service.InvoiceLocalServiceUtil;
 import com.covisint.papi.sample.portlet.service.InvoiceServiceUtil;
 
@@ -22,9 +20,6 @@ public class ClpMessageListener extends BaseMessageListener {
 
         if (command.equals("undeploy") &&
                 servletContextName.equals(getServletContextName())) {
-            ConsumerLocalServiceUtil.clearService();
-
-            ConsumerServiceUtil.clearService();
             InvoiceLocalServiceUtil.clearService();
 
             InvoiceServiceUtil.clearService();

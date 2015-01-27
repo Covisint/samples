@@ -1,11 +1,8 @@
 package com.covisint.papi.sample.portlet.service.base;
 
 import com.covisint.papi.sample.portlet.model.Invoice;
-import com.covisint.papi.sample.portlet.service.ConsumerLocalService;
-import com.covisint.papi.sample.portlet.service.ConsumerService;
 import com.covisint.papi.sample.portlet.service.InvoiceLocalService;
 import com.covisint.papi.sample.portlet.service.InvoiceService;
-import com.covisint.papi.sample.portlet.service.persistence.ConsumerPersistence;
 import com.covisint.papi.sample.portlet.service.persistence.InvoicePersistence;
 
 import com.liferay.counter.service.CounterLocalService;
@@ -51,12 +48,6 @@ import javax.sql.DataSource;
  */
 public abstract class InvoiceLocalServiceBaseImpl extends BaseLocalServiceImpl
     implements InvoiceLocalService, IdentifiableBean {
-    @BeanReference(type = ConsumerLocalService.class)
-    protected ConsumerLocalService consumerLocalService;
-    @BeanReference(type = ConsumerService.class)
-    protected ConsumerService consumerService;
-    @BeanReference(type = ConsumerPersistence.class)
-    protected ConsumerPersistence consumerPersistence;
     @BeanReference(type = InvoiceLocalService.class)
     protected InvoiceLocalService invoiceLocalService;
     @BeanReference(type = InvoiceService.class)
@@ -284,61 +275,6 @@ public abstract class InvoiceLocalServiceBaseImpl extends BaseLocalServiceImpl
         invoice.setNew(false);
 
         return invoicePersistence.update(invoice, merge);
-    }
-
-    /**
-     * Returns the consumer local service.
-     *
-     * @return the consumer local service
-     */
-    public ConsumerLocalService getConsumerLocalService() {
-        return consumerLocalService;
-    }
-
-    /**
-     * Sets the consumer local service.
-     *
-     * @param consumerLocalService the consumer local service
-     */
-    public void setConsumerLocalService(
-        ConsumerLocalService consumerLocalService) {
-        this.consumerLocalService = consumerLocalService;
-    }
-
-    /**
-     * Returns the consumer remote service.
-     *
-     * @return the consumer remote service
-     */
-    public ConsumerService getConsumerService() {
-        return consumerService;
-    }
-
-    /**
-     * Sets the consumer remote service.
-     *
-     * @param consumerService the consumer remote service
-     */
-    public void setConsumerService(ConsumerService consumerService) {
-        this.consumerService = consumerService;
-    }
-
-    /**
-     * Returns the consumer persistence.
-     *
-     * @return the consumer persistence
-     */
-    public ConsumerPersistence getConsumerPersistence() {
-        return consumerPersistence;
-    }
-
-    /**
-     * Sets the consumer persistence.
-     *
-     * @param consumerPersistence the consumer persistence
-     */
-    public void setConsumerPersistence(ConsumerPersistence consumerPersistence) {
-        this.consumerPersistence = consumerPersistence;
     }
 
     /**

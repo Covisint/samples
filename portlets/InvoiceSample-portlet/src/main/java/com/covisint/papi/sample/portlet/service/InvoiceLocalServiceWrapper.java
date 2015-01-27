@@ -254,10 +254,9 @@ public class InvoiceLocalServiceWrapper implements InvoiceLocalService,
         return _invoiceLocalService.invokeMethod(name, parameterTypes, arguments);
     }
 
-    public java.util.List<com.covisint.papi.sample.portlet.model.Invoice> getInvoicesForConsumer(
-        long consumerId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _invoiceLocalService.getInvoicesForConsumer(consumerId);
+    public java.util.List<com.covisint.papi.sample.portlet.model.Invoice> getInvoicesForUser(
+        long userId) throws com.liferay.portal.kernel.exception.SystemException {
+        return _invoiceLocalService.getInvoicesForUser(userId);
     }
 
     /**

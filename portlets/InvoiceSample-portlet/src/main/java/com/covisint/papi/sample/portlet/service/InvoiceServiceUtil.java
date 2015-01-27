@@ -50,10 +50,9 @@ public class InvoiceServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static java.util.List<com.covisint.papi.sample.portlet.model.Invoice> getInvoicesForConsumer(
-        long consumerId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getInvoicesForConsumer(consumerId);
+    public static java.util.List<com.covisint.papi.sample.portlet.model.Invoice> getInvoicesForUser(
+        long userId) throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getInvoicesForUser(userId);
     }
 
     public static void clearService() {

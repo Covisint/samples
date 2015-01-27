@@ -1,6 +1,7 @@
 package com.covisint.papi.sample.portlet.model;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.service.ServiceContext;
@@ -73,18 +74,33 @@ public interface InvoiceModel extends BaseModel<Invoice> {
     public void setPath(String path);
 
     /**
-     * Returns the consumer ID of this invoice.
+     * Returns the user ID of this invoice.
      *
-     * @return the consumer ID of this invoice
+     * @return the user ID of this invoice
      */
-    public long getConsumerId();
+    public long getUserId();
 
     /**
-     * Sets the consumer ID of this invoice.
+     * Sets the user ID of this invoice.
      *
-     * @param consumerId the consumer ID of this invoice
+     * @param userId the user ID of this invoice
      */
-    public void setConsumerId(long consumerId);
+    public void setUserId(long userId);
+
+    /**
+     * Returns the user uuid of this invoice.
+     *
+     * @return the user uuid of this invoice
+     * @throws SystemException if a system exception occurred
+     */
+    public String getUserUuid() throws SystemException;
+
+    /**
+     * Sets the user uuid of this invoice.
+     *
+     * @param userUuid the user uuid of this invoice
+     */
+    public void setUserUuid(String userUuid);
 
     public boolean isNew();
 

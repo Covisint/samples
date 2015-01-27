@@ -35,7 +35,7 @@ public class InvoiceWrapper implements Invoice, ModelWrapper<Invoice> {
 
         attributes.put("invoiceId", getInvoiceId());
         attributes.put("path", getPath());
-        attributes.put("consumerId", getConsumerId());
+        attributes.put("userId", getUserId());
 
         return attributes;
     }
@@ -53,10 +53,10 @@ public class InvoiceWrapper implements Invoice, ModelWrapper<Invoice> {
             setPath(path);
         }
 
-        Long consumerId = (Long) attributes.get("consumerId");
+        Long userId = (Long) attributes.get("userId");
 
-        if (consumerId != null) {
-            setConsumerId(consumerId);
+        if (userId != null) {
+            setUserId(userId);
         }
     }
 
@@ -115,21 +115,41 @@ public class InvoiceWrapper implements Invoice, ModelWrapper<Invoice> {
     }
 
     /**
-    * Returns the consumer ID of this invoice.
+    * Returns the user ID of this invoice.
     *
-    * @return the consumer ID of this invoice
+    * @return the user ID of this invoice
     */
-    public long getConsumerId() {
-        return _invoice.getConsumerId();
+    public long getUserId() {
+        return _invoice.getUserId();
     }
 
     /**
-    * Sets the consumer ID of this invoice.
+    * Sets the user ID of this invoice.
     *
-    * @param consumerId the consumer ID of this invoice
+    * @param userId the user ID of this invoice
     */
-    public void setConsumerId(long consumerId) {
-        _invoice.setConsumerId(consumerId);
+    public void setUserId(long userId) {
+        _invoice.setUserId(userId);
+    }
+
+    /**
+    * Returns the user uuid of this invoice.
+    *
+    * @return the user uuid of this invoice
+    * @throws SystemException if a system exception occurred
+    */
+    public java.lang.String getUserUuid()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _invoice.getUserUuid();
+    }
+
+    /**
+    * Sets the user uuid of this invoice.
+    *
+    * @param userUuid the user uuid of this invoice
+    */
+    public void setUserUuid(java.lang.String userUuid) {
+        _invoice.setUserUuid(userUuid);
     }
 
     public boolean isNew() {

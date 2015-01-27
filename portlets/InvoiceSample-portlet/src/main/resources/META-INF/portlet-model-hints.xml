@@ -1,14 +1,9 @@
 <?xml version="1.0"?>
 
 <model-hints>
-	<model name="com.covisint.papi.sample.portlet.model.Consumer">
-		<field name="consumerId" type="long" />
-		<field name="consumerName" type="String" />
-		<field name="password" type="String" />
-	</model>
 	<model name="com.covisint.papi.sample.portlet.model.Invoice">
 		<field name="invoiceId" type="long" />
 		<field name="path" type="String" />
-		<field name="consumerId" type="long" />
+		<field name="userId" type="long" />
 	</model>
 </model-hints>

@@ -52,7 +52,6 @@ public interface InvoiceService extends BaseService, InvokableService {
         throws java.lang.Throwable;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.covisint.papi.sample.portlet.model.Invoice> getInvoicesForConsumer(
-        long consumerId)
-        throws com.liferay.portal.kernel.exception.SystemException;
+    public java.util.List<com.covisint.papi.sample.portlet.model.Invoice> getInvoicesForUser(
+        long userId) throws com.liferay.portal.kernel.exception.SystemException;
 }

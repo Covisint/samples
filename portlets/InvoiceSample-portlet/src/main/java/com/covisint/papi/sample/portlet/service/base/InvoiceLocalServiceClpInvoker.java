@@ -38,12 +38,12 @@ public class InvoiceLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
+    private String _methodName38;
+    private String[] _methodParameterTypes38;
+    private String _methodName39;
+    private String[] _methodParameterTypes39;
     private String _methodName44;
     private String[] _methodParameterTypes44;
-    private String _methodName45;
-    private String[] _methodParameterTypes45;
-    private String _methodName50;
-    private String[] _methodParameterTypes50;
 
     public InvoiceLocalServiceClpInvoker() {
         _methodName0 = "addInvoice";
@@ -127,17 +127,17 @@ public class InvoiceLocalServiceClpInvoker {
                 "com.covisint.papi.sample.portlet.model.Invoice", "boolean"
             };
 
-        _methodName44 = "getBeanIdentifier";
+        _methodName38 = "getBeanIdentifier";
 
-        _methodParameterTypes44 = new String[] {  };
+        _methodParameterTypes38 = new String[] {  };
 
-        _methodName45 = "setBeanIdentifier";
+        _methodName39 = "setBeanIdentifier";
 
-        _methodParameterTypes45 = new String[] { "java.lang.String" };
+        _methodParameterTypes39 = new String[] { "java.lang.String" };
 
-        _methodName50 = "getInvoicesForConsumer";
+        _methodName44 = "getInvoicesForUser";
 
-        _methodParameterTypes50 = new String[] { "long" };
+        _methodParameterTypes44 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -229,21 +229,21 @@ public class InvoiceLocalServiceClpInvoker {
                 ((Boolean) arguments[1]).booleanValue());
         }
 
-        if (_methodName44.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes44, parameterTypes)) {
+        if (_methodName38.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes38, parameterTypes)) {
             return InvoiceLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName45.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes45, parameterTypes)) {
+        if (_methodName39.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes39, parameterTypes)) {
             InvoiceLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName50.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes50, parameterTypes)) {
-            return InvoiceLocalServiceUtil.getInvoicesForConsumer(((Long) arguments[0]).longValue());
+        if (_methodName44.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes44, parameterTypes)) {
+            return InvoiceLocalServiceUtil.getInvoicesForUser(((Long) arguments[0]).longValue());
         }
 
         throw new UnsupportedOperationException();

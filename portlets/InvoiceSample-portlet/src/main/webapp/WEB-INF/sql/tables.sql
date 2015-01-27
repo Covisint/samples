@@ -7,5 +7,5 @@ create table Invoice_Consumer (
 create table Invoice_Invoice (
 	invoiceId LONG not null primary key,
 	path_ VARCHAR(75) null,
-	consumerId LONG
+	userId LONG
 );

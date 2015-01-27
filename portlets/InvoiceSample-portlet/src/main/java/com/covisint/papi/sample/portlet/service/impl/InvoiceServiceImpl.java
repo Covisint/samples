@@ -27,7 +27,7 @@ public class InvoiceServiceImpl extends InvoiceServiceBaseImpl {
      *
      * Never reference this interface directly. Always use {@link com.covisint.papi.sample.portlet.service.InvoiceServiceUtil} to access the invoice remote service.
      */
-	public List<Invoice> getInvoicesForConsumer(long consumerId) throws SystemException {
-		return InvoiceLocalServiceUtil.getInvoicesForConsumer(consumerId);
+	public List<Invoice> getInvoicesForUser(long userId) throws SystemException {
+		return InvoiceLocalServiceUtil.getInvoicesForUser(userId);
 	}
 }

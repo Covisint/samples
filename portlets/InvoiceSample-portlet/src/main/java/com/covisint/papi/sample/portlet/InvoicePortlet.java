@@ -18,29 +18,37 @@ import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
+import com.covisint.papi.sample.model.TokenResponse;
 import com.covisint.papi.sample.portlet.ebay.model.FindResponse;
 import com.covisint.papi.sample.portlet.ebay.model.Item;
-import com.covisint.papi.sample.portlet.model.Consumer;
-import com.covisint.papi.sample.portlet.model.ConsumerModel;
 import com.covisint.papi.sample.portlet.model.Invoice;
-import com.covisint.papi.sample.portlet.service.ConsumerLocalServiceUtil;
-import com.covisint.papi.sample.portlet.service.InvoiceLocalService;
 import com.covisint.papi.sample.portlet.service.InvoiceLocalServiceUtil;
 import com.covisint.papi.sample.portlet.service.persistence.InvoiceUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.Company;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.CompanyServiceUtil;
+import com.liferay.portal.service.UserServiceUtil;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
+import com.liferay.util.portlet.PortletProps;
 
 /**
  * Portlet implementation class InvoicePortlet
@@ -55,7 +63,6 @@ public class InvoicePortlet extends MVCPortlet {
 	@Override
 	public void init(PortletConfig config) throws PortletException {
 		super.init(config);
-		loginTemplate = getInitParameter("login-template");
 		listTemplate = getInitParameter("list-template");
 		purchaseTemplate = getInitParameter("purchase-template");
 		displayInvoiceTemplate = getInitParameter("display-invoice-template");
@@ -64,18 +71,42 @@ public class InvoicePortlet extends MVCPortlet {
 	@Override
 	public void doView(RenderRequest renderRequest,
 			RenderResponse renderResponse) throws IOException, PortletException {
-		String token = (String) renderRequest.getPortletSession().getAttribute(
-				"token");
-		System.out.println("token = " + token);
-		if (token == null) {
-			include(loginTemplate, renderRequest, renderResponse);
+		// Get current logged in user
+		String remoteUser = renderRequest.getRemoteUser();
+		if (remoteUser == null) {
+			ThemeDisplay themeDisplay = (ThemeDisplay) renderRequest
+					.getAttribute(WebKeys.THEME_DISPLAY);
+			String currenturl = themeDisplay.getURLCurrent();
+			long companyId = themeDisplay.getCompanyId();
+			Company company;
+			try {
+				company = CompanyServiceUtil.getCompanyById(companyId);
+				String portalURL = PortalUtil.getPortalURL(
+						company.getVirtualHostname(),
+						PortalUtil.getPortalPort(false), false);
+				renderResponse.getWriter().write(
+						"Please <a href=\"" + portalURL
+								+ "/c/portal/login?redirect=" + currenturl
+								+ "\">login</a> to proceed!");
+			} catch (PortalException e) {
+				e.printStackTrace();
+			} catch (SystemException e) {
+				e.printStackTrace();
+			}
 		} else {
+			String token = (String) renderRequest.getPortletSession()
+					.getAttribute("token");
+			System.out.println("token = " + token);
+			if (token == null) {
+				getToken();
+			}
 			String itemJson = renderRequest.getParameter("item");
 			System.out.println("itemJson = " + itemJson);
 			String pdfFilePath = (String) renderRequest
 					.getAttribute("pdfFilePath");
-			if(pdfFilePath == null) {
-				pdfFilePath = (String) renderRequest.getParameter("pdfFilePath");
+			if (pdfFilePath == null) {
+				pdfFilePath = (String) renderRequest
+						.getParameter("pdfFilePath");
 			}
 			System.out.println("pdfFilePath = " + pdfFilePath);
 			if (itemJson != null) {
@@ -119,17 +150,23 @@ public class InvoicePortlet extends MVCPortlet {
 							FindResponse.class);
 					System.out.println(findResponse);
 					renderRequest.setAttribute("findResponse", findResponse);
-					
-					//Get all previous purchase Invoice
-					Consumer consumer = (Consumer) renderRequest.getPortletSession()
-							.getAttribute("consumer");
-					long consumerId = consumer.getConsumerId();
-					List<Invoice> invoices = InvoiceLocalServiceUtil.getInvoicesForConsumer(consumerId);
-					renderRequest.setAttribute("invoices", invoices);
+
+					// Get all previous purchase Invoice
+					try {
+						User user = UserServiceUtil.getUserById(Long
+								.parseLong(remoteUser));
+						long userId = user.getUserId();
+						List<Invoice> invoices = InvoiceLocalServiceUtil
+								.getInvoicesForUser(userId);
+						renderRequest.setAttribute("invoices", invoices);
+					} catch (PortalException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (SystemException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				} catch (URISyntaxException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SystemException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -138,24 +175,80 @@ public class InvoicePortlet extends MVCPortlet {
 		}
 	}
 
-	public void processLogin(ActionRequest actionRequest,
-			ActionResponse actionResponse) throws NoSuchConsumerException, SystemException {
-		String userId = actionRequest.getParameter("userId");
-		String password = actionRequest.getParameter("password");
-		System.out.println(userId);
-		Consumer consumer = ConsumerLocalServiceUtil.getConsumer(userId);
-		System.out.println(consumer);
-		if (consumer != null) {
-			String consumerPass = consumer.getPassword();
-			if (consumerPass != null && consumerPass.equals(password)) {
-				SessionMessages.add(actionRequest, "request_processed",
-						"Welcome!");
-				actionRequest.getPortletSession()
-						.setAttribute("token", "token");
-				actionRequest.getPortletSession().setAttribute("consumer",
-						consumer);
+	private void getPersons(String token) throws ClientProtocolException,
+			IOException {
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		String personAPIUrl = PortletProps.get("personAPIUrl");
+		HttpGet personGet = new HttpGet(personAPIUrl);
+		personGet.addHeader("Accept",
+				"application/vnd.com.covisint.platform.person.v1+json");
+		personGet.addHeader("Authorization", token);
+		HttpResponse response = httpClient.execute(personGet);
+
+		if (response.getStatusLine().getStatusCode() == 200) {
+			HttpEntity entity = response.getEntity();
+			InputStream inputStream = entity.getContent();
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					inputStream));
+			String line;
+
+			StringBuilder builder = new StringBuilder(2048);
+			while ((line = br.readLine()) != null) {
+				builder.append(line);
 			}
+			System.out.println("Response = " + builder.toString());
+
+			Gson gson = new GsonBuilder().create();
+			String responseString = builder.toString();
+			TokenResponse tokenResponse = gson.fromJson(responseString,
+					TokenResponse.class);
+			System.out.println(tokenResponse);
 		}
+	}
+
+	private void getToken() throws ClientProtocolException, IOException {
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		String tokenAPIUrl = PortletProps.get("tokenAPIUrl");
+		HttpGet tokenGet = new HttpGet(tokenAPIUrl);
+		tokenGet.addHeader("Accept",
+				"application/vnd.com.covisint.platform.oauth.token.v1+json");
+		tokenGet.addHeader("Type", "client_credentials");
+		String base64EncodedKeys = getBase64CodedKeys();
+		tokenGet.addHeader("Authorization", "Basic " + base64EncodedKeys);
+		tokenGet.addHeader("Accept",
+				"application/vnd.com.covisint.platform.oauth.token.v1+json");
+		HttpResponse response = httpClient.execute(tokenGet);
+
+		if (response.getStatusLine().getStatusCode() == 200) {
+			HttpEntity entity = response.getEntity();
+			InputStream inputStream = entity.getContent();
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					inputStream));
+			String line;
+
+			StringBuilder builder = new StringBuilder(2048);
+			while ((line = br.readLine()) != null) {
+				builder.append(line);
+			}
+			System.out.println("All Person returned " + builder.length()
+					+ " bytes");
+			System.out.println("Response = " + builder.toString());
+
+			Gson gson = new GsonBuilder().create();
+			String responseString = builder.toString();
+			TokenResponse tokenResponse = gson.fromJson(responseString,
+					TokenResponse.class);
+			System.out.println(tokenResponse);
+		}
+	}
+
+	private String getBase64CodedKeys() {
+		String apiClientId = PortletProps.get("env.apiClientId");
+		String apiClientSecret = PortletProps.get("env.apiClientSecret");
+		String stringToEncode = apiClientId + ":" + apiClientSecret;
+		String encodedString = Base64.encodeBase64String(stringToEncode
+				.getBytes());
+		return encodedString;
 	}
 
 	public void processLogout(ActionRequest actionRequest,
@@ -165,7 +258,8 @@ public class InvoicePortlet extends MVCPortlet {
 	}
 
 	public void processPurchase(ActionRequest actionRequest,
-			ActionResponse actionResponse) throws IOException, PortletException, SystemException {
+			ActionResponse actionResponse) throws IOException,
+			PortletException, SystemException {
 		System.out.println("processAction");
 		String itemString = actionRequest.getParameter("itemJson");
 		String itemJson = URLDecoder.decode(itemString, "UTF-8");
@@ -245,14 +339,12 @@ public class InvoicePortlet extends MVCPortlet {
 				}
 				inputStream.close();
 				fos.close();
-				actionRequest.setAttribute("pdfFilePath",
-						urlPath);
+				actionRequest.setAttribute("pdfFilePath", urlPath);
 				long invoiceId = CounterLocalServiceUtil.increment();
 				Invoice invoice = InvoiceUtil.create(invoiceId);
 				invoice.setPath(urlPath);
-				Consumer consumer = (Consumer)actionRequest.getPortletSession().getAttribute("consumer");
-				long consumerId = consumer.getConsumerId();
-				invoice.setConsumerId(consumerId);
+				String remoteUser = actionRequest.getRemoteUser();
+				invoice.setUserId(Long.parseLong(remoteUser));
 				InvoiceLocalServiceUtil.addInvoice(invoice);
 			}
 		} catch (URISyntaxException e) {
