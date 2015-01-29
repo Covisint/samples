@@ -278,7 +278,7 @@ public class InvoicePortlet extends MVCPortlet {
 	}
 
 	private String getBase64CodedKeys() {
-		_log.debug("ClientId/ClientSecret" + System.getenv("env.apiClientId")+"/"+System.getenv("env.apiClientSecret"));
+		_log.debug("ClientId/ClientSecret" + System.getProperty("env.apiClientId")+"/"+System.getProperty("env.apiClientSecret"));
 		String apiClientId = System.getProperty("env.apiClientId");//PortletProps.get("env.apiClientId");
 		String apiClientSecret = System.getProperty("env.apiClientSecret");//PortletProps.get("env.apiClientSecret");
 		String stringToEncode = apiClientId + ":" + apiClientSecret;
