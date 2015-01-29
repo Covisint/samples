@@ -2,6 +2,9 @@
 <%@page import="com.google.gson.Gson"%>
 <%@page import="org.apache.http.StatusLine"%>
 <%@page import="com.covisint.papi.sample.portlet.ebay.model.Item"%>
+<%@page import="com.covisint.papi.sample.model.Person" %>
+<%@page import="com.covisint.papi.sample.model.Address" %>
+
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
 <portlet:defineObjects />
@@ -12,6 +15,7 @@
 <%
 	Item item = (Item) renderRequest
 			.getAttribute("item");
+    Person person = (Person) renderRequest.getAttribute("person");
 	StatusLine status = (StatusLine) renderRequest
 			.getAttribute("status");
 	if (item == null) {
@@ -46,6 +50,12 @@
 		  	<td>Total (<%= item.getSellingStatus().get(0).getConvertedCurrentPrice().get(0).getCurrencyId() %>): </td>
 		  	<td id="total"></td>
 		  </tr>
+		  <tr>
+		  	<td>Shipping Address:</td>
+		  	<td><%= person.addresses.get(0).streets.get(0)%></td>
+		  	<td><%= person.addresses.get(0).city%></td>
+		  	<td><%= person.addresses.get(0).state%></td>
+		  	<td><%= person.addresses.get(0).postal%></td>
 		  <tr>
 		  	<td colspan="2" align="center"><input type="submit" name="purchase" id="purchase" value="Purchase" disabled="disabled"/></td>
 		  </tr>
