@@ -26,10 +26,13 @@
 	if (status.getStatusCode() != HttpStatus.SC_OK) {
 %>
 <div class="grid">
-	<h4>Communication error!</h4>
-<%=status.getStatusCode()%>
-	<br />
-<%=status.getReasonPhrase()%>
+	<h4 class="bg-danger">Communication error!<br>
+		<small>
+			<%=status.getStatusCode()%>
+		<br />
+			<%=status.getReasonPhrase()%>
+		</small>
+	</h4>
 <%
 	} else {
 %>

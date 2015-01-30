@@ -8,7 +8,7 @@
 	String remoteUser = renderRequest.getRemoteUser();
 	User user = UserServiceUtil.getUserById(Long.parseLong(remoteUser));
 %>
-<table width="100%">
+<table class="table-header">
 	<tr>
 		<%
 			if (user != null) {
