@@ -25,6 +25,7 @@
 			.getAttribute("status");
 	if (status.getStatusCode() != HttpStatus.SC_OK) {
 %>
+<div class="grid">
 <h4>Communication error!</h4>
 <%=status.getStatusCode()%>
 <br />
@@ -69,9 +70,11 @@
 			}
 	%>
 </ul>
+</div>
 <%
 	if (invoices != null && invoices.size() > 0) {
 %>
+<div class="sidebar">
 <h4>Previous Purchases</h4>
 <ul>
 	<%
@@ -88,6 +91,7 @@
 		}
 	%>
 </ul>
+</div>
 <%
 	}
 
