@@ -52,10 +52,12 @@
 		  </tr>
 		  <tr>
 		  	<td>Shipping Address:</td>
+		  <tr>	
 		  	<td><%= person.addresses.get(0).streets.get(0)%></td>
-		  	<td><%= person.addresses.get(0).city%></td>
-		  	<td><%= person.addresses.get(0).state%></td>
-		  	<td><%= person.addresses.get(0).postal%></td>
+		  </tr>
+		  <tr>
+		  	<td><%= person.addresses.get(0).city%>, &nbsp<%= person.addresses.get(0).state%>&nbsp<%= person.addresses.get(0).postal%></td>
+		  </tr>
 		  <tr>
 		  	<td colspan="2" align="center"><input type="submit" name="purchase" id="purchase" value="Purchase" disabled="disabled"/></td>
 		  </tr>

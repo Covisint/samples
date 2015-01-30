@@ -194,7 +194,7 @@ public class InvoiceWrapper implements Invoice, ModelWrapper<Invoice> {
         return new InvoiceWrapper((Invoice) _invoice.clone());
     }
 
-    public int compareTo(com.covisint.papi.sample.portlet.model.Invoice invoice) {
+    public int compareTo(Invoice invoice) {
         return _invoice.compareTo(invoice);
     }
 
@@ -203,15 +203,15 @@ public class InvoiceWrapper implements Invoice, ModelWrapper<Invoice> {
         return _invoice.hashCode();
     }
 
-    public com.liferay.portal.model.CacheModel<com.covisint.papi.sample.portlet.model.Invoice> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<Invoice> toCacheModel() {
         return _invoice.toCacheModel();
     }
 
-    public com.covisint.papi.sample.portlet.model.Invoice toEscapedModel() {
+    public Invoice toEscapedModel() {
         return new InvoiceWrapper(_invoice.toEscapedModel());
     }
 
-    public com.covisint.papi.sample.portlet.model.Invoice toUnescapedModel() {
+    public Invoice toUnescapedModel() {
         return new InvoiceWrapper(_invoice.toUnescapedModel());
     }
 
