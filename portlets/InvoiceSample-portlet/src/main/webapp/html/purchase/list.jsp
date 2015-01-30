@@ -25,7 +25,6 @@
 			.getAttribute("status");
 	if (status.getStatusCode() != HttpStatus.SC_OK) {
 %>
-<div class="grid">
 	<h4 class="bg-danger">Communication error!<br>
 		<small>
 			<%=status.getStatusCode()%>
@@ -36,6 +35,7 @@
 <%
 	} else {
 %>
+<div class="grid">
 	<h4>Select item to purchase</h4>
 	<ul>
 	<%
