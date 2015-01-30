@@ -43,6 +43,7 @@
 		<address>
 			<p><%= person.addresses.get(0).streets.get(0)%>
 			<br><%= person.addresses.get(0).city%>, &nbsp<%= person.addresses.get(0).state%>&nbsp<%= person.addresses.get(0).postal%></p>
+		</address>
 
 			<button name="purchase" id="purchase" value="Purcahse" disabled="disabled" type="submit">Purchase</button>
 		</div>

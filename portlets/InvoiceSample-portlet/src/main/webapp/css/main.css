@@ -6,3 +6,6 @@
 .sidebar{float: left;width: 30%;}
 .sidebar .list-group-item a {display: block; width: 100%; height: 100%;}
 .bg-danger { text-align: center; }
+
+#formContent h2 { font-size: 20px; }
+#formContent h3 { font-size: 14px; }
