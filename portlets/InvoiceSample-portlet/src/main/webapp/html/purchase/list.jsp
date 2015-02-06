@@ -25,15 +25,19 @@
 			.getAttribute("status");
 	if (status.getStatusCode() != HttpStatus.SC_OK) {
 %>
-<h4>Communication error!</h4>
-<%=status.getStatusCode()%>
-<br />
-<%=status.getReasonPhrase()%>
+	<h4 class="bg-danger">Communication error!<br>
+		<small>
+			<%=status.getStatusCode()%>
+		<br />
+			<%=status.getReasonPhrase()%>
+		</small>
+	</h4>
 <%
 	} else {
 %>
-<H4>Select item to purchase</H4>
-<ul style="list-style: none;">
+<div class="grid">
+	<h4>Select item to purchase</h4>
+	<ul>
 	<%
 		ArrayList<ResponseObject> responseObjects = findResponse
 					.getResponseObjects();
@@ -51,29 +55,33 @@
 							String title = titles.get(l);
 							String itemJson = new Gson().toJson(item);
 	%>
-	<li>
-		<a
-		href='<portlet:renderURL><portlet:param name="item" value="<%=itemJson%>"/></portlet:renderURL>'>
-		<img alt="Picture" src="<%=item.getGalleryURL().get(0)%>">
-		</a>
-		<br/>
-		<a
-		href='<portlet:renderURL><portlet:param name="item" value="<%=itemJson%>"/></portlet:renderURL>'>
-		<%=title%>
-		</a>
-	</li>
+		<li>
+			<a
+			href='<portlet:renderURL><portlet:param name="item" value="<%=itemJson%>"/></portlet:renderURL>'>
+			<img alt="Picture" src="<%=item.getGalleryURL().get(0)%>">
+			</a>
+			<br/>
+			<a class="title-link"
+			href='<portlet:renderURL><portlet:param name="item" value="<%=itemJson%>"/></portlet:renderURL>'>
+			<%=title%>
+			</a>
+		</li>
 	<%
 		}
 					}
 				}
 			}
 	%>
-</ul>
+	</ul>
+</div>
+
+
 <%
 	if (invoices != null && invoices.size() > 0) {
 %>
-<h4>Previous Purchases</h4>
-<ul>
+	<div class="sidebar">
+		<div class="list-group">
+			<span class="active list-group-item">Previous Purchases</span>
 	<%
 		for (int i = 0; i < invoices.size(); i++) {
 					Invoice invoice = invoices.get(i);
@@ -81,13 +89,13 @@
 					String pdfName = pdfPath.substring(pdfPath
 							.lastIndexOf('/') + 1);
 	%>
-	<li><a
-		href='<portlet:renderURL><portlet:param name="pdfFilePath" value="<%=pdfPath%>"/></portlet:renderURL>'><%=pdfName%></a>
-	</li>
+	<a
+		href='<portlet:renderURL><portlet:param name="pdfFilePath" value="<%=pdfPath%>"/></portlet:renderURL>' class="list-group-item"><%=pdfName%></a>
 	<%
 		}
 	%>
-</ul>
+	</div>
+</div>
 <%
 	}
 

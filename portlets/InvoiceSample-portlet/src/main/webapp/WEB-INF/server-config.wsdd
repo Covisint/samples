@@ -32,20 +32,6 @@
 			<handler type="LocalResponder" />
 		</responseFlow>
 	</transport>
-	<service name="Plugin_Invoice_ConsumerService" provider="java:RPC" style="rpc" use="encoded">
-		<typeMapping xmlns:ns="http://model.portlet.sample.papi.covisint.com" qname="ns:ConsumerSoap" type="java:com.covisint.papi.sample.portlet.model.ConsumerSoap" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></typeMapping>
-		<operation xmlns:operNS="urn:http.service.portlet.sample.papi.covisint.com" xmlns:rtns="http://model.portlet.sample.papi.covisint.com" name="getConsumer" qname="operNS:getConsumer" returnQName="getConsumerReturn" returnType="rtns:ConsumerSoap" soapAction="">
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="consumerId" type="tns:string"></parameter>
-		</operation>
-		<parameter name="allowedMethods" value="getConsumer" />
-		<parameter name="className" value="com.covisint.papi.sample.portlet.service.http.ConsumerServiceSoap" />
-		<parameter name="schemaUnqualified" value="http://model.portlet.sample.papi.covisint.com" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<parameter name="wsdlPortType" value="ConsumerServiceSoap" />
-		<parameter name="wsdlServiceElement" value="ConsumerServiceSoapService" />
-		<parameter name="wsdlServicePort" value="Plugin_Invoice_ConsumerService" />
-		<parameter name="wsdlTargetNamespace" value="urn:http.service.portlet.sample.papi.covisint.com" />
-	</service>
 	<service name="Plugin_Invoice_InvoiceService" provider="java:RPC" style="rpc" use="encoded">
 		<arrayMapping xmlns:ns="urn:http.service.portlet.sample.papi.covisint.com" xmlns:cmp-ns="http://model.portlet.sample.papi.covisint.com" qname="ns:ArrayOf_tns2_InvoiceSoap" type="java:com.covisint.papi.sample.portlet.model.InvoiceSoap[]" innerType="cmp-ns:InvoiceSoap" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></arrayMapping>
 		<typeMapping xmlns:ns="http://model.portlet.sample.papi.covisint.com" qname="ns:InvoiceSoap" type="java:com.covisint.papi.sample.portlet.model.InvoiceSoap" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></typeMapping>

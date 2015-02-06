@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.portlet.ActionRequest;
@@ -29,6 +30,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
+import com.covisint.papi.sample.model.Person;
 import com.covisint.papi.sample.model.TokenResponse;
 import com.covisint.papi.sample.portlet.ebay.model.FindResponse;
 import com.covisint.papi.sample.portlet.ebay.model.Item;
@@ -50,10 +52,15 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.liferay.util.portlet.PortletProps;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
 /**
  * Portlet implementation class InvoicePortlet
  */
 public class InvoicePortlet extends MVCPortlet {
+	
+	private static Log _log = LogFactoryUtil.getLog(InvoicePortlet.class);
 
 	private String loginTemplate;
 	private String listTemplate;
@@ -89,34 +96,54 @@ public class InvoicePortlet extends MVCPortlet {
 								+ "/c/portal/login?redirect=" + currenturl
 								+ "\">login</a> to proceed!");
 			} catch (PortalException e) {
+				_log.error("portal exception", e);
 				e.printStackTrace();
 			} catch (SystemException e) {
+				_log.error("portal exception", e);
 				e.printStackTrace();
 			}
 		} else {
 			String token = (String) renderRequest.getPortletSession()
 					.getAttribute("token");
-			System.out.println("token = " + token);
+			_log.debug("token = " + token);
 			if (token == null) {
 				token = getToken();
 				renderRequest.getPortletSession().setAttribute("token", token);
 			}
 			String itemJson = renderRequest.getParameter("item");
-			System.out.println("itemJson = " + itemJson);
+			_log.debug("itemJson = " + itemJson);
 			String pdfFilePath = (String) renderRequest
 					.getAttribute("pdfFilePath");
 			if (pdfFilePath == null) {
 				pdfFilePath = (String) renderRequest
 						.getParameter("pdfFilePath");
 			}
-			System.out.println("pdfFilePath = " + pdfFilePath);
+			_log.debug("pdfFilePath = " + pdfFilePath);
 			if (itemJson != null) {
 				Gson gson = new GsonBuilder().create();
 				Item item = gson.fromJson(itemJson, Item.class);
-				System.out.println(item);
+				_log.debug(item);
 				renderRequest.setAttribute("item", item);
+				User user = null;
+				try {
+					user = UserServiceUtil.getUserById(Long
+							.parseLong(remoteUser));
+				} catch (NumberFormatException e) {
+					_log.error(e);
+					e.printStackTrace();
+				} catch (PortalException e) {
+					_log.error(e);
+					e.printStackTrace();
+				} catch (SystemException e) {
+					_log.error(e);
+					e.printStackTrace();
+				}
+				String screenName = user.getScreenName();
+				Person person = getPersons(getToken(), screenName);
+				renderRequest.setAttribute("person", person);
 				include(purchaseTemplate, renderRequest, renderResponse);
 			} else if (pdfFilePath != null) {
+				
 				include(displayInvoiceTemplate, renderRequest, renderResponse);
 			} else {
 				final StringBuilder builder = new StringBuilder(2048);
@@ -141,15 +168,15 @@ public class InvoicePortlet extends MVCPortlet {
 					while ((line = br.readLine()) != null) {
 						builder.append(line);
 					}
-					System.out.println("All Person returned "
+					_log.debug("All Person returned "
 							+ builder.length() + " bytes");
-					System.out.println("Response = " + builder.toString());
+					_log.debug("Response = " + builder.toString());
 
 					Gson gson = new GsonBuilder().create();
 					String responseString = builder.toString();
 					FindResponse findResponse = gson.fromJson(responseString,
 							FindResponse.class);
-					System.out.println(findResponse);
+					_log.debug(findResponse);
 					renderRequest.setAttribute("findResponse", findResponse);
 
 					// Get all previous purchase Invoice
@@ -176,10 +203,12 @@ public class InvoicePortlet extends MVCPortlet {
 		}
 	}
 
-	private void getPersons(String token) throws ClientProtocolException,
+	private Person getPersons(String token, String screenName) throws ClientProtocolException,
 			IOException {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		String personAPIUrl = PortletProps.get("personAPIUrl");
+		personAPIUrl = personAPIUrl+screenName.toUpperCase();
+		_log.debug("personAPIUrl=" + personAPIUrl);
 		HttpGet personGet = new HttpGet(personAPIUrl);
 		personGet.addHeader("Accept",
 				"application/vnd.com.covisint.platform.person.v1+json");
@@ -197,13 +226,16 @@ public class InvoicePortlet extends MVCPortlet {
 			while ((line = br.readLine()) != null) {
 				builder.append(line);
 			}
-			System.out.println("Response = " + builder.toString());
+			_log.debug("Response = " + builder.toString());
 
 			Gson gson = new GsonBuilder().create();
 			String responseString = builder.toString();
-			TokenResponse tokenResponse = gson.fromJson(responseString,
-					TokenResponse.class);
-			System.out.println(tokenResponse);
+			Person person = gson.fromJson(responseString,
+					Person.class);
+			return person;
+		} else {
+			_log.error(response.getStatusLine().getStatusCode());
+			throw new ClientProtocolException("Bad response" + response.getStatusLine().getStatusCode());
 		}
 	}
 
@@ -231,23 +263,24 @@ public class InvoicePortlet extends MVCPortlet {
 			while ((line = br.readLine()) != null) {
 				builder.append(line);
 			}
-			System.out.println("All Person returned " + builder.length()
+			_log.debug("All Person returned " + builder.length()
 					+ " bytes");
-			System.out.println("Response = " + builder.toString());
+			_log.debug("Response = " + builder.toString());
 
 			Gson gson = new GsonBuilder().create();
 			String responseString = builder.toString();
 			TokenResponse tokenResponse = gson.fromJson(responseString,
 					TokenResponse.class);
-			System.out.println(tokenResponse);
+			_log.debug(tokenResponse);
 			return tokenResponse.getAccess_token();
 		}
 		return null;
 	}
 
 	private String getBase64CodedKeys() {
-		String apiClientId = PortletProps.get("env.apiClientId");
-		String apiClientSecret = PortletProps.get("env.apiClientSecret");
+		_log.debug("ClientId/ClientSecret" + System.getProperty("env.apiClientId")+"/"+System.getProperty("env.apiClientSecret"));
+		String apiClientId = System.getProperty("env.apiClientId");//PortletProps.get("env.apiClientId");
+		String apiClientSecret = System.getProperty("env.apiClientSecret");//PortletProps.get("env.apiClientSecret");
 		String stringToEncode = apiClientId + ":" + apiClientSecret;
 		String encodedString = Base64.encodeBase64String(stringToEncode
 				.getBytes());

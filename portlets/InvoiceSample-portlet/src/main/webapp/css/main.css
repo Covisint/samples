@@ -1,0 +1,11 @@
+.table-header {display: none;}
+.grid{float: left;width:70%;}
+.grid ul li {display: inline;float: left; width: 30%;}
+.grid .title-link { width:20%;font-size: 12px;}
+
+.sidebar{float: left;width: 30%;}
+.sidebar .list-group-item a {display: block; width: 100%; height: 100%;}
+.bg-danger { text-align: center; }
+
+#formContent h2 { font-size: 20px; }
+#formContent h3 { font-size: 14px; }

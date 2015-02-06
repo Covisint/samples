@@ -1,0 +1,8 @@
+themes/bootstrap-theme/.settings/
+themes/bootstrap-theme/docroot/css/
+themes/bootstrap-theme/docroot/images/
+themes/bootstrap-theme/docroot/js/
+themes/bootstrap-theme/docroot/templates/
+themes/bootstrap-theme/docroot/WEB-INF/classes/
+themes/bootstrap-theme/docroot/WEB-INF/lib/
+themes/bootstrap-theme/docroot/WEB-INF/liferay-look-and-feel.xml
