@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_activity_contacts">Contacts</string>
+    <string name="phone_number">*Phone</string>
+    <string name="mobile_number">Mobile</string>
+    <string name="fax">Fax</string>
+    <string name="email">*Email</string>
+    <string name="reenter_email">*Re-enter email</string>
+</resources>

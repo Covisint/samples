@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Open Registration</string>
+    <string name="action_settings">Settings</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="org_base_url">http://organization.cf.covisintrnd.com/organizations</string>
+    <string name="title_activity_organization_list">OrganizationList</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="logo">logo</string>
+    <string name="no_org_found">No organization with this name found!\nTry again!!</string>
+    <string name="proceed">Proceed</string>
+
+    <string-array name="countries_lang_isd_sample_number">
+        <item>AC,+247,1234</item>
+        <item>AF,+93,72-123-4567</item>
+        <item>AL,+355,72-123-4567</item>
+        <item>DZ,+213,72-123-4567 72-123-456</item>
+        <item>AS,+1,123-456-7890</item>
+        <item>AD,+376,123-456</item>
+        <item>AO,+244,123-456-7890</item>
+        <item>AI,+1,123-456-7890</item>
+        <item>AG,+1,123-456-7890</item>
+        <item>AN,+599,9-1234-222-333</item>
+        <item>AR,+54,9-11-2345-6789</item>
+        <item>AM,+374,933-33-333 92-333-333</item>
+        <item>AW,+297,333-333</item>
+        <item>AU,+61,4-1234-5678</item>
+        <item>AT,+43,612-345-6789</item>
+        <item>AZ,+994,22-333-4444</item>
+        <item>BS,+1,123-456-7890</item>
+        <item>BH,+973,1234-56789</item>
+        <item>BD,+880,12-4444-4444</item>
+        <item>BB,+1,123-456-7890</item>
+        <item>BY,+375,12-123-4567 123-456-789</item>
+        <item>BE,+32,400-123-456</item>
+        <item>BZ,+501,123-4567</item>
+        <item>BJ,+229,1234-5678 12-345-678</item>
+        <item>BM,+1,123-456-7890</item>
+        <item>BT,+975,12-123-1234 1-234-567</item>
+        <item>BO,+591,1234-5678 1-234-5678</item>
+        <item>BA,+387,12-345-678</item>
+        <item>BW,+267,1234-1234 123-4567</item>
+        <item>BR,+55,11-2345-6789</item>
+        <item>BN,+673,123-4567</item>
+        <item>BG,+359,43-123-1456</item>
+        <item>BF,+226,12-123-123</item>
+        <item>BI,+257,1234-4567</item>
+        <item>KH,+855,12-333-456</item>
+        <item>CM,+237,1234-5678</item>
+        <item>CA,+1,204-234-5678</item>
+        <item>CV,+238,123-4567</item>
+        <item>KY,+1,123-456-7890</item>
+        <item>CF,+236,12-23-45-56</item>
+        <item>TD,+235,12-23-45-56</item>
+        <item>CL,+56,2-123-4567</item>
+        <item>CN,+86,130-1234-5678</item>
+        <item>CX,+61</item>
+        <item>CC,+61</item>
+        <item>CO,+57,300-123-4567</item>
+        <item>KM,+269,123-4567</item>
+        <item>CD,+243</item>
+        <item>CK,+682,12-345</item>
+        <item>CR,+506,1234-5678</item>
+        <item>CI,+225,1234-5678</item>
+        <item>HR,+385,12-345-6789</item>
+        <item>CU,+53,5-12-3562 123-2356</item>
+        <item>CY,+357,357-99-816999</item>
+        <item>CZ,+420,212-345-678</item>
+        <item>DK,+45,32-12-34-56</item>
+        <item>DJ,+253,12-34-56</item>
+        <item>DM,+1,123-456-7890</item>
+        <item>DO,+1,123-456-7890</item>
+        <item>TL,+670,123-4567</item>
+        <item>EC,+593</item>
+        <item>EG,+20,10-456-7890</item>
+        <item>SV,+503,1234-1234</item>
+        <item>GQ,+240,123-456-789</item>
+        <item>ER,+291,1-234-567</item>
+        <item>EE,+372,1-123-4567, 123-4567</item>
+        <item>ET,+251,12-345-6789</item>
+        <item>FO,+298,123-456</item>
+        <item>FJ,+679,123-4567</item>
+        <item>FI,+358,50-123-4567</item>
+        <item>FR,+33,600-123-456</item>
+        <item>GF,+594,123-456-789</item>
+        <item>PF,+689,123-456</item>
+        <item>GA,+241,12-123-456, 123-456</item>
+        <item>GM,+220,123-4567</item>
+        <item>GE,+995,8-32-12-34-56</item>
+        <item>DE,+49,100-1234-5678</item>
+        <item>GH,+233,12-123-4567</item>
+        <item>GI,+350,1234-5678</item>
+        <item>GR,+30,21-2345-6789</item>
+        <item>GL,+299,123-456</item>
+        <item>GD,+1,123-456-7890</item>
+        <item>GP,+590,123-12-34-56</item>
+        <item>GU,+1,123-456-4789</item>
+        <item>GT,+502,1234-5678</item>
+        <item>GG,+44</item>
+        <item>GN,+224,1234-4567</item>
+        <item>GW,+245,123-4567</item>
+        <item>GY,+592,123-4567</item>
+        <item>HT,+509,1234-5678</item>
+        <item>HN,+504,1234-5678</item>
+        <item>HK,+852,2123-4567</item>
+        <item>HU,+36,1-234-5678</item>
+        <item>IS,+354,123-456-789, 123-4567</item>
+        <item>IN,+91,011-2345-6789</item>
+        <item>ID,+62,061-2345678</item>
+        <item>IR,+98,123-456-4789</item>
+        <item>IQ,+964,123-456-7894, 12-123-456</item>
+        <item>IE,+353,80-123 4567</item>
+        <item>IM,+44</item>
+        <item>IL,+972,50-123-4567</item>
+        <item>IT,+39,300 123 4567</item>
+        <item>JM,+1,123-456-7890</item>
+        <item>JP,+81,3-9999-9999</item>
+        <item>JE,+44</item>
+        <item>JO,+962,1-1234-5678, 1-123-4567</item>
+        <item>KZ,+7,123-345-6789</item>
+        <item>KE,+254,123-456-789</item>
+        <item>KI,+686,12-345</item>
+        <item>KW,+965,1234-5678</item>
+        <item>KG,+996,123-456-789</item>
+        <item>LA,+856,12-23-45-56, 12-345-568</item>
+        <item>LV,+371,61-234-567</item>
+        <item>LB,+961,70-123-456</item>
+        <item>LS,+266,12-234-456</item>
+        <item>LR,+231,1-234-256, 1-234-5698</item>
+        <item>LY,+218,12-235-689</item>
+        <item>LI,+423,123-4567</item>
+        <item>LT,+370,8-312-34-567</item>
+        <item>LU,+352,1-2356-4567, 123-456-789</item>
+        <item>MO,+853,1234-4567</item>
+        <item>MK,+389,70-221-2345</item>
+        <item>MG,+261,12-23-456-45</item>
+        <item>MW,+265,12-256-4578</item>
+        <item>MY,+60,03-1234 5678</item>
+        <item>MV,+960,123-4567</item>
+        <item>ML,+223,1234-5678</item>
+        <item>MT,+356,1234-5678</item>
+        <item>MH,+692,123-5678</item>
+        <item>MQ,+596,123-12-45-56</item>
+        <item>MR,+222,1234-5678</item>
+        <item>MU,+230,123-5678</item>
+        <item>YT,+262,123-412-678</item>
+        <item>MX,+52,1 222 123 4567</item>
+        <item>FM,+691,123-5678</item>
+        <item>MD,+373,123-14-678</item>
+        <item>MC,+377,1234-5678, 1234-56781</item>
+        <item>MN,+976,1234-5678</item>
+        <item>ME,+382,12-134-578</item>
+        <item>MS,+1,123-456-5678</item>
+        <item>MA,+212,60 123-4567</item>
+        <item>MZ,+258,12-145-5678</item>
+        <item>MM,+95,1-123-4567</item>
+        <item>NA,+264,23-456-7894, 12-345-567</item>
+        <item>NR,+674,123-5678</item>
+        <item>NP,+977,12-1234-5678, 12-345-678</item>
+        <item>NL,+31,6 1234 5678</item>
+        <item>NC,+687,123-567</item>
+        <item>NZ,+64,2-234 5678</item>
+        <item>NI,+505</item>
+        <item>NE,+227,1234-5678</item>
+        <item>NG,+234,70-1234-5678</item>
+        <item>NU,+683,1234</item>
+        <item>NF,+6723,23-123</item>
+        <item>KP,+850</item>
+        <item>MP,+1-670</item>
+        <item>NO,+47,21 23 45 67</item>
+        <item>OM,+968,23 123456</item>
+        <item>PK,+92,(30) 12345678</item>
+        <item>PW,+680,123-4567</item>
+        <item>PS,+970,12-356-4567</item>
+        <item>PA,+507,1234-5678</item>
+        <item>PG,+675,123-45-567, 123-5678</item>
+        <item>PY,+595,123-456-567, 34-5678</item>
+        <item>PE,+51,123-456-678</item>
+        <item>PH,+63,900-123-4567</item>
+        <item>PL,+48,12 345 67 89</item>
+        <item>PT,+351,212-345-678</item>
+        <item>PR,+1,700-123-4567</item>
+        <item>QA,+974,70-123-456</item>
+        <item>RE,+262,701-123-456</item>
+        <item>RO,+40,700-123-456</item>
+        <item>RU,+7,8-301-123-45-67</item>
+        <item>RW,+250,70-123-456</item>
+        <item>PM,+508</item>
+        <item>SH,+290,12-45</item>
+        <item>KN,+1,700-123-4560</item>
+        <item>LC,+1,700-123-4560</item>
+        <item>VC,+1,700-123-4560</item>
+        <item>WS,+685,700-4560, 70-4560</item>
+        <item>SM,+378,700-123-4560</item>
+        <item>ST,+239,70-45601</item>
+        <item>SA,+966,5-1234-5678</item>
+        <item>SN,+221,70-123-4560</item>
+        <item>RS,+381,60 123 456</item>
+        <item>SC,+248,7-12-45</item>
+        <item>SL,+232,70-123-456</item>
+        <item>SG,+65,6123-4567</item>
+        <item>SK,+421,900-123-456</item>
+        <item>SI,+386,30-123-456</item>
+        <item>SB,+677,70-12-45</item>
+        <item>SO,+252,70-123-456</item>
+        <item>ZA,+27,70-123-4567</item>
+        <item>KR,+82,22123456</item>
+        <item>GE,+995,8-32-12-34-56</item>
+        <item>ES,+34,812-34-56-78</item>
+        <item>LK,+94,70-123-4560</item>
+        <item>SD,+249,70-123-4560</item>
+        <item>SR,+597,700-4560</item>
+        <item>SJ,+47</item>
+        <item>SZ,+268,7001-4560</item>
+        <item>SE,+46</item>
+        <item>CH,+41</item>
+        <item>SY,+963</item>
+        <item>TJ,+992</item>
+        <item>TZ,+255</item>
+        <item>TW,+886</item>
+        <item>TH,+66</item>
+        <item>TG,+228</item>
+        <item>TK,+690</item>
+        <item>TO,+676</item>
+        <item>TT,+1</item>
+        <item>TN,+216</item>
+        <item>TR,+90</item>
+        <item>TM,+993</item>
+        <item>TC,+1</item>
+        <item>TV,+688</item>
+        <item>UG,+256</item>
+        <item>UA,+380,48 234-56-78</item>
+        <item>AE,+971,70-123-4560, 7-123-4560</item>
+        <item>GB,+44,121-234-5678</item>
+        <item>US,+1,201-234-5678</item>
+        <item>UY,+598,7-123-4560</item>
+        <item>UZ,+998,70-123-4560</item>
+        <item>VU,+678,70-560, 700-4560</item>
+        <item>VA,+379,700-123-4560</item>
+        <item>VE,+58</item>
+        <item>VN,+84,100-1234-567</item>
+        <item>VG,+1,700-123-4560</item>
+        <item>WF,+681,700-123</item>
+        <item>YE,+967,700-123-456</item>
+        <item>ZM,+260,70-123-4560</item>
+        <item>ZW,+263,70-123-4560</item>
+    </string-array>
+</resources>

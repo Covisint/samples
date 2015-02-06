@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_activity_tz_lang">Timezone and Language</string>
+    <string name="time_zone">*Timezone</string>
+    <string name="language_preference">*Language</string>
+</resources>

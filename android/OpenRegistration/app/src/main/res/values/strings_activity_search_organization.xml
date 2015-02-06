@@ -1,0 +1,11 @@
+<resources>
+    <string name="title_activity_search_organization">Search Organization</string>
+
+    <!-- Strings related to search organization -->
+    <string name="prompt_org_name">Organization name</string>
+    <string name="action_search">Search</string>
+    <string name="search_criteria">Search Criteria</string>
+    <string name="contains">Contains</string>
+    <string name="begins_with">Begins with</string>
+    <string name="enter_org_name">Enter Organization Name</string>
+</resources>

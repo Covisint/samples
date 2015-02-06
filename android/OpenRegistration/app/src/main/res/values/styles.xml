@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Black.NoTitleBar.Fullscreen">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="android:buttonStyle">@style/ButtonAppTheme</item>
+        <item name="android:progressBarStyle">@style/status_indicator</item>
+    </style>
+
+    <style name="Theme.SplashTheme" parent="android:Theme.Black.NoTitleBar.Fullscreen">
+
+    </style>
+
+    <style name="AppTheme.UserInfoInput" parent="AppTheme">
+        <item name="android:textViewStyle">@style/Label</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">@style/ButtonBar</item>
+    </style>
+
+    <style name="ButtonBar">
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:background">@android:drawable/bottom_bar</item>
+    </style>
+
+    <style name="Label">
+        <item name="android:minWidth">120dip</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="status_indicator" parent="android:Widget.DeviceDefault.RatingBar.Indicator">
+        <item name="android:progressDrawable">@drawable/indicator</item>
+    </style>
+</resources>
