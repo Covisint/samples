@@ -1,4 +1,4 @@
-# Prerequisits
+# Prerequistes
 1. Eclipse with or without Liferay plugin
 2. Maven
 
