@@ -7,9 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.covisint.papi.sample.android.openregistration.model.PAPIModel;
 import com.covisint.papi.sample.android.openregistration.model.organization.Organization;
 import com.covisint.papi.sample.android.openregistration.util.Constants;
 import com.google.gson.Gson;
@@ -20,9 +20,10 @@ import java.util.List;
 
 
 public class OrganizationList extends ListActivity {
-
+    public static PAPIModel[] organizations;
     private List<Organization> organizationList;
     private Organization mDummyOrgForBackOperation = new Organization("Search again...");
+    private ArrayAdapter<Organization> mListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,21 +31,16 @@ public class OrganizationList extends ListActivity {
         // We'll define a custom screen layout here (the one shown above), but
         // typically, you could just use the standard ListActivity layout.
         setContentView(R.layout.activity_organization_list);
-        organizationList = new ArrayList<Organization>();
-        String orgListJson = getIntent().getStringExtra("OrganizationListJson");
-        Gson gson = new GsonBuilder().create();
-        try {
-            Organization[] organizations = gson.fromJson(orgListJson, Organization[].class);
-            for (int i = 0; i < organizations.length; i++) {
-                organizationList.add(organizations[i]);
+        organizationList = new ArrayList<>();
+        if (organizations != null) {
+            for (PAPIModel organization : organizations) {
+                if (organization instanceof Organization)
+                    organizationList.add((Organization) organization);
             }
-            organizationList.add(mDummyOrgForBackOperation);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        ListAdapter listAdapter = new ArrayAdapter<Organization>(this, android.R.layout.simple_list_item_1, organizationList);
-        setListAdapter(listAdapter);
-
+        organizationList.add(mDummyOrgForBackOperation);
+        mListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, organizationList);
+        setListAdapter(mListAdapter);
     }
 
 

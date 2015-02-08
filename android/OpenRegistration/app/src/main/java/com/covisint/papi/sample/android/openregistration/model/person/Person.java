@@ -1,17 +1,13 @@
 package com.covisint.papi.sample.android.openregistration.model.person;
 
+import com.covisint.papi.sample.android.openregistration.model.PAPIModel;
 import com.covisint.papi.sample.android.openregistration.model.contact.Address;
 import com.covisint.papi.sample.android.openregistration.model.contact.Phone;
 
 /**
  * Created by Nitin.Khobragade on 2/4/2015.
  */
-public class Person {
-    private String id;
-    private long version;
-    private long creation;
-    private String realm;
-    private String status;
+public class Person extends PAPIModel {
     private Name name;
     private Address addresses;
     private String language;

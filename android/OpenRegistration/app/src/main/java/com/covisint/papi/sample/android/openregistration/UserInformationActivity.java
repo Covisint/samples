@@ -1,14 +1,8 @@
 package com.covisint.papi.sample.android.openregistration;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -17,18 +11,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.covisint.papi.sample.android.openregistration.model.UserInformation;
 import com.covisint.papi.sample.android.openregistration.model.organization.Organization;
 import com.covisint.papi.sample.android.openregistration.model.person.Name;
 import com.covisint.papi.sample.android.openregistration.model.person.Person;
 import com.covisint.papi.sample.android.openregistration.util.Constants;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Locale;
 
 
 /**
@@ -83,13 +71,30 @@ public class UserInformationActivity extends Activity {
         Person person = new Person();
         Name name = new Name();
         Object prefix = mPrefix.getSelectedItem();
-        name.setPrefix(prefix.toString());
+        String prefixString = prefix.toString();
+        if (prefixString != null && prefixString.trim().length() > 0) {
+            name.setPrefix(prefixString);
+        }
         String firstName = mGivenName.getText().toString();
-        name.setGiven(firstName);
+        if (firstName != null && firstName.trim().length() > 0) {
+            name.setGiven(firstName);
+        } else {
+            mGivenName.setError(getString(R.string.error_field_required));
+            mGivenName.requestFocus();
+            return;
+        }
         String middleName = mMiddleName.getText().toString();
-        name.setMiddle(middleName);
+        if (middleName != null && middleName.trim().length() > 0) {
+            name.setMiddle(middleName);
+        }
         String lastName = mSurname.getText().toString();
-        name.setSurname(lastName);
+        if (lastName != null && lastName.trim().length() > 0) {
+            name.setSurname(lastName);
+        } else {
+            mSurname.setError(getString(R.string.error_field_required));
+            mSurname.requestFocus();
+            return;
+        }
         person.setName(name);
         person.setTitle(mJobTitle.getText().toString());
         person.setOrganizationId(mOrganization.getId());

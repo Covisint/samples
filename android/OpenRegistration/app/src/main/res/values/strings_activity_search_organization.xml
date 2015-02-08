@@ -8,4 +8,5 @@
     <string name="contains">Contains</string>
     <string name="begins_with">Begins with</string>
     <string name="enter_org_name">Enter Organization Name</string>
+    <string name="no_org_found">No organization with this name found!\nTry again!!</string>
 </resources>

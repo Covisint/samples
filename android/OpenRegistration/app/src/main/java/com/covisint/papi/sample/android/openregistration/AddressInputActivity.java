@@ -87,18 +87,41 @@ public class AddressInputActivity extends Activity {
         Address address = new Address();
         ArrayList<String> streets = new ArrayList<>(3);
         String address1 = mAddress1ET.getText().toString();
-        streets.add(address1);
+        if (address1 != null && address1.trim().length() > 0) {
+            streets.add(address1);
+        } else {
+            mAddress1ET.setError(getString(R.string.error_field_required));
+            mAddress1ET.requestFocus();
+            return;
+        }
         String address2 = mAddress2ET.getText().toString();
         streets.add(address2);
         String address3 = mAddress3ET.getText().toString();
         streets.add(address3);
         address.setStreets(streets);
         String city = mCity.getText().toString();
-        address.setCity(city);
+        if (city != null && city.trim().length() > 0) {
+            address.setCity(city);
+        } else {
+            mCity.setError(getString(R.string.error_field_required));
+            mCity.requestFocus();
+            return;
+        }
         String state = mState.getText().toString();
-        address.setState(state);
+        if (state != null && state.trim().length() > 0) {
+            address.setState(state);
+        } else {
+            mState.setError(getString(R.string.error_field_required));
+            mState.requestFocus();
+            return;
+        }
         String postalCode = mPostalCode.getText().toString();
-        address.setPostal(postalCode);
+        if (postalCode != null && postalCode.trim().length() > 0) {
+            address.setPostal(postalCode);
+        } else {
+            mPostalCode.setError(getString(R.string.error_field_required));
+            mPostalCode.requestFocus();
+        }
         Object country = mCountriesSpinner.getSelectedItem();
         address.setCountry(country.toString());
 

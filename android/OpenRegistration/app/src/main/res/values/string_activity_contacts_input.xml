@@ -6,4 +6,7 @@
     <string name="fax">Fax</string>
     <string name="email">*Email</string>
     <string name="reenter_email">*Re-enter email</string>
+    <string name="error_invalid_number">Please enter valid number.</string>
+    <string name="error_invalid_email">Please enter valid email address.</string>
+    <string name="error_email_mismatch">Email address mismatch.</string>
 </resources>

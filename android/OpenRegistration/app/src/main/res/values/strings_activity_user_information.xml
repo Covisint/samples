@@ -1,17 +1,11 @@
 <resources>
     <string name="title_activity_user_information">User Information</string>
-    <string name="prefix">Prefix</string>
+    <string name="org_name">Organization:</string>
+    <string name="prefix">Prefix:</string>
     <string name="first_name">*First Name:</string>
     <string name="middle_name">Middle Name:</string>
     <string name="last_name">*Last Name:</string>
     <string name="job_title">Job Title:</string>
-    <string name="address1">*Address 1:</string>
-    <string name="address2">Address 2:</string>
-    <string name="address3">Address 3:</string>
-    <string name="city">City</string>
-    <string name="state">State</string>
-    <string name="postal_code">Postal code</string>
-    <string name="country">Country</string>
 
     <!-- Strings related to user info submission -->
     <string-array name="prefix_arrays">

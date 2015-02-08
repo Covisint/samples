@@ -1,21 +1,14 @@
 package com.covisint.papi.sample.android.openregistration;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 
-import com.covisint.papi.sample.android.openregistration.model.UserInformation;
 import com.covisint.papi.sample.android.openregistration.model.contact.Phone;
 import com.covisint.papi.sample.android.openregistration.model.contact.PhoneType;
 import com.covisint.papi.sample.android.openregistration.model.person.Person;
@@ -25,9 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Locale;
 
 
 /**
@@ -35,6 +26,8 @@ import java.util.Locale;
  */
 public class ContactsInputActivity extends Activity {
 
+    private static final String VALID_NUMBER = "valid_number";
+    private static final String VALID_EMAIL = "valid_email";
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -114,20 +107,48 @@ public class ContactsInputActivity extends Activity {
         String reenterEmail = mReenterEmail.getText().toString();
 
         ArrayList<Phone> phones = new ArrayList<>(3);
-        if(phoneNumber != null && phoneNumber.trim().length() > 0) {
-            Phone phone = new Phone(PhoneType.main, isdPhoneNumber + " " + phoneNumber);
+        String result = validateNumber(isdPhoneNumber, phoneNumber);
+        if (result == VALID_NUMBER) {
+            String globalPhoneNumber = isdPhoneNumber + phoneNumber;
+            Phone phone = new Phone(PhoneType.main, globalPhoneNumber);
             phones.add(phone);
+        } else {
+            mPhoneNumber.setError(result);
+            mPhoneNumber.requestFocus();
+            return;
         }
-        if(mobileNumber != null && mobileNumber.trim().length() > 0) {
-            Phone phone = new Phone(PhoneType.mobile, isdMobileNumber + " " + mobileNumber);
+        result = validateNumber(isdMobileNumber, mobileNumber);
+        if (result == VALID_NUMBER) {
+            String globalPhoneNumber = isdMobileNumber + " " + mobileNumber;
+            Phone phone = new Phone(PhoneType.mobile, globalPhoneNumber);
             phones.add(phone);
+        } else {
+            mMobileNumber.setError(result);
+            mMobileNumber.requestFocus();
+            return;
         }
-        if(faxNumber != null && faxNumber.trim().length() > 0) {
+        result = validateNumber("", faxNumber);
+        if (result == VALID_NUMBER) {
             Phone phone = new Phone(PhoneType.fax, faxNumber);
             phones.add(phone);
+        } else {
+            mFaxNumber.setError(result);
+            mFaxNumber.requestFocus();
         }
         mPerson.setPhones(phones.toArray(new Phone[phones.size()]));
 
+        result = validateEmail(email, reenterEmail);
+        if (result == VALID_EMAIL) {
+            mPerson.setEmail(email);
+        } else if (result.equals(getString(R.string.error_invalid_email))) {
+            mEmail.setError(result);
+            mEmail.requestFocus();
+            return;
+        } else {
+            mReenterEmail.setError(result);
+            mReenterEmail.requestFocus();
+            return;
+        }
         Intent intent = new Intent(this, TimezoneLanguageInputActivity.class);
         Gson gson = new GsonBuilder().create();
         String personJson = gson.toJson(mPerson);
@@ -135,6 +156,44 @@ public class ContactsInputActivity extends Activity {
         startActivity(intent);
         finish();
 
+    }
+
+    private String validateEmail(String email, String reenterEmail) {
+        String result;
+        if (email != null && email.trim().length() > 0) {
+            String emailAddress = email.trim();
+            if (android.util.Patterns.EMAIL_ADDRESS.matcher(emailAddress).matches()) {
+                if (reenterEmail != null && reenterEmail.equals(email)) {
+                    result = VALID_EMAIL;
+                } else {
+                    result = getString(R.string.error_email_mismatch);
+                }
+            } else {
+                result = getString(R.string.error_invalid_email);
+            }
+        } else {
+            result = getString(R.string.error_invalid_email);
+        }
+        return result;
+    }
+
+    private String validateNumber(String isdPhoneNumber, String phoneNumber) {
+        String result = VALID_NUMBER;
+        if(phoneNumber != null && phoneNumber.trim().length() > 0) {
+            String globalPhoneNumber = isdPhoneNumber + phoneNumber;
+            if (PhoneNumberUtils.isGlobalPhoneNumber(globalPhoneNumber)) {
+                Phone phone = new Phone(PhoneType.main, globalPhoneNumber);
+            } else {
+                mPhoneNumber.setError(getString(R.string.error_invalid_number));
+                mPhoneNumber.requestFocus();
+                result = getString(R.string.error_invalid_number);
+            }
+        } else {
+            mPhoneNumber.setError(getString(R.string.error_field_required));
+            mPhoneNumber.requestFocus();
+            result = getString(R.string.error_field_required);
+        }
+        return result;
     }
 
 }

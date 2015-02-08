@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_activity_address">Address</string>
+    <string name="address1">*Address 1:</string>
+    <string name="address2">Address 2:</string>
+    <string name="address3">Address 3:</string>
+    <string name="city">*City</string>
+    <string name="state">*State</string>
+    <string name="postal_code">*Postal code</string>
+    <string name="country">*Country</string>
 </resources>

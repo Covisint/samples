@@ -1,6 +1,7 @@
 package com.covisint.papi.sample.android.openregistration.model.organization;
 
 import com.covisint.papi.sample.android.openregistration.model.AuthenticationPolicy;
+import com.covisint.papi.sample.android.openregistration.model.PAPIModel;
 import com.covisint.papi.sample.android.openregistration.model.PasswordPolicy;
 import com.covisint.papi.sample.android.openregistration.model.contact.Address;
 import com.covisint.papi.sample.android.openregistration.model.contact.Phone;
@@ -11,15 +12,10 @@ import java.util.ArrayList;
 /**
  * Created by Nitin.Khobragade on 2/2/2015.
  */
-public class Organization {
-    private String id;
-    private long version;
-    private long creation;
-    private String realm;
-    private String status;
+public class Organization extends PAPIModel {
+    private String name;
     private Org parentOrganization;
     private Org rootOrganization;
-    private String name;
     private ArrayList<Address> addresses;
     private ArrayList<Phone> phones;
     private String url;

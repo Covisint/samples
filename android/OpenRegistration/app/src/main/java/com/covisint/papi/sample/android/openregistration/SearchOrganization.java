@@ -20,11 +20,14 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.covisint.papi.sample.android.openregistration.model.PAPIModel;
 import com.covisint.papi.sample.android.openregistration.model.organization.Organization;
 import com.covisint.papi.sample.android.openregistration.util.Constants;
+import com.covisint.papi.sample.android.openregistration.util.NetworkResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -46,13 +49,6 @@ import java.util.List;
 public class SearchOrganization extends Activity {
 
     /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private SearchTask mAuthTask = null;
@@ -62,6 +58,7 @@ public class SearchOrganization extends Activity {
     private View mProgressView;
     private View mSearchFormView;
     private TextView mErrorMessage;
+    private TextView mSearchStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +89,10 @@ public class SearchOrganization extends Activity {
         mSearchFormView = findViewById(R.id.name_search_form);
         mProgressView = findViewById(R.id.search_progress);
         mErrorMessage = (TextView) findViewById(R.id.message);
+        mSearchStatus = (TextView) findViewById(R.id.search_status);
+        if (mAuthTask != null) {
+            showProgress(true);
+        }
     }
 
     /**
@@ -170,20 +171,11 @@ public class SearchOrganization extends Activity {
         }
     }
 
-    private void addOrgNameToAutoComplete(List<String> orgNameAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(SearchOrganization.this,
-                        android.R.layout.simple_dropdown_item_1line, orgNameAddressCollection);
-
-        mOrgNameView.setAdapter(adapter);
-    }
-
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class SearchTask extends AsyncTask<Void, Void, String> {
+    public class SearchTask extends AsyncTask<Void, String, NetworkResponse> {
 
         private final String mName;
 
@@ -192,8 +184,8 @@ public class SearchOrganization extends Activity {
         }
 
         @Override
-        protected String doInBackground(Void... params) {
-            String networkResponse = null;
+        protected NetworkResponse doInBackground(Void... params) {
+            NetworkResponse networkResponse = new NetworkResponse();
             try {
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpGet getRequest = new HttpGet();
@@ -203,21 +195,41 @@ public class SearchOrganization extends Activity {
 
                 URI uri = new URI(urlString);
                 getRequest.setURI(uri);
-                getRequest.setHeader("Accept", "application/vnd.com.covisint.platform.organization.v1+json");
-                getRequest.setHeader("x-realm", "ALIAS162-DEV");
-                getRequest.setHeader("x-requestor", "requestor");
-                getRequest.setHeader("x-requestor-app", "app");
+                String[] headersArray = getResources().getStringArray(R.array.org_request_headers);
+                for (String header : headersArray) {
+                    String[] headers = header.split(",");
+                    getRequest.setHeader(headers[0], headers[1]);
+                }
                 HttpResponse httpResponse = httpClient.execute(getRequest);
                 StringBuilder stringBuilder = new StringBuilder(1024);
+                networkResponse.setStatusLine(httpResponse.getStatusLine());
                 if (httpResponse.getStatusLine().getStatusCode() == 200) {
+                    publishProgress("Reading response...");
                     BufferedReader br = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
                     String reading;
+                    int dots = 0;
                     while ((reading = br.readLine()) != null) {
                         stringBuilder.append(reading);
+                        dots %= 3;
+                        dots++;
+                        switch (dots) {
+                            case 3:
+                                publishProgress("Reading response...");
+                                break;
+                            case 2:
+                                publishProgress("Reading response..");
+                                break;
+                            case 1:
+                                publishProgress("Reading response.");
+                                break;
+                        }
                     }
-                    networkResponse = stringBuilder.toString();
-                } else {
-                    networkResponse = httpResponse.getStatusLine().toString();
+                    String jsonResponse = stringBuilder.toString();
+                    networkResponse.setRawData(jsonResponse);
+                    publishProgress("Parsing response...");
+                    Gson gson = new GsonBuilder().create();
+                    Organization[] organizations = gson.fromJson(jsonResponse, Organization[].class);
+                    networkResponse.setResponse(organizations);
                 }
             } catch (URISyntaxException e) {
                 e.printStackTrace();
@@ -230,26 +242,26 @@ public class SearchOrganization extends Activity {
         }
 
         @Override
-        protected void onPostExecute(final String networkResponse) {
+        protected void onPostExecute(final NetworkResponse networkResponse) {
             mAuthTask = null;
             showProgress(false);
-            if (networkResponse == null) {
+            if (networkResponse.getStatusLine() == null) {
                 mErrorMessage.setText("Something went wrong!");
-            } else if (networkResponse.startsWith("HTTP")) {
-                mErrorMessage.setText(networkResponse);
+            } else if (networkResponse.getStatusLine().getStatusCode() != 200) {
+                mErrorMessage.setText(networkResponse.getStatusLine().getReasonPhrase());
             } else {
-                Gson gson = new GsonBuilder().create();
-                Organization[] organizations = gson.fromJson(networkResponse, Organization[].class);
+                PAPIModel[] organizations = networkResponse.getResponse();
                 if (organizations.length == 0) {
                     mErrorMessage.setText(getString(R.string.no_org_found));
                 } else {
                     Intent intent;
+                    Gson gson = new GsonBuilder().create();
                     if (organizations.length == 1) {
                         intent = new Intent(getBaseContext(), UserInformationActivity.class);
                         intent.putExtra(Constants.ORGANIZATION_JSON, gson.toJson(organizations[0]));
                     } else {
                         intent = new Intent(getBaseContext(), OrganizationList.class);
-                        intent.putExtra(Constants.ORGANIZATION_LIST_JSON, networkResponse);
+                        OrganizationList.organizations = organizations;
                     }
                     startActivity(intent);
                     finish();
@@ -261,6 +273,13 @@ public class SearchOrganization extends Activity {
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            if (values.length > 0)
+            mSearchStatus.setText(values[0]);
         }
     }
 }

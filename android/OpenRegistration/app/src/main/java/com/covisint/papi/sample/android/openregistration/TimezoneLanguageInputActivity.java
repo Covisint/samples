@@ -4,21 +4,18 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.covisint.papi.sample.android.openregistration.model.contact.Address;
+import com.covisint.papi.sample.android.openregistration.model.error.Error;
 import com.covisint.papi.sample.android.openregistration.model.organization.Organization;
 import com.covisint.papi.sample.android.openregistration.model.person.Person;
 import com.covisint.papi.sample.android.openregistration.util.Constants;
@@ -29,7 +26,8 @@ import com.google.gson.GsonBuilder;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.BufferedReader;
@@ -37,8 +35,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -85,6 +81,8 @@ public class TimezoneLanguageInputActivity extends Activity {
         int tzIndex = timezones.indexOf(tzId);
         mTimezoneSpinner.setSelection(tzIndex);
 
+        mLanguageSpinner = (Spinner) findViewById(R.id.lang_prefs);
+
         mTzLandSubmissionButton = (Button) findViewById(R.id.tz_lang_submission_button);
         mTzLandSubmissionButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -104,12 +102,15 @@ public class TimezoneLanguageInputActivity extends Activity {
         if (mPersonTask != null) {
             return;
         }
-        Intent intent = new Intent(this, ContactsInputActivity.class);
-        Gson gson = new GsonBuilder().create();
-        String personJson = gson.toJson(mPerson);
-        intent.putExtra(Constants.PERSON_JSON, personJson);
-        startActivity(intent);
-        finish();
+        String timeZone = mTimezoneSpinner.getSelectedItem().toString();
+        String langPref = mLanguageSpinner.getSelectedItem().toString();
+
+        mPerson.setTimezone(timeZone);
+        mPerson.setLanguage(langPref);
+
+        showProgress(true);
+        mPersonTask = new SubmitPersonTask();
+        mPersonTask.execute(mPerson);
     }
 
     /**
@@ -152,48 +153,51 @@ public class TimezoneLanguageInputActivity extends Activity {
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class SubmitPersonTask extends AsyncTask<Void, Void, String> {
-
-        private final String mName;
-
-        SubmitPersonTask(String name) {
-            mName = name;
-        }
+    public class SubmitPersonTask extends AsyncTask<Person, Void, String> {
 
         @Override
-        protected String doInBackground(Void... params) {
+        protected String doInBackground(Person... persons) {
             String networkResponse = null;
-            try {
-                HttpClient httpClient = new DefaultHttpClient();
-                HttpGet getRequest = new HttpGet();
-                String urlString = getString(R.string.org_base_url);
-                if (!mName.equalsIgnoreCase("all"))
-                    urlString = urlString + "?name=" + URLEncoder.encode(mName, "UTF-8");
+            int count = persons.length;
+            if (count > 0) {
+                Person person = persons[0];
+                try {
+                    HttpClient httpClient = new DefaultHttpClient();
+                    HttpPost postRequest = new HttpPost();
+                    String urlString = getString(R.string.person_base_url);
+//                    if (!mName.equalsIgnoreCase("all"))
+//                        urlString = urlString + "?name=" + URLEncoder.encode(mName, "UTF-8");
 
-                URI uri = new URI(urlString);
-                getRequest.setURI(uri);
-                getRequest.setHeader("Accept", "application/vnd.com.covisint.platform.organization.v1+json");
-                getRequest.setHeader("x-realm", "ALIAS162-DEV");
-                getRequest.setHeader("x-requestor", "requestor");
-                getRequest.setHeader("x-requestor-app", "app");
-                HttpResponse httpResponse = httpClient.execute(getRequest);
-                StringBuilder stringBuilder = new StringBuilder(1024);
-                if (httpResponse.getStatusLine().getStatusCode() == 200) {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
-                    String reading;
-                    while ((reading = br.readLine()) != null) {
-                        stringBuilder.append(reading);
+                    URI uri = new URI(urlString);
+                    postRequest.setURI(uri);
+                    String[] headersArray = getResources().getStringArray(R.array.person_request_headers);
+                    for (String header : headersArray) {
+                        String[] headers = header.split(",");
+                        postRequest.setHeader(headers[0], headers[1]);
                     }
-                    networkResponse = stringBuilder.toString();
-                } else {
-                    networkResponse = httpResponse.getStatusLine().toString();
+                    Gson gson = new GsonBuilder().create();
+                    String personJson = gson.toJson(mPerson);
+                    postRequest.setEntity(new StringEntity(personJson));
+                    HttpResponse httpResponse = httpClient.execute(postRequest);
+                    StringBuilder stringBuilder = new StringBuilder(1024);
+                    int statusCode = httpResponse.getStatusLine().getStatusCode();
+                    if (statusCode == 201 || statusCode == 400) {
+                        BufferedReader br = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
+                        String reading;
+                        while ((reading = br.readLine()) != null) {
+                            stringBuilder.append(reading);
+                        }
+                        networkResponse = stringBuilder.toString();
+                    } else {
+                        networkResponse = httpResponse.getStatusLine().toString();
+                    }
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                } catch (ClientProtocolException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
             return networkResponse;
         }
@@ -208,20 +212,29 @@ public class TimezoneLanguageInputActivity extends Activity {
                 mErrorMessage.setText(networkResponse);
             } else {
                 Gson gson = new GsonBuilder().create();
-                Organization[] organizations = gson.fromJson(networkResponse, Organization[].class);
-                if (organizations.length == 0) {
-                    mErrorMessage.setText(getString(R.string.no_org_found));
-                } else {
-                    Intent intent;
-                    if (organizations.length == 1) {
-                        intent = new Intent(getBaseContext(), UserInformationActivity.class);
-                        intent.putExtra(Constants.ORGANIZATION_JSON, gson.toJson(organizations[0]));
+                try {
+                    Organization[] organizations = gson.fromJson(networkResponse, Organization[].class);
+                    if (organizations.length == 0) {
+                        mErrorMessage.setText(getString(R.string.no_org_found));
+                        mErrorMessage.setVisibility(View.VISIBLE);
                     } else {
-                        intent = new Intent(getBaseContext(), OrganizationList.class);
-                        intent.putExtra(Constants.ORGANIZATION_LIST_JSON, networkResponse);
+                        Intent intent;
+                        if (organizations.length == 1) {
+                            intent = new Intent(getBaseContext(), UserInformationActivity.class);
+                            intent.putExtra(Constants.ORGANIZATION_JSON, gson.toJson(organizations[0]));
+                        } else {
+                            intent = new Intent(getBaseContext(), OrganizationList.class);
+                            intent.putExtra(Constants.ORGANIZATION_LIST_JSON, networkResponse);
+                        }
+                        startActivity(intent);
+                        finish();
                     }
-                    startActivity(intent);
-                    finish();
+                } catch ( Exception e) {
+                    // Try to parse Error
+                    Error error = gson.fromJson(networkResponse, Error.class);
+                    String errorMessageToDisplay = error.getApiMessage() + "\n" + error.getApiStatusCode();
+                    mErrorMessage.setText(errorMessageToDisplay.trim());
+                    mErrorMessage.setVisibility(View.VISIBLE);
                 }
             }
         }
