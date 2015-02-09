@@ -3,24 +3,23 @@
     <string name="realm">ALIAS162-DEV</string>
 
     <!-- Properties for organization network call -->
-    <string name="org_base_url">http://organization.cf.covisintrnd.com/organizations</string>
+    <string name="org_base_url">https://api.covisintlabs.com/organization/v1/organizations</string>
     <string name="org_accept">application/vnd.com.covisint.platform.organization.v1+json</string>
+    <string name="app_id">jlmMCCGIqTl4AOo3qN1xKlb11AZliXGO</string>
+    <string name="client_id">59cf3f49-0a21-4e13-898d-f447441b88ad</string>
+    <string name="client_secret">ec898026-0175-45b5-a4a4-8b9d90800b86</string>
+    <string name="token_auth">https://api.covisintlabs.com/oauth/v1/token</string>
+    <string name="token_accept">application/vnd.com.covisint.platform.oauth.token.v1+json</string>
 
     <string-array name="org_request_headers">
         <item>Accept, application/vnd.com.covisint.platform.organization.v1+json</item>
-        <item>x-realm, ALIAS162-DEV</item>
-        <item>x-requestor, requestor</item>
-        <item>x-requestor-app, app</item>
     </string-array>
 
     <!-- Properties for person network call -->
-    <string name="person_base_url">http://person.cf.covisintrnd.com/persons</string>
+    <string name="person_base_url">https://api.covisintlabs.com/person/v1/persons</string>
 
     <string-array name="person_request_headers">
         <item>Accept, application/vnd.com.covisint.platform.person.v1+json</item>
         <item>Content-Type, application/vnd.com.covisint.platform.person.v1+json</item>
-        <item>x-realm, ALIAS162-DEV</item>
-        <item>x-requestor, requestor</item>
-        <item>x-requestor-app, app</item>
     </string-array>
 </resources>

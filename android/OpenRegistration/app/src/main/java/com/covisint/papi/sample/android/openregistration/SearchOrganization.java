@@ -19,11 +19,13 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
+import android.util.Log;
 
 import com.covisint.papi.sample.android.openregistration.model.PAPIModel;
 import com.covisint.papi.sample.android.openregistration.model.organization.Organization;
 import com.covisint.papi.sample.android.openregistration.util.Constants;
 import com.covisint.papi.sample.android.openregistration.util.NetworkResponse;
+import com.covisint.papi.sample.android.openregistration.util.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -200,6 +202,7 @@ public class SearchOrganization extends Activity {
                     String[] headers = header.split(",");
                     getRequest.setHeader(headers[0], headers[1]);
                 }
+                getRequest.setHeader("Authorization", "Bearer " + Utils.getToken(getBaseContext(),true));
                 HttpResponse httpResponse = httpClient.execute(getRequest);
                 StringBuilder stringBuilder = new StringBuilder(1024);
                 networkResponse.setStatusLine(httpResponse.getStatusLine());

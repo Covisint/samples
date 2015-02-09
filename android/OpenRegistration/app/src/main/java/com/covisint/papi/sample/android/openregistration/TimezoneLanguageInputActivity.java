@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -105,8 +106,10 @@ public class TimezoneLanguageInputActivity extends Activity {
         String timeZone = mTimezoneSpinner.getSelectedItem().toString();
         String langPref = mLanguageSpinner.getSelectedItem().toString();
 
+        String[] langarr = getResources().getStringArray(R.array.twodigitlanguage);
+
         mPerson.setTimezone(timeZone);
-        mPerson.setLanguage(langPref);
+        mPerson.setLanguage(langarr[(int)mLanguageSpinner.getSelectedItemId()]);
 
         showProgress(true);
         mPersonTask = new SubmitPersonTask();
@@ -175,12 +178,15 @@ public class TimezoneLanguageInputActivity extends Activity {
                         String[] headers = header.split(",");
                         postRequest.setHeader(headers[0], headers[1]);
                     }
+                    postRequest.setHeader("Authorization", "Bearer " + Utils.getToken(getBaseContext(),true));
                     Gson gson = new GsonBuilder().create();
-                    String personJson = gson.toJson(mPerson);
+                    String personJson = gson.toJson(person);
+                    Log.d("SubmitPersonTask", personJson);
                     postRequest.setEntity(new StringEntity(personJson));
                     HttpResponse httpResponse = httpClient.execute(postRequest);
                     StringBuilder stringBuilder = new StringBuilder(1024);
                     int statusCode = httpResponse.getStatusLine().getStatusCode();
+                    Log.d("SubmitPersonTask", ""+statusCode);
                     if (statusCode == 201 || statusCode == 400) {
                         BufferedReader br = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
                         String reading;
