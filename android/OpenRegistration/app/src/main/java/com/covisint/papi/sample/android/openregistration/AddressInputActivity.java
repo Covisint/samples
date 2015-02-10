@@ -84,7 +84,9 @@ public class AddressInputActivity extends Activity {
      * errors are presented and no actual login attempt is made.
      */
     public void attemptSubmission() {
+        Address[] addresses = new Address[1];
         Address address = new Address();
+        addresses[0] = address;
         ArrayList<String> streets = new ArrayList<>(3);
         String address1 = mAddress1ET.getText().toString();
         if (address1 != null && address1.trim().length() > 0) {
@@ -125,7 +127,7 @@ public class AddressInputActivity extends Activity {
         Object country = mCountriesSpinner.getSelectedItem();
         address.setCountry(country.toString());
 
-        mPerson.setAddresses(address);
+        mPerson.setAddresses(addresses);
 
         Intent intent = new Intent(this, ContactsInputActivity.class);
         Gson gson = new GsonBuilder().create();

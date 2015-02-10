@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.covisint.papi.sample.android.openregistration.model.contact.Address;
 import com.covisint.papi.sample.android.openregistration.model.contact.Phone;
 import com.covisint.papi.sample.android.openregistration.model.contact.PhoneType;
 import com.covisint.papi.sample.android.openregistration.model.person.Person;
@@ -71,7 +72,8 @@ public class ContactsInputActivity extends Activity {
         });
 
         // pre populate some ui elements
-        String country = mPerson.getAddresses().getCountry();
+        Address[] addresses = mPerson.getAddresses();
+        String country = addresses[0].getCountry();
         HashMap<String, String> countryCountryCodeMap = Utils.getCountryCountryCodeMap();
         String countryCode = countryCountryCodeMap.get(country);
         String[] countryLangIsdSamples = getResources().getStringArray(R.array.countries_lang_isd_sample_number);

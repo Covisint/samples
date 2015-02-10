@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -106,10 +105,9 @@ public class TimezoneLanguageInputActivity extends Activity {
         String timeZone = mTimezoneSpinner.getSelectedItem().toString();
         String langPref = mLanguageSpinner.getSelectedItem().toString();
 
-        String[] langarr = getResources().getStringArray(R.array.twodigitlanguage);
-
+        String lang = Utils.getCountryLanguageCodeMap().get(mPerson.getAddresses()[0].getCountry());
         mPerson.setTimezone(timeZone);
-        mPerson.setLanguage(langarr[(int)mLanguageSpinner.getSelectedItemId()]);
+        mPerson.setLanguage(lang);
 
         showProgress(true);
         mPersonTask = new SubmitPersonTask();
@@ -178,15 +176,13 @@ public class TimezoneLanguageInputActivity extends Activity {
                         String[] headers = header.split(",");
                         postRequest.setHeader(headers[0], headers[1]);
                     }
-                    postRequest.setHeader("Authorization", "Bearer " + Utils.getToken(getBaseContext(),true));
+                    postRequest.setHeader("Authorization", "Bearer " + Utils.getToken(getBaseContext(),false));
                     Gson gson = new GsonBuilder().create();
-                    String personJson = gson.toJson(person);
-                    Log.d("SubmitPersonTask", personJson);
+                    String personJson = gson.toJson(mPerson);
                     postRequest.setEntity(new StringEntity(personJson));
                     HttpResponse httpResponse = httpClient.execute(postRequest);
                     StringBuilder stringBuilder = new StringBuilder(1024);
                     int statusCode = httpResponse.getStatusLine().getStatusCode();
-                    Log.d("SubmitPersonTask", ""+statusCode);
                     if (statusCode == 201 || statusCode == 400) {
                         BufferedReader br = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
                         String reading;
@@ -219,22 +215,11 @@ public class TimezoneLanguageInputActivity extends Activity {
             } else {
                 Gson gson = new GsonBuilder().create();
                 try {
-                    Organization[] organizations = gson.fromJson(networkResponse, Organization[].class);
-                    if (organizations.length == 0) {
-                        mErrorMessage.setText(getString(R.string.no_org_found));
-                        mErrorMessage.setVisibility(View.VISIBLE);
-                    } else {
-                        Intent intent;
-                        if (organizations.length == 1) {
-                            intent = new Intent(getBaseContext(), UserInformationActivity.class);
-                            intent.putExtra(Constants.ORGANIZATION_JSON, gson.toJson(organizations[0]));
-                        } else {
-                            intent = new Intent(getBaseContext(), OrganizationList.class);
-                            intent.putExtra(Constants.ORGANIZATION_LIST_JSON, networkResponse);
-                        }
-                        startActivity(intent);
-                        finish();
-                    }
+                    Person person = gson.fromJson(networkResponse, Person.class);
+                    Intent intent = new Intent(getBaseContext(), PasswordAccountActivity.class);
+                    intent.putExtra(Constants.PERSON_JSON, networkResponse);
+                    startActivity(intent);
+                    finish();
                 } catch ( Exception e) {
                     // Try to parse Error
                     Error error = gson.fromJson(networkResponse, Error.class);

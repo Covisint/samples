@@ -9,7 +9,7 @@ import com.covisint.papi.sample.android.openregistration.model.contact.Phone;
  */
 public class Person extends PAPIModel {
     private Name name;
-    private Address addresses;
+    private Address[] addresses;
     private String language;
     private String timezone;
     private Phone[] phones;
@@ -69,11 +69,11 @@ public class Person extends PAPIModel {
         this.name = name;
     }
 
-    public Address getAddresses() {
+    public Address[] getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(Address addresses) {
+    public void setAddresses(Address[] addresses) {
         this.addresses = addresses;
     }
 

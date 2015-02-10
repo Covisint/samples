@@ -6,7 +6,7 @@ package com.covisint.papi.sample.android.openregistration.model;
 public abstract class PAPIModel {
 
     protected String id;
-    protected long version;
+    protected Long version;
     protected long creation;
     protected String realm;
     protected String status;

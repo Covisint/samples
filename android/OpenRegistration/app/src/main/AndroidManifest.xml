@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.covisint.papi.sample.android.openregistration">
+    package="com.covisint.papi.sample.android.openregistration" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -13,20 +13,20 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".SearchOrganization"
             android:label="@string/title_activity_search_organization"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".OrganizationList"
-            android:label="@string/title_activity_organization_list"></activity>
+            android:label="@string/title_activity_organization_list" />
         <activity
             android:name=".SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:theme="@style/Theme.SplashTheme">
+            android:theme="@style/Theme.SplashTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,25 +37,29 @@
             android:name=".UserInformationActivity"
             android:label="@string/title_activity_user_information"
             android:theme="@style/AppTheme.UserInfoInput"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
             android:name=".AddressInputActivity"
             android:label="@string/title_activity_address"
             android:theme="@style/AppTheme.UserInfoInput"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
             android:name=".ContactsInputActivity"
             android:label="@string/title_activity_contacts"
             android:theme="@style/AppTheme.UserInfoInput"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
             android:name=".TimezoneLanguageInputActivity"
             android:label="@string/title_activity_tz_lang"
             android:theme="@style/AppTheme.UserInfoInput"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
+        <activity
+            android:name=".PasswordAccountActivity"
+            android:label="@string/title_activity_password_account" >
         </activity>
     </application>
 
