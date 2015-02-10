@@ -19,6 +19,7 @@ import com.covisint.papi.sample.android.openregistration.model.error.Error;
 import com.covisint.papi.sample.android.openregistration.model.organization.Organization;
 import com.covisint.papi.sample.android.openregistration.model.person.Person;
 import com.covisint.papi.sample.android.openregistration.util.Constants;
+import com.covisint.papi.sample.android.openregistration.util.ProgressDisplay;
 import com.covisint.papi.sample.android.openregistration.util.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -56,6 +57,8 @@ public class TimezoneLanguageInputActivity extends Activity {
     private Spinner mLanguageSpinner;
     private TextView mErrorMessage;
 
+    private ProgressDisplay mProgressDisplay;
+
     // UI references.
 
     @Override
@@ -90,6 +93,8 @@ public class TimezoneLanguageInputActivity extends Activity {
                 attemptSubmission();
             }
         });
+        if (mProgressDisplay == null)
+            mProgressDisplay = new ProgressDisplay(this, mPersonSubmissionFormView, mProgressView);
     }
 
 
@@ -109,45 +114,9 @@ public class TimezoneLanguageInputActivity extends Activity {
         mPerson.setTimezone(timeZone);
         mPerson.setLanguage(lang);
 
-        showProgress(true);
+        mProgressDisplay.showProgress(true);
         mPersonTask = new SubmitPersonTask();
         mPersonTask.execute(mPerson);
-    }
-
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    public void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mPersonSubmissionFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mPersonSubmissionFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mPersonSubmissionFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mPersonSubmissionFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
     }
 
     /**
@@ -165,7 +134,7 @@ public class TimezoneLanguageInputActivity extends Activity {
                 try {
                     HttpClient httpClient = new DefaultHttpClient();
                     HttpPost postRequest = new HttpPost();
-                    String urlString = getString(R.string.person_base_url);
+                    String urlString = getString(R.string.person_url);
 //                    if (!mName.equalsIgnoreCase("all"))
 //                        urlString = urlString + "?name=" + URLEncoder.encode(mName, "UTF-8");
 
@@ -207,7 +176,7 @@ public class TimezoneLanguageInputActivity extends Activity {
         @Override
         protected void onPostExecute(final String networkResponse) {
             mPersonTask = null;
-            showProgress(false);
+            mProgressDisplay.showProgress(false);
             if (networkResponse == null) {
                 mErrorMessage.setText("Something went wrong!");
             } else if (networkResponse.startsWith("HTTP")) {
@@ -233,7 +202,7 @@ public class TimezoneLanguageInputActivity extends Activity {
         @Override
         protected void onCancelled() {
             mPersonTask = null;
-            showProgress(false);
+            mProgressDisplay.showProgress(false);
         }
     }
 }

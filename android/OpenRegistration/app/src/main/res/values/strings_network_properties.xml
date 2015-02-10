@@ -2,24 +2,41 @@
 <resources>
     <string name="realm">ALIAS162-DEV</string>
 
-    <!-- Properties for organization network call -->
-    <string name="org_base_url">https://api.covisintlabs.com/organization/v1/organizations</string>
-    <string name="org_accept">application/vnd.com.covisint.platform.organization.v1+json</string>
+    <!-- Properties for token network call -->
     <string name="app_id">jlmMCCGIqTl4AOo3qN1xKlb11AZliXGO</string>
-    <string name="client_id">59cf3f49-0a21-4e13-898d-f447441b88ad</string>
-    <string name="client_secret">ec898026-0175-45b5-a4a4-8b9d90800b86</string>
-    <string name="token_auth">https://api.covisintlabs.com/oauth/v1/token</string>
+    <string name="client_id">8abe079f-d2fb-4a51-95a6-d5c385237272</string>
+    <string name="client_secret">029cabce-e2ef-4f53-a48f-7db375a21a65</string>
+    <string name="token_auth_url">http://54.172.168.251:9053/oauth/v1/token</string>
     <string name="token_accept">application/vnd.com.covisint.platform.oauth.token.v1+json</string>
+
+    <!-- Properties for organization network call -->
+    <string name="org_url">http://54.172.168.251:9053/organization/v1/organizations</string>
+    <string name="org_accept">application/vnd.com.covisint.platform.organization.v1+json</string>
 
     <string-array name="org_request_headers">
         <item>Accept, application/vnd.com.covisint.platform.organization.v1+json</item>
     </string-array>
 
     <!-- Properties for person network call -->
-    <string name="person_base_url">https://api.covisintlabs.com/person/v1/persons</string>
+    <string name="person_url">http://54.172.168.251:9053/person/v1/persons</string>
 
     <string-array name="person_request_headers">
         <item>Accept, application/vnd.com.covisint.platform.person.v1+json</item>
         <item>Content-Type, application/vnd.com.covisint.platform.person.v1+json</item>
     </string-array>
+
+    <!-- Properties for password policy network call -->
+    <string name="password_policy_url">http://54.172.168.251:9053/authn/v2/passwords/policies</string>
+
+    <string-array name="password_policy_request_headers">
+        <item>Accept, application/vnd.com.covisint.platform.password.policy.v1+json</item>
+    </string-array>
+
+    <!-- Properties for password policy network call -->
+    <string name="authn_policy_url">http://54.172.168.251:9053/authn/v2/policies</string>
+
+    <string-array name="authn_policy_request_headers">
+        <item>Accept, application/vnd.com.covisint.platform.authn.policy.v1+json</item>
+    </string-array>
+
 </resources>

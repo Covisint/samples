@@ -191,7 +191,7 @@ public class SearchOrganization extends Activity {
             try {
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpGet getRequest = new HttpGet();
-                String urlString = getString(R.string.org_base_url);
+                String urlString = getString(R.string.org_url);
                 if (!mName.equalsIgnoreCase("all"))
                     urlString = urlString + "?name=" + URLEncoder.encode(mName, "UTF-8");
 

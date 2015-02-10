@@ -5,18 +5,17 @@ package com.covisint.papi.sample.android.openregistration.model;
  */
 public class PasswordPolicy {
     String id;
-    String type;
+    Long version;
+    String creator;
+    String creatorAppId;
+    Long creation;
     String realm;
+    String status;
+    String name;
+    String description;
 
     public String getId() {
         return id;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public String getRealm() {
-        return realm;
-    }
 }

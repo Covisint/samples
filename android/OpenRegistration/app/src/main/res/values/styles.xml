@@ -17,6 +17,10 @@
         <item name="android:textViewStyle">@style/Label</item>
     </style>
 
+    <style name="AppTheme.PasswordAccountInput" parent="AppTheme">
+        <item name="android:textViewStyle">@style/LabelPasswordAccount</item>
+    </style>
+
     <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@null</item>
@@ -33,6 +37,12 @@
 
     <style name="Label">
         <item name="android:minWidth">120dip</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="LabelPasswordAccount">
+        <item name="android:minWidth">80dip</item>
+        <item name="android:maxWidth">80dip</item>
         <item name="android:gravity">center_vertical</item>
     </style>
 

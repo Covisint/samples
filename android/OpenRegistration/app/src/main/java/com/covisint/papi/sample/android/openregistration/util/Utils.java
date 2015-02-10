@@ -96,7 +96,7 @@ public class Utils {
             try {
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpPost postRequest = new HttpPost();
-                String urlString = context.getString(R.string.token_auth);
+                String urlString = context.getString(R.string.token_auth_url);
                 URI uri = new URI(urlString);
                 postRequest.setURI(uri);
                 postRequest.setHeader("Accept", context.getString(R.string.token_accept));

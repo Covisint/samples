@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="com.covisint.papi.sample.android.openregistration.UserInformationActivity">
+    tools:context="com.covisint.papi.sample.android.openregistration.AddressInputActivity">
 
     <RatingBar
         android:layout_width="wrap_content"
