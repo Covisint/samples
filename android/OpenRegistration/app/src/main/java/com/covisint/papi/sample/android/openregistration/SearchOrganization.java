@@ -133,7 +133,7 @@ public class SearchOrganization extends Activity {
             // perform the user login attempt.
             showProgress(true);
             mAuthTask = new SearchTask(orgName);
-            mAuthTask.execute((Void) null);
+            mAuthTask.execute(true);
         }
     }
 
@@ -177,7 +177,7 @@ public class SearchOrganization extends Activity {
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class SearchTask extends AsyncTask<Void, String, NetworkResponse> {
+    public class SearchTask extends AsyncTask<Boolean, String, NetworkResponse> {
 
         private final String mName;
 
@@ -186,7 +186,8 @@ public class SearchOrganization extends Activity {
         }
 
         @Override
-        protected NetworkResponse doInBackground(Void... params) {
+        protected NetworkResponse doInBackground(Boolean... params) {
+            boolean renewToken = params[0];
             NetworkResponse networkResponse = new NetworkResponse();
             try {
                 HttpClient httpClient = new DefaultHttpClient();
@@ -202,7 +203,7 @@ public class SearchOrganization extends Activity {
                     String[] headers = header.split(",");
                     getRequest.setHeader(headers[0], headers[1]);
                 }
-                getRequest.setHeader("Authorization", "Bearer " + Utils.getToken(getBaseContext(),true));
+                getRequest.setHeader("Authorization", "Bearer " + Utils.getToken(getBaseContext(),renewToken));
                 HttpResponse httpResponse = httpClient.execute(getRequest);
                 StringBuilder stringBuilder = new StringBuilder(1024);
                 networkResponse.setStatusLine(httpResponse.getStatusLine());
@@ -250,6 +251,13 @@ public class SearchOrganization extends Activity {
             showProgress(false);
             if (networkResponse.getStatusLine() == null) {
                 mErrorMessage.setText("Something went wrong!");
+            } else if (networkResponse.getStatusLine().getStatusCode() == 401) {
+                if ("Access Token Expired".equals(networkResponse.getStatusLine().getReasonPhrase())){
+                    mSearchStatus.setText("Token expired! Getting token...");
+                    mAuthTask = new SearchTask(mName);
+                    mAuthTask.execute(true);
+                    showProgress(true);
+                }
             } else if (networkResponse.getStatusLine().getStatusCode() != 200) {
                 mErrorMessage.setText(networkResponse.getStatusLine().getReasonPhrase());
             } else {

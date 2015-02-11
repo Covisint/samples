@@ -247,4 +247,5 @@
     <string name="title_activity_password_account">PasswordAccount</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_security_question">SecurityQuestionActivity</string>
 </resources>

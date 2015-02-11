@@ -1,12 +1,8 @@
 package com.covisint.papi.sample.android.openregistration;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,9 +12,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.covisint.papi.sample.android.openregistration.model.error.Error;
-import com.covisint.papi.sample.android.openregistration.model.organization.Organization;
 import com.covisint.papi.sample.android.openregistration.model.person.Person;
 import com.covisint.papi.sample.android.openregistration.util.Constants;
+import com.covisint.papi.sample.android.openregistration.util.NetworkResponse;
 import com.covisint.papi.sample.android.openregistration.util.ProgressDisplay;
 import com.covisint.papi.sample.android.openregistration.util.Utils;
 import com.google.gson.Gson;
@@ -58,6 +54,7 @@ public class TimezoneLanguageInputActivity extends Activity {
     private TextView mErrorMessage;
 
     private ProgressDisplay mProgressDisplay;
+    private TextView mSubmitStatus;
 
     // UI references.
 
@@ -72,6 +69,7 @@ public class TimezoneLanguageInputActivity extends Activity {
 
         mPersonSubmissionFormView = findViewById(R.id.tz_lang_submission_form);
         mProgressView = findViewById(R.id.person_submission_progress);
+        mSubmitStatus = (TextView) findViewById(R.id.submit_person_status);
 
         mErrorMessage = (TextView)findViewById(R.id.message);
         mTimezoneSpinner = (Spinner) findViewById(R.id.time_zone);
@@ -116,82 +114,86 @@ public class TimezoneLanguageInputActivity extends Activity {
 
         mProgressDisplay.showProgress(true);
         mPersonTask = new SubmitPersonTask();
-        mPersonTask.execute(mPerson);
+        mPersonTask.execute(false);
     }
 
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class SubmitPersonTask extends AsyncTask<Person, Void, String> {
+    public class SubmitPersonTask extends AsyncTask<Boolean, Void, NetworkResponse> {
 
         @Override
-        protected String doInBackground(Person... persons) {
-            String networkResponse = null;
-            int count = persons.length;
-            if (count > 0) {
-                Person person = persons[0];
-                try {
-                    HttpClient httpClient = new DefaultHttpClient();
-                    HttpPost postRequest = new HttpPost();
-                    String urlString = getString(R.string.person_url);
+        protected NetworkResponse doInBackground(Boolean... flags) {
+            NetworkResponse networkResponse = new NetworkResponse();
+            boolean renewToken = flags[0];
+            try {
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost postRequest = new HttpPost();
+                String urlString = getString(R.string.person_url);
 //                    if (!mName.equalsIgnoreCase("all"))
 //                        urlString = urlString + "?name=" + URLEncoder.encode(mName, "UTF-8");
 
-                    URI uri = new URI(urlString);
-                    postRequest.setURI(uri);
-                    String[] headersArray = getResources().getStringArray(R.array.person_request_headers);
-                    for (String header : headersArray) {
-                        String[] headers = header.split(",");
-                        postRequest.setHeader(headers[0], headers[1]);
-                    }
-                    postRequest.setHeader("Authorization", "Bearer " + Utils.getToken(getBaseContext(),false));
-                    Gson gson = new GsonBuilder().create();
-                    String personJson = gson.toJson(mPerson);
-                    postRequest.setEntity(new StringEntity(personJson));
-                    HttpResponse httpResponse = httpClient.execute(postRequest);
-                    StringBuilder stringBuilder = new StringBuilder(1024);
-                    int statusCode = httpResponse.getStatusLine().getStatusCode();
-                    if (statusCode == 201 || statusCode == 400) {
-                        BufferedReader br = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
-                        String reading;
-                        while ((reading = br.readLine()) != null) {
-                            stringBuilder.append(reading);
-                        }
-                        networkResponse = stringBuilder.toString();
-                    } else {
-                        networkResponse = httpResponse.getStatusLine().toString();
-                    }
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                } catch (ClientProtocolException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                URI uri = new URI(urlString);
+                postRequest.setURI(uri);
+                String[] headersArray = getResources().getStringArray(R.array.person_request_headers);
+                for (String header : headersArray) {
+                    String[] headers = header.split(",");
+                    postRequest.setHeader(headers[0], headers[1]);
                 }
+                postRequest.setHeader("Authorization", "Bearer " + Utils.getToken(getBaseContext(),renewToken));
+                Gson gson = new GsonBuilder().create();
+                String personJson = gson.toJson(mPerson);
+                postRequest.setEntity(new StringEntity(personJson));
+                HttpResponse httpResponse = httpClient.execute(postRequest);
+                StringBuilder stringBuilder = new StringBuilder(1024);
+                int statusCode = httpResponse.getStatusLine().getStatusCode();
+                BufferedReader br = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
+                String reading;
+                while ((reading = br.readLine()) != null) {
+                    stringBuilder.append(reading);
+                }
+                networkResponse.setRawData(stringBuilder.toString());
+                networkResponse.setStatusLine(httpResponse.getStatusLine());
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             return networkResponse;
         }
 
         @Override
-        protected void onPostExecute(final String networkResponse) {
+        protected void onPostExecute(final NetworkResponse networkResponse) {
             mPersonTask = null;
             mProgressDisplay.showProgress(false);
             if (networkResponse == null) {
                 mErrorMessage.setText("Something went wrong!");
-            } else if (networkResponse.startsWith("HTTP")) {
-                mErrorMessage.setText(networkResponse);
+            } else if (networkResponse.getStatusLine().getStatusCode() == 401) {
+                // Token expired.
+                if ("Access Token Expired".equals(networkResponse.getStatusLine().getReasonPhrase())){
+                    mSubmitStatus.setText("Token expired! Getting token...");
+                    mPersonTask = new SubmitPersonTask();
+                    mPersonTask.execute(true);
+                    mProgressDisplay.showProgress(true);
+                }
+            } else if (networkResponse.getStatusLine().getReasonPhrase().startsWith("HTTP")) {
+                mErrorMessage.setText(networkResponse.getStatusLine().getReasonPhrase());
             } else {
                 Gson gson = new GsonBuilder().create();
                 try {
-                    Person person = gson.fromJson(networkResponse, Person.class);
+                    Person person = gson.fromJson(networkResponse.getRawData(), Person.class);
                     Intent intent = new Intent(getBaseContext(), PasswordAccountActivity.class);
-                    intent.putExtra(Constants.PERSON_JSON, networkResponse);
+                    intent.putExtra(Constants.PERSON_JSON, networkResponse.getRawData());
+                    String organizationJson = getIntent().getStringExtra(Constants.ORGANIZATION_JSON);
+                    intent.putExtra(Constants.ORGANIZATION_JSON, organizationJson);
                     startActivity(intent);
                     finish();
                 } catch ( Exception e) {
                     // Try to parse Error
-                    Error error = gson.fromJson(networkResponse, Error.class);
+                    Error error = gson.fromJson(networkResponse.getRawData(), Error.class);
                     String errorMessageToDisplay = error.getApiMessage() + "\n" + error.getApiStatusCode();
                     mErrorMessage.setText(errorMessageToDisplay.trim());
                     mErrorMessage.setVisibility(View.VISIBLE);

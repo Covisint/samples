@@ -59,8 +59,12 @@
         </activity>
         <activity
             android:name=".PasswordAccountActivity"
-            android:theme="@style/AppTheme.PasswordAccountInput"
-            android:label="@string/title_activity_password_account" >
+            android:label="@string/title_activity_password_account"
+            android:theme="@style/AppTheme.PasswordAccountInput" >
+        </activity>
+        <activity
+            android:name=".SecurityQuestionActivity"
+            android:label="@string/title_activity_security_question" >
         </activity>
     </application>
 

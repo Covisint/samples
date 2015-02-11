@@ -19,4 +19,9 @@ public class Error {
     public String getApiStatusCode() {
         return apiStatusCode;
     }
+
+    @Override
+    public String toString() {
+        return status + ":" + apiStatusCode + ":" + apiMessage;
+    }
 }

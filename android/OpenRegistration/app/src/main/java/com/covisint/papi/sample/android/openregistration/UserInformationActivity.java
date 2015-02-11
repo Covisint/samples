@@ -102,6 +102,8 @@ public class UserInformationActivity extends Activity {
         String personJson = gson.toJson(person);
         Intent intent = new Intent(this, AddressInputActivity.class);
         intent.putExtra(Constants.PERSON_JSON, personJson);
+        String organizationJson = getIntent().getStringExtra(Constants.ORGANIZATION_JSON);
+        intent.putExtra(Constants.ORGANIZATION_JSON, organizationJson);
         startActivity(intent);
         finish();
     }

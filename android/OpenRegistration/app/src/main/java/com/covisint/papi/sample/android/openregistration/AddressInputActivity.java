@@ -133,6 +133,8 @@ public class AddressInputActivity extends Activity {
         Gson gson = new GsonBuilder().create();
         String personJson = gson.toJson(mPerson);
         intent.putExtra(Constants.PERSON_JSON, personJson);
+        String organizationJson = getIntent().getStringExtra(Constants.ORGANIZATION_JSON);
+        intent.putExtra(Constants.ORGANIZATION_JSON, organizationJson);
         startActivity(intent);
         finish();
     }

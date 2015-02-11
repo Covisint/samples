@@ -1,6 +1,7 @@
 package com.covisint.papi.sample.android.openregistration;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,10 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.covisint.papi.sample.android.openregistration.model.AuthenticationPolicy;
-import com.covisint.papi.sample.android.openregistration.model.PasswordPolicy;
+import com.covisint.papi.sample.android.openregistration.model.PasswordAccount;
+import com.covisint.papi.sample.android.openregistration.model.error.*;
+import com.covisint.papi.sample.android.openregistration.model.error.Error;
+import com.covisint.papi.sample.android.openregistration.model.organization.Organization;
 import com.covisint.papi.sample.android.openregistration.model.person.Person;
 import com.covisint.papi.sample.android.openregistration.util.Constants;
+import com.covisint.papi.sample.android.openregistration.util.NetworkResponse;
 import com.covisint.papi.sample.android.openregistration.util.ProgressDisplay;
 import com.covisint.papi.sample.android.openregistration.util.Utils;
 import com.google.gson.Gson;
@@ -22,7 +26,8 @@ import com.google.gson.GsonBuilder;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.BufferedReader;
@@ -38,15 +43,13 @@ public class PasswordAccountActivity extends Activity {
     private EditText mPassword;
     private EditText mReenterPassword;
     private Person mPerson;
+    private Organization mOrganization;
     private View mPasswordSubmissionFormView;
     private View mProgressView;
     private TextView mErrorMessage;
     private ProgressDisplay mProgressDisplay;
-    private PasswordPolicyFetchTask mPasswordPolicyTask = null;
-    private AuthenticationPolicyFetchTask mAuthnPolicyTask = null;
     private PasswordAccountCreationTask mPasswordAccountTask = null;
-    private PasswordPolicy[] mPasswordPolicies;
-    private AuthenticationPolicy[] mAuthnPolicies;
+    private PasswordAccount mPasswordAccount;
 
 
     @Override
@@ -54,9 +57,13 @@ public class PasswordAccountActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password_account);
 
+        mPasswordAccount = new PasswordAccount();
         String personJson = getIntent().getStringExtra(Constants.PERSON_JSON);
         Gson gson = new GsonBuilder().create();
         mPerson = gson.fromJson(personJson, Person.class);
+
+        String organizationJson = getIntent().getStringExtra(Constants.ORGANIZATION_JSON);
+        mOrganization = gson.fromJson(organizationJson, Organization.class);
 
         mPasswordSubmissionFormView = findViewById(R.id.password_account_submission_form);
         mProgressView = findViewById(R.id.password_account_submission_progress);
@@ -76,15 +83,43 @@ public class PasswordAccountActivity extends Activity {
 
         if (mProgressDisplay == null)
             mProgressDisplay = new ProgressDisplay(this, mPasswordSubmissionFormView, mProgressView);
-        if (mPasswordPolicies == null) {
-            mPasswordPolicyTask = new PasswordPolicyFetchTask();
-            mPasswordPolicyTask.execute();
-            mProgressDisplay.showProgress(true);
-        }
     }
 
     private void attemptAddPasswordAccount() {
-
+        String userId = mUserId.getText().toString();
+        String password = mPassword.getText().toString();
+        String reenterPassword = mReenterPassword.getText().toString();
+        int userIdLength = userId.trim().length();
+        if (userId != null && userIdLength > 0) {
+            if (userIdLength < 4 || userIdLength > 20) {
+                mUserId.setError(getString(R.string.error_user_id_length));
+                mUserId.requestFocus();
+            } else {
+                if(password != null && reenterPassword != null) {
+                    int passwordLength = password.trim().length();
+                    if (passwordLength > 0) {
+                        if (password.equals(reenterPassword)) {
+                            mPasswordAccount.setUsername(userId);
+                            mPasswordAccount.setPassword(password);
+                            mPasswordAccount.setAuthenticationPolicyId(mOrganization.getAuthenticationPolicy().getId());
+                            mPasswordAccount.setPasswordPolicyId(mOrganization.getPasswordPolicy().getId());
+                            mPasswordAccountTask = new PasswordAccountCreationTask();
+                            mPasswordAccountTask.execute(false);
+                            mProgressDisplay.showProgress(true);
+                        } else {
+                            mReenterPassword.setError(getString(R.string.error_password_mismatch));
+                            mReenterPassword.requestFocus();
+                        }
+                    } else {
+                        mPassword.setError(getString(R.string.error_field_required));
+                        mPassword.requestFocus();
+                    }
+                }
+            }
+        } else {
+            mUserId.setError(getString(R.string.error_field_required));
+            mUserId.requestFocus();
+        }
     }
 
 
@@ -110,51 +145,38 @@ public class PasswordAccountActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class PasswordPolicyFetchTask extends AsyncTask<Void, String, PasswordPolicy[]> {
+    private class PasswordAccountCreationTask extends AsyncTask<Boolean, String, NetworkResponse> {
+
         @Override
-        protected PasswordPolicy[] doInBackground(Void... params) {
-            PasswordPolicy[] passwordPolicies = null;
+        protected NetworkResponse doInBackground(Boolean... flags) {
+            Boolean renewToken = flags[0];
+            NetworkResponse networkResponse = new NetworkResponse();
             try {
+                Gson gson = new GsonBuilder().create();
+                String passwordAccountJson = gson.toJson(mPasswordAccount);
                 HttpClient httpClient = new DefaultHttpClient();
-                HttpGet getRequest = new HttpGet();
-                String urlString = getString(R.string.password_policy_url);
+                HttpPut putRequest = new HttpPut();
+                String urlString = String.format(getString(R.string.password_account_url), mPerson.getId());
 
                 URI uri = new URI(urlString);
-                getRequest.setURI(uri);
-                String[] headersArray = getResources().getStringArray(R.array.password_policy_request_headers);
+                putRequest.setURI(uri);
+                String[] headersArray = getResources().getStringArray(R.array.password_account_request_headers);
                 for (String header : headersArray) {
                     String[] headers = header.split(",");
-                    getRequest.setHeader(headers[0], headers[1]);
+                    putRequest.setHeader(headers[0], headers[1]);
                 }
-                getRequest.setHeader("Authorization", "Bearer " + Utils.getToken(getBaseContext(), false));
-                HttpResponse httpResponse = httpClient.execute(getRequest);
+                putRequest.setHeader("Authorization", "Bearer " + Utils.getToken(getBaseContext(),renewToken));
+                putRequest.setEntity(new StringEntity(passwordAccountJson));
+                HttpResponse httpResponse = httpClient.execute(putRequest);
                 StringBuilder stringBuilder = new StringBuilder(1024);
-                if (httpResponse.getStatusLine().getStatusCode() == 200) {
-                    publishProgress("Reading response...");
-                    BufferedReader br = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
-                    String reading;
-                    int dots = 0;
-                    while ((reading = br.readLine()) != null) {
-                        stringBuilder.append(reading);
-                        dots %= 3;
-                        dots++;
-                        switch (dots) {
-                            case 3:
-                                publishProgress("Reading response...");
-                                break;
-                            case 2:
-                                publishProgress("Reading response..");
-                                break;
-                            case 1:
-                                publishProgress("Reading response.");
-                                break;
-                        }
-                    }
-                    String jsonResponse = stringBuilder.toString();
-                    publishProgress("Parsing response...");
-                    Gson gson = new GsonBuilder().create();
-                    passwordPolicies = gson.fromJson(jsonResponse, PasswordPolicy[].class);
+                int statusCode = httpResponse.getStatusLine().getStatusCode();
+                BufferedReader br = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
+                String reading;
+                while ((reading = br.readLine()) != null) {
+                    stringBuilder.append(reading);
                 }
+                networkResponse.setRawData(stringBuilder.toString());
+                networkResponse.setStatusLine(httpResponse.getStatusLine());
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             } catch (ClientProtocolException e) {
@@ -162,85 +184,39 @@ public class PasswordAccountActivity extends Activity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return passwordPolicies;
+            return networkResponse;
         }
 
         @Override
-        protected void onPostExecute(PasswordPolicy[] passwordPolicies) {
-            mPasswordPolicies = passwordPolicies;
-            mPasswordPolicyTask = null;
-            mAuthnPolicyTask = new AuthenticationPolicyFetchTask();
-            mAuthnPolicyTask.execute();
-        }
-    }
-
-    public class AuthenticationPolicyFetchTask extends AsyncTask<Void, String, AuthenticationPolicy[]> {
-        @Override
-        protected AuthenticationPolicy[] doInBackground(Void... params) {
-            AuthenticationPolicy[] authnPolicies = null;
-            try {
-                HttpClient httpClient = new DefaultHttpClient();
-                HttpGet getRequest = new HttpGet();
-                String urlString = getString(R.string.authn_policy_url);
-
-                URI uri = new URI(urlString);
-                getRequest.setURI(uri);
-                String[] headersArray = getResources().getStringArray(R.array.authn_policy_request_headers);
-                for (String header : headersArray) {
-                    String[] headers = header.split(",");
-                    getRequest.setHeader(headers[0], headers[1]);
-                }
-                getRequest.setHeader("Authorization", "Bearer " + Utils.getToken(getBaseContext(), false));
-                HttpResponse httpResponse = httpClient.execute(getRequest);
-                StringBuilder stringBuilder = new StringBuilder(1024);
-                if (httpResponse.getStatusLine().getStatusCode() == 200) {
-                    publishProgress("Reading response...");
-                    BufferedReader br = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
-                    String reading;
-                    int dots = 0;
-                    while ((reading = br.readLine()) != null) {
-                        stringBuilder.append(reading);
-                        dots %= 3;
-                        dots++;
-                        switch (dots) {
-                            case 3:
-                                publishProgress("Reading response...");
-                                break;
-                            case 2:
-                                publishProgress("Reading response..");
-                                break;
-                            case 1:
-                                publishProgress("Reading response.");
-                                break;
-                        }
-                    }
-                    String jsonResponse = stringBuilder.toString();
-                    publishProgress("Parsing response...");
-                    Gson gson = new GsonBuilder().create();
-                    authnPolicies = gson.fromJson(jsonResponse, AuthenticationPolicy[].class);
-                }
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return authnPolicies;
-        }
-
-        @Override
-        protected void onPostExecute(AuthenticationPolicy[] authnPolicies) {
-            mAuthnPolicies = authnPolicies;
+        protected void onPostExecute(NetworkResponse networkResponse) {
+            mPasswordAccountTask = null;
             mProgressDisplay.showProgress(false);
-        }
-    }
-
-    private class PasswordAccountCreationTask extends AsyncTask<String, String, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            return null;
+            int statusCode = networkResponse.getStatusLine().getStatusCode();
+            Gson gson = new GsonBuilder().create();
+            if (statusCode == 200) {
+                // Success
+                mPasswordAccount = gson.fromJson(networkResponse.getRawData(), PasswordAccount.class);
+                // Proceed further...
+                Intent intent = new Intent(getBaseContext(), SecurityQuestionActivity.class);
+                intent.putExtra(Constants.PERSON_JSON, getIntent().getStringExtra(Constants.PERSON_JSON));
+                intent.putExtra(Constants.ORGANIZATION_JSON, getIntent().getStringExtra(Constants.ORGANIZATION_JSON));
+                intent.putExtra(Constants.PASSWORD_ACCOUNT, networkResponse.getRawData());
+                startActivity(intent);
+                finish();
+            } else if (statusCode == 400) {
+                // Error from server
+                Error serverError = gson.fromJson(networkResponse.getRawData(), Error.class);
+                mErrorMessage.setText(serverError.toString());
+            } else if (statusCode == 401) {
+                if ("Access Token Expired".equals(networkResponse.getStatusLine().getReasonPhrase())){
+                    mPasswordAccountTask = new PasswordAccountCreationTask();
+                    mPasswordAccountTask.execute(true);
+                    mProgressDisplay.showProgress(true);
+                }
+            } else {
+                // Any other error
+                mErrorMessage.setText(networkResponse.getStatusLine().toString());
+            }
         }
     }
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="question_1">*Challenge Question 1:</string>
+    <string name="answer_1">*Challenge Answer 1:</string>
+    <string name="question_2">*Challenge Question 2:</string>
+    <string name="answer_2">*Challenge Answer 2:</string>
+</resources>

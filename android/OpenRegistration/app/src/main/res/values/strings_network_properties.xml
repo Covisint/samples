@@ -25,18 +25,18 @@
         <item>Content-Type, application/vnd.com.covisint.platform.person.v1+json</item>
     </string-array>
 
-    <!-- Properties for password policy network call -->
-    <string name="password_policy_url">http://54.172.168.251:9053/authn/v2/passwords/policies</string>
+    <!-- Properties for adding PasswordAccount -->
+    <string name="password_account_url">http://54.172.168.251:9053/person/v1/persons/%1$s/accounts/password </string>
 
-    <string-array name="password_policy_request_headers">
-        <item>Accept, application/vnd.com.covisint.platform.password.policy.v1+json</item>
+    <string-array name="password_account_request_headers">
+        <item>Accept, application/vnd.com.covisint.platform.person.account.password.v1+json</item>
+        <item>Content-Type, application/vnd.com.covisint.platform.person.account.password.v1+json</item>
     </string-array>
 
-    <!-- Properties for password policy network call -->
-    <string name="authn_policy_url">http://54.172.168.251:9053/authn/v2/policies</string>
+    <!-- Properties for getting security question -->
+    <string name="security_question_url">http://54.172.168.251:9053/authn/v2/securityQuestions</string>
 
-    <string-array name="authn_policy_request_headers">
-        <item>Accept, application/vnd.com.covisint.platform.authn.policy.v1+json</item>
+    <string-array name="security_question_request_headers">
+        <item>Accept: application/vnd.com.covisint.platform.securityquestion.v1+json</item>
     </string-array>
-
 </resources>
