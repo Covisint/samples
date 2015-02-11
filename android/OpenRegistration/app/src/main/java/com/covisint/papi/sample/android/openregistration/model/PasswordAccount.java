@@ -4,21 +4,27 @@ package com.covisint.papi.sample.android.openregistration.model;
  * Created by Nitin.Khobragade on 2/10/2015.
  */
 public class PasswordAccount {
+    String id;
+    Integer version;
+    String creator;
+    String creatorAppId;
+    Long creation;
     String realm;
-    String subject;
     String username;
-    String password;
-    Long version;
     String passwordPolicyId;
     String authenticationPolicyId;
-    Integer expiration;
+    Long expiration;
     Boolean locked;
     Integer unlockInstant;
-    String creator;
-    Long creation;
+    String subject;
+    String password;
 
     public PasswordAccount() {
-        version = 0L;
+        version = 0;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getRealm() {
@@ -53,11 +59,11 @@ public class PasswordAccount {
         this.password = password;
     }
 
-    public Long getVersion() {
+    public Integer getVersion() {
         return version;
     }
 
-    public void setVersion(Long version) {
+    public void setVersion(Integer version) {
         this.version = version;
     }
 
@@ -77,11 +83,11 @@ public class PasswordAccount {
         this.authenticationPolicyId = authenticationPolicyId;
     }
 
-    public Integer getExpiration() {
+    public Long getExpiration() {
         return expiration;
     }
 
-    public void setExpiration(Integer expiration) {
+    public void setExpiration(Long expiration) {
         this.expiration = expiration;
     }
 

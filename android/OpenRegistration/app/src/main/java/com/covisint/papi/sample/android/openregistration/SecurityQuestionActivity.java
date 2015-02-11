@@ -34,7 +34,7 @@ public class SecurityQuestionActivity extends Activity {
         mOrganization = gson.fromJson(organizationJson, Organization.class);
 
         String passwordAccountJson = getIntent().getStringExtra(Constants.PASSWORD_ACCOUNT);
-        mPasswordAccount = gson.fromJson(organizationJson, PasswordAccount.class);
+        mPasswordAccount = gson.fromJson(passwordAccountJson, PasswordAccount.class);
 
     }
 
