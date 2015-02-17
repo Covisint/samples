@@ -4,4 +4,7 @@
     <string name="answer_1">*Challenge Answer 1:</string>
     <string name="question_2">*Challenge Question 2:</string>
     <string name="answer_2">*Challenge Answer 2:</string>
+    <string name="select_one">Select one</string>
+    <string name="note">Note:</string>
+    <string name="note_text">To reset a forgotten password, your answer must match exactly what you input into the text box above. The answer will be case and punctuation sensitive. Both the question and the answer will be accessible to your Security Administrator</string>
 </resources>

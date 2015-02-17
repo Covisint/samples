@@ -27,11 +27,11 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/Theme.SplashTheme" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".UserInformationActivity"
@@ -64,6 +64,20 @@
         </activity>
         <activity
             android:name=".SecurityQuestionActivity"
+            android:label="@string/title_activity_security_question" >
+        </activity>
+        <activity
+            android:name=".PackageSelectionActivity"
+            android:label="@string/title_activity_package_selection"
+            android:theme="@style/AppTheme.PasswordAccountInput" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".RegistrationCompleteActivity"
             android:label="@string/title_activity_security_question" >
         </activity>
     </application>

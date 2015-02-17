@@ -26,7 +26,7 @@
     </string-array>
 
     <!-- Properties for adding PasswordAccount -->
-    <string name="password_account_url">https://api.covisintlabs.com/person/v1/persons/%1$s/accounts/password </string>
+    <string name="password_account_url">https://api.covisintlabs.com/person/v1/persons/%1$s/accounts/password</string>
 
     <string-array name="password_account_request_headers">
         <item>Accept, application/vnd.com.covisint.platform.person.account.password.v1+json</item>
@@ -37,6 +37,31 @@
     <string name="security_question_url">https://api.covisintlabs.com/authn/v2/securityQuestions</string>
 
     <string-array name="security_question_request_headers">
-        <item>Accept: application/vnd.com.covisint.platform.securityquestion.v1+json</item>
+        <item>Accept, application/vnd.com.covisint.platform.securityquestion.v1+json</item>
     </string-array>
+
+    <!-- Properties for getting security question -->
+    <string name="security_question_submit_url">https://api.covisintlabs.com/authn/v2/persons/%1$s/accounts/securityQuestion</string>
+
+    <string-array name="security_question_submit_request_headers">
+        <item>Accept, application/vnd.com.covisint.platform.person.account.securityQuestion.v1+json</item>
+        <item>Content-Type, application/vnd.com.covisint.platform.person.account.securityQuestion.v1+json</item>
+    </string-array>
+
+    <!-- Properties for getting packages for an organization -->
+    <string name="packages_url">https://api.covisintlabs.com/service/v1/organizations/%1$s/packages</string>
+
+    <string-array name="packages_request_headers">
+        <item>Accept, application/vnd.com.covisint.platform.package.grant.v1+json</item>
+        <item>Content-Type, application/vnd.com.covisint.platform.package.grant.v1+json</item>
+    </string-array>
+
+    <!-- Properties for getting packages for an organization -->
+    <string name="register_url">https://api.covisintlabs.com/person/v1/requests</string>
+
+    <string-array name="register_request_headers">
+        <item>Accept, application/vnd.com.covisint.platform.person.request.v1+json</item>
+        <item>Content-Type, application/vnd.com.covisint.platform.person.request.v1+json</item>
+    </string-array>
+
 </resources>

@@ -8,4 +8,6 @@ public abstract class Constants {
     public static final String ORGANIZATION_LIST_JSON = "OrganizationListJson";
     public static final String PERSON_JSON = "PersonJson";
     public static final String PASSWORD_ACCOUNT = "PasswordAccount";
+    public static final String SECURITY_QUESTIONS = "SecurityQuestions";
+    public static final String PERSON_REQUESTS = "PersonRequests";
 }

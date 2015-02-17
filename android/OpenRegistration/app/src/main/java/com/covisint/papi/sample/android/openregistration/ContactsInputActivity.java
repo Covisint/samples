@@ -119,23 +119,14 @@ public class ContactsInputActivity extends Activity {
             mPhoneNumber.requestFocus();
             return;
         }
-        result = validateNumber(isdMobileNumber, mobileNumber);
-        if (result == VALID_NUMBER) {
+        if (mobileNumber != null && mobileNumber.trim().length() > 0) {
             String globalPhoneNumber = isdMobileNumber + " " + mobileNumber;
             Phone phone = new Phone(PhoneType.mobile, globalPhoneNumber);
             phones.add(phone);
-        } else {
-            mMobileNumber.setError(result);
-            mMobileNumber.requestFocus();
-            return;
         }
-        result = validateNumber("", faxNumber);
-        if (result == VALID_NUMBER) {
+        if (faxNumber != null && faxNumber.trim().length() > 0) {
             Phone phone = new Phone(PhoneType.fax, faxNumber);
             phones.add(phone);
-        } else {
-            mFaxNumber.setError(result);
-            mFaxNumber.requestFocus();
         }
         mPerson.setPhones(phones.toArray(new Phone[phones.size()]));
 
