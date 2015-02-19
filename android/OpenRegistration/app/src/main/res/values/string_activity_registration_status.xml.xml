@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="registration_status">Registration Status</string>
+    <string name="name">Name</string>
+    <string name="address">Address</string>
+    <string name="contacts">Contacts</string>
+    <string name="user_id">User Id</string>
+    <string name="organization">Organization</string>
+    <string name="language">Language</string>
+</resources>

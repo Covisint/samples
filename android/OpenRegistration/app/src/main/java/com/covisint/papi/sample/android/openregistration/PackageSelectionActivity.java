@@ -18,6 +18,7 @@ import com.covisint.papi.sample.android.openregistration.model.person.Person;
 import com.covisint.papi.sample.android.openregistration.model.person.PersonRequest;
 import com.covisint.papi.sample.android.openregistration.model.person.Registrant;
 import com.covisint.papi.sample.android.openregistration.model.person.ServicePackageRequest;
+import com.covisint.papi.sample.android.openregistration.model.securityquestion.SecurityQuestionAnswer;
 import com.covisint.papi.sample.android.openregistration.util.Constants;
 import com.covisint.papi.sample.android.openregistration.util.NetworkResponse;
 import com.covisint.papi.sample.android.openregistration.util.ProgressDisplay;
@@ -59,6 +60,7 @@ public class PackageSelectionActivity extends Activity {
 
     private List<PersonRequest> mPersonRequests;
     private List<PersonRequest> mPersonRequestResponses;
+    private SecurityQuestionAnswer mSecurityQuestionAnswer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,16 +69,14 @@ public class PackageSelectionActivity extends Activity {
 
         Gson gson = new GsonBuilder().create();
         String personJson = getIntent().getStringExtra(Constants.PERSON_JSON);
-        if (personJson == null) {
-            personJson = "{\"id\":\"IHSK63T4\",\"version\":1423729413145,\"creator\":\"jlmMCCGIqTl4AOo3qN1xKlb11AZliXGO\",\"creatorAppId\":\"jlmMCCGIqTl4AOo3qN1xKlb11AZliXGO\",\"creation\":1423729413145,\"realm\":\"JWDEMOA-QA\",\"status\":\"unactivated\",\"name\":{\"prefix\":\"Mr.\",\"given\":\"Nitin\",\"middle\":\"R\",\"surname\":\"Khobragade\"},\"addresses\":[{\"streets\":[\"#128\"],\"city\":\"Bangalore\",\"state\":\"Karnataka\",\"postal\":\"560078\"}],\"language\":\"en\",\"timezone\":\"Asia/Calcutta\",\"phones\":[{\"type\":\"main\",\"number\":\"+919901066033\"},{\"type\":\"mobile\",\"number\":\"+91 9403186961\"}],\"title\":\"Arch\",\"email\":\"nitin.khobragade@happiestminds.com\",\"organizationId\":\"OJWDEMOA-QA102802\"}";
-        }
         mPerson = gson.fromJson(personJson, Person.class);
 
         String organizationJson = getIntent().getStringExtra(Constants.ORGANIZATION_JSON);
-        if (organizationJson == null) {
-            organizationJson = "{\"url\":\"http://www.covisint.com\",\"accountNumber\":\"999999\",\"addresses\":[{\"city\":\"Southfield\",\"country\":\"US\",\"postal\":\"48076\",\"state\":\"MI\",\"streets\":[\"25800 Northwestern Hwy\"]}],\"authDomain\":\"SSO\",\"authenticationPolicy\":{\"id\":\"205fd2f1-5877-4cc6-a091-9cf4a5ff8304\",\"realm\":\"JWDEMOA-QA\",\"type\":\"authenticationPolicy\"},\"duns\":\"0\",\"name\":\"JWDEMOA-QA\",\"organizationType\":\"SU\",\"parentOrganization\":{\"id\":\"0\",\"realm\":\"JWDEMOA-QA\",\"type\":\"organization\"},\"passwordPolicy\":{\"id\":\"2816418c-8409-4866-8d69-a07ab7a79a19\",\"realm\":\"JWDEMOA-QA\"},\"phones\":[{\"number\":\"313-227-9707\",\"type\":\"main\"},{\"number\":\"313-227-9707\",\"type\":\"fax\"}],\"rootOrganization\":{\"id\":\"102802\",\"realm\":\"JWDEMOA-QA\",\"type\":\"organization\"},\"public\":true,\"version\":1423146903000,\"id\":\"OJWDEMOA-QA102802\",\"realm\":\"JWDEMOA-QA\",\"status\":\"active\",\"creation\":1423146903000}";
-        }
         mOrganization = gson.fromJson(organizationJson, Organization.class);
+
+        String securityQuestionAnswersJson = getIntent().getStringExtra(Constants.SECURITY_QUESTION_ANSWERS);
+        mSecurityQuestionAnswer = gson.fromJson(securityQuestionAnswersJson, SecurityQuestionAnswer.class);
+
         mPersonRequests = new ArrayList<>();
         mPersonRequestResponses = new ArrayList<>();
         mPackageListView = (ListView) findViewById(R.id.package_list);
@@ -94,7 +94,7 @@ public class PackageSelectionActivity extends Activity {
         mProgressView = findViewById(R.id.package_submission_progress);
         if (mPackages.size() == 0) {
             mPackageSearchTask = new PackageSearchTask();
-            mPackageSearchTask.execute(true);
+            mPackageSearchTask.execute(false);
         }
         if (mProgressDisplay == null)
             mProgressDisplay = new ProgressDisplay(this, mPackageSubmissionFormView, mProgressView);
@@ -126,7 +126,7 @@ public class PackageSelectionActivity extends Activity {
         }
 
         mPersonRegistrationTask = new PersonRegistrationTask();
-        mPersonRegistrationTask.execute(true);
+        mPersonRegistrationTask.execute(false);
         mProgressDisplay.showProgress(true);
     }
 
@@ -275,6 +275,8 @@ public class PackageSelectionActivity extends Activity {
                 intent.putExtra(Constants.PASSWORD_ACCOUNT, passwordAccountJson);
                 String securityQuestionJson = getIntent().getStringExtra(Constants.SECURITY_QUESTIONS);
                 intent.putExtra(Constants.SECURITY_QUESTIONS, securityQuestionJson);
+                String securityQuestionAnswerJson = getIntent().getStringExtra(Constants.SECURITY_QUESTION_ANSWERS);
+                intent.putExtra(Constants.SECURITY_QUESTION_ANSWERS, securityQuestionAnswerJson);
                 Gson gson = new GsonBuilder().create();
                 String personRequestResponses = gson.toJson(mPersonRequestResponses);
                 intent.putExtra(Constants.PERSON_REQUESTS, personRequestResponses);

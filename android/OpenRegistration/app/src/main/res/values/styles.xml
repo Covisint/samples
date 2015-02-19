@@ -21,6 +21,11 @@
         <item name="android:textViewStyle">@style/LabelPasswordAccount</item>
     </style>
 
+    <style name="AppTheme.RegistrationStatus" parent="AppTheme">
+        <item name="android:textViewStyle">@style/Label</item>
+        <item name="android:padding">3dip</item>
+    </style>
+
     <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@null</item>

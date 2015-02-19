@@ -78,21 +78,12 @@ public class SecurityQuestionActivity extends Activity {
         Gson gson = new GsonBuilder().create();
 
         String personJson = getIntent().getStringExtra(Constants.PERSON_JSON);
-        if (personJson == null) {
-            personJson = "{\"id\":\"IHSK63T4\",\"version\":1423729413145,\"creator\":\"jlmMCCGIqTl4AOo3qN1xKlb11AZliXGO\",\"creatorAppId\":\"jlmMCCGIqTl4AOo3qN1xKlb11AZliXGO\",\"creation\":1423729413145,\"realm\":\"JWDEMOA-QA\",\"status\":\"unactivated\",\"name\":{\"prefix\":\"Mr.\",\"given\":\"Nitin\",\"middle\":\"R\",\"surname\":\"Khobragade\"},\"addresses\":[{\"streets\":[\"#128\"],\"city\":\"Bangalore\",\"state\":\"Karnataka\",\"postal\":\"560078\"}],\"language\":\"en\",\"timezone\":\"Asia/Calcutta\",\"phones\":[{\"type\":\"main\",\"number\":\"+919901066033\"},{\"type\":\"mobile\",\"number\":\"+91 9403186961\"}],\"title\":\"Arch\",\"email\":\"nitin.khobragade@happiestminds.com\",\"organizationId\":\"OJWDEMOA-QA102802\"}";
-        }
         mPerson = gson.fromJson(personJson, Person.class);
 
         String organizationJson = getIntent().getStringExtra(Constants.ORGANIZATION_JSON);
-        if (organizationJson == null) {
-            organizationJson = "{\"url\":\"http://www.covisint.com\",\"accountNumber\":\"999999\",\"addresses\":[{\"city\":\"Southfield\",\"country\":\"US\",\"postal\":\"48076\",\"state\":\"MI\",\"streets\":[\"25800 Northwestern Hwy\"]}],\"authDomain\":\"SSO\",\"authenticationPolicy\":{\"id\":\"205fd2f1-5877-4cc6-a091-9cf4a5ff8304\",\"realm\":\"JWDEMOA-QA\",\"type\":\"authenticationPolicy\"},\"duns\":\"0\",\"name\":\"JWDEMOA-QA\",\"organizationType\":\"SU\",\"parentOrganization\":{\"id\":\"0\",\"realm\":\"JWDEMOA-QA\",\"type\":\"organization\"},\"passwordPolicy\":{\"id\":\"2816418c-8409-4866-8d69-a07ab7a79a19\",\"realm\":\"JWDEMOA-QA\"},\"phones\":[{\"number\":\"313-227-9707\",\"type\":\"main\"},{\"number\":\"313-227-9707\",\"type\":\"fax\"}],\"rootOrganization\":{\"id\":\"102802\",\"realm\":\"JWDEMOA-QA\",\"type\":\"organization\"},\"public\":true,\"version\":1423146903000,\"id\":\"OJWDEMOA-QA102802\",\"realm\":\"JWDEMOA-QA\",\"status\":\"active\",\"creation\":1423146903000}";
-        }
         mOrganization = gson.fromJson(organizationJson, Organization.class);
 
         String passwordAccountJson = getIntent().getStringExtra(Constants.PASSWORD_ACCOUNT);
-        if (passwordAccountJson == null) {
-            passwordAccountJson = "{\"id\":\"IHSK63T4\",\"version\":1,\"creator\":\"jlmMCCGIqTl4AOo3qN1xKlb11AZliXGO\",\"creatorAppId\":\"jlmMCCGIqTl4AOo3qN1xKlb11AZliXGO\",\"creation\":1423729454844,\"realm\":\"JWDEMOA-QA\",\"username\":\"NITIN2\",\"passwordPolicyId\":\"2816418c-8409-4866-8d69-a07ab7a79a19\",\"authenticationPolicyId\":\"205fd2f1-5877-4cc6-a091-9cf4a5ff8304\",\"expiration\":1439281454883,\"locked\":false,\"unlockInstant\":0}";
-        }
         mPasswordAccount = gson.fromJson(passwordAccountJson, PasswordAccount.class);
 
         mSecurityQuestionsFormView = findViewById(R.id.security_question_submission_form);
@@ -161,17 +152,17 @@ public class SecurityQuestionActivity extends Activity {
                     mSecurityQuestionAnswer.setVersion(0L);
                     SecurityQuestionAnswer.SecurityQuestion[] questions = new SecurityQuestionAnswer.SecurityQuestion[2];
                     questions[0] = mSecurityQuestionAnswer.new SecurityQuestion();
-                    SecurityQuestionAnswer.Question question = mSecurityQuestionAnswer.new Question();
-                    question.setId(question1.getId());
-                    question.setType("question");
-                    questions[0].setQuestion(question);
+                    SecurityQuestionAnswer.Question q1 = mSecurityQuestionAnswer.new Question();
+                    q1.setId(question1.getId());
+                    q1.setType("question");
+                    questions[0].setQuestion(q1);
                     questions[0].setAnswer(answer1);
 
                     questions[1] = mSecurityQuestionAnswer.new SecurityQuestion();
-                    question = mSecurityQuestionAnswer.new Question();
-                    question.setId(question2.getId());
-                    question.setType("question");
-                    questions[1].setQuestion(question);
+                    SecurityQuestionAnswer.Question q2 = mSecurityQuestionAnswer.new Question();
+                    q2.setId(question2.getId());
+                    q2.setType("question");
+                    questions[1].setQuestion(q2);
                     questions[1].setAnswer(answer2);
                     mSecurityQuestionAnswer.setQuestions(questions);
                     mSubmitSecurityQuestionTask = new SubmitSecurityQuestionTask();
@@ -408,8 +399,16 @@ public class SecurityQuestionActivity extends Activity {
                     String passwordAccountJson = getIntent().getStringExtra(Constants.PASSWORD_ACCOUNT);
                     intent.putExtra(Constants.PASSWORD_ACCOUNT, passwordAccountJson);
 
-                    String securityQuestionJson = gson.toJson(mSecurityQuestionAnswer, SecurityQuestionAnswer.class);
+                    String securityQuestionAnswersJson = gson.toJson(mSecurityQuestionAnswer, SecurityQuestionAnswer.class);
+                    intent.putExtra(Constants.SECURITY_QUESTION_ANSWERS, securityQuestionAnswersJson);
+
+                    // Pass the questions for display
+                    SecurityQuestion [] questions = new SecurityQuestion[2];
+                    questions[0] = (SecurityQuestion) mQuestion1Spinner.getSelectedItem();
+                    questions[1] = (SecurityQuestion) mQuestion2Spinner.getSelectedItem();
+                    String securityQuestionJson = gson.toJson(questions, SecurityQuestion[].class);
                     intent.putExtra(Constants.SECURITY_QUESTIONS, securityQuestionJson);
+
                     startActivity(intent);
                     finish();
                 } catch ( Exception e) {

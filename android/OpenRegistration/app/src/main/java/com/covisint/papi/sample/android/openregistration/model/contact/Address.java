@@ -51,4 +51,21 @@ public class Address {
     public void setPostal(String postal) {
         this.postal = postal;
     }
+
+    public String getAddress() {
+        StringBuilder builder = new StringBuilder();
+        for (String street : streets) {
+            if (street != null && street.trim().length() > 0)
+                builder.append(street + "\n");
+        }
+        if (city != null && city.trim().length() > 0)
+            builder.append(city + "\n");
+        if (state != null && state.trim().length() > 0)
+            builder.append(state + "\n");
+        if (country != null && country.trim().length() > 0)
+            builder.append(country + "\n");
+        if (postal != null && postal.trim().length() > 0)
+            builder.append(postal + "\n");
+        return builder.toString().trim();
+    }
 }
