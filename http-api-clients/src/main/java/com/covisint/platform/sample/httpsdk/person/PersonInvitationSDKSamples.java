@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.http.protocol.BasicHttpContext;
 
 import com.covisint.core.http.service.core.Page;
+import com.covisint.core.http.service.core.ResourceReference;
 import com.covisint.core.http.service.core.SortCriteria;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
 import com.covisint.platform.user.client.person.invitation.PersonInvitationClient;
@@ -27,12 +28,16 @@ public final class PersonInvitationSDKSamples {
         // Create a new instance of the client.
         PersonInvitationClient client = createPersonInvitationClient();
 
+        String organizationId = "5b128ea0933b";
+        String invitorId = "5752da251c36";
+        String inviteeId = "fe5ea256148a";
+
         // Build the invitation object.
         PersonInvitation invite = new PersonInvitation();
         invite.setEmail("joe@covisint.com");
-        invite.setTargetOrganizationId("5b128ea0933b");
-        invite.setInvitorId("5752da251c36");
-        invite.setInviteeId("fe5ea256148a");
+        invite.setTargetOrganization(new ResourceReference(organizationId, "organization"));
+        invite.setInvitor(new ResourceReference(invitorId, "person"));
+        invite.setInvitee(new ResourceReference(inviteeId, "person"));
 
         // Create the person invitation.
         PersonInvitation invitation = client.add(invite, new BasicHttpContext()).checkedGet();
@@ -50,9 +55,6 @@ public final class PersonInvitationSDKSamples {
         System.out.println("Retrieved invitation: " + invitation.toString());
 
         // Search person invitations.
-
-        // The invitee id.
-        String inviteeId = "86268197c07b";
 
         // Set up filter criteria.
         Multimap<String, String> filter = ArrayListMultimap.<String, String> create();

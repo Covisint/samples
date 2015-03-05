@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.apache.http.protocol.BasicHttpContext;
 
 import com.covisint.core.http.service.core.Page;
+import com.covisint.core.http.service.core.ResourceReference;
 import com.covisint.core.http.service.core.SortCriteria;
 import com.covisint.platform.legacy.address.Address;
 import com.covisint.platform.legacy.phone.Phones;
@@ -74,7 +75,7 @@ public final class PersonRequestSDKSamples {
         // Set up the person request object.
         String registrantId = createdPerson.getId();
         PersonRequest request = new PersonRequest();
-        request.setRegistrantId(registrantId);
+        request.setRegistrant(new ResourceReference(registrantId, "person"));
         request.setPackageId("a4ad06e9190a");
         request.setJustification("Need access.");
 
@@ -95,14 +96,14 @@ public final class PersonRequestSDKSamples {
 
         // Set up a search filter to return all requests made by the registrant (person).
         Multimap<String, String> filter = ArrayListMultimap.<String, String> create();
-        filter.put("registrantId", request.getRegistrantId());
+        filter.put("registrantId", request.getRegistrant().getId());
 
         // Execute the search.
         List<PersonRequest> results = client.search(filter, SortCriteria.NONE, Page.DEFAULT, new BasicHttpContext())
                 .checkedGet();
 
         System.out.println(Iterables.size(results) + " requests have been made by registrant "
-                + request.getRegistrantId());
+                + request.getRegistrant().getId());
 
         // Delete the request.
         client.delete("abf886c7505a", new BasicHttpContext()).checkedGet();

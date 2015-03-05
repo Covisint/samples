@@ -1,13 +1,19 @@
 
 package com.covisint.platform.sample.httpsdk.service;
 
+import java.util.List;
+
 import org.apache.http.protocol.BasicHttpContext;
 
+import com.covisint.core.http.service.core.Page;
+import com.covisint.core.http.service.core.SortCriteria;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
 import com.covisint.platform.service.client.service.grant.ServicePackageGrantClient;
 import com.covisint.platform.service.client.service.grant.ServicePackageGrantSDK;
 import com.covisint.platform.service.core.service.grant.ServicePackageGrant;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Multimap;
 
 public class ServicePackageGrantSDKSamples {
 
@@ -68,6 +74,24 @@ public class ServicePackageGrantSDKSamples {
                 .checkedGet();
 
         System.out.println(Iterables.size(results) + " packages granted to organization " + organizationId);
+    }
+
+    /** Search all grants for a given package, optionally scoped to person or organization grantees. */
+    public static void searchPackageGrants() {
+
+        // Get an instance of the client.
+        ServicePackageGrantClient client = createServicePackageGrantClient();
+
+        // Filter by the package id of interest.
+        String packageId = "51a4ce2ee1ac3";
+        Multimap<String, String> filter = ArrayListMultimap.<String, String> create();
+        filter.put("grantedPackageId", packageId);
+
+        // Now list all grants for that package.
+        List<ServicePackageGrant> grants = client.search(filter, SortCriteria.NONE, Page.DEFAULT,
+                new BasicHttpContext()).checkedGet();
+
+        System.out.println("Retrieved " + grants.size() + " grants issued for package " + packageId);
     }
 
 }

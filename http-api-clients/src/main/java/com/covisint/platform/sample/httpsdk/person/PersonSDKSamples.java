@@ -2,11 +2,9 @@
 
 package com.covisint.platform.sample.httpsdk.person;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HttpContext;
 
 import com.covisint.core.http.service.core.Page;
 import com.covisint.core.http.service.core.SortCriteria;
@@ -87,20 +85,13 @@ public final class PersonSDKSamples {
 
         System.out.println("Successfully update person's job title to " + updated.getJobTitle());
 
-        // Search person resources by one or more IDs.
-
-        // The unique id of the person resources to search.
-        String[] personIds = { "0f7a031b9370", "211a20a6fb78", "4f6e76c4f732" };
-
-        // Build the filter criteria.
+        // Search by a person's username.
         Multimap<String, String> filter = ArrayListMultimap.<String, String> create();
-        filter.putAll("id", Arrays.asList(personIds));
-
-        // Create the HTTP context to pass.
-        HttpContext context = new BasicHttpContext();
+        filter.put("username", "johnsmith");
 
         // Execute the search.
-        List<Person> search = personClient.search(filter, SortCriteria.NONE, Page.DEFAULT, context).checkedGet();
+        List<Person> search = personClient.search(filter, SortCriteria.NONE, Page.DEFAULT, new BasicHttpContext())
+                .checkedGet();
 
         System.out.println("Search produced " + search.size() + " results.");
     }

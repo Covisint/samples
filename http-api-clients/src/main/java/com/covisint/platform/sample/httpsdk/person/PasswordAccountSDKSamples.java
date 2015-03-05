@@ -43,7 +43,7 @@ public final class PasswordAccountSDKSamples {
 
         // Build the account object.
         PasswordAccount account = new PasswordAccount();
-        account.setUsername("USER0002");
+        account.setUsername("johnsmith");
         account.setPassword("$up3r_SecR3t");
         account.setOwner(owner);
         account.setAuthnPolicyId("4e9a64577378");

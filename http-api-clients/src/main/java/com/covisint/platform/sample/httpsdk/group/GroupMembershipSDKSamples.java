@@ -15,6 +15,7 @@ import com.covisint.platform.group.core.group.Group;
 import com.covisint.platform.group.core.group.GroupMembership;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 
 public final class GroupMembershipSDKSamples {
@@ -68,6 +69,13 @@ public final class GroupMembershipSDKSamples {
                 .checkedGet();
 
         System.out.println("Found " + results.size() + " memberships for member " + member.getId());
+
+        // Just list all memberships to a given group id.
+        String groupId = "1ba3401ac2a";
+        Iterable<GroupMembership> groupMemberships = client.listGroupMemberships(groupId, false, false,
+                new BasicHttpContext()).checkedGet();
+
+        System.out.println("Found " + Iterables.size(groupMemberships) + " memberships for group " + groupId);
 
         // Now delete the membership from the group.
         client.delete(group.getId(), createdMembership.getId(), new BasicHttpContext()).checkedGet();
