@@ -2,6 +2,8 @@
 
 package com.covisint.platform.sample.httpsdk;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import org.apache.http.protocol.BasicHttpContext;
@@ -11,6 +13,7 @@ import com.covisint.core.http.service.client.CacheSpec.ExpirationMode;
 import com.covisint.core.http.service.core.Page;
 import com.covisint.core.http.service.core.ServiceException;
 import com.covisint.core.http.service.core.SortCriteria;
+import com.covisint.platform.oauth.client.token.sdk.AuthConfigurationProvider;
 import com.covisint.platform.user.client.person.PersonClient;
 import com.covisint.platform.user.client.person.PersonSDK;
 import com.covisint.platform.user.core.person.Person;
@@ -135,6 +138,50 @@ public class CommonSamples {
 
     /** Shows how you can provide your own source of client credentials. */
     public static void customCredentialProvider() {
+
+        /*
+         * A custom config provider that can load app id/client credentials from a secure location and supply them to
+         * the SDK.
+         */
+        class MyCustomConfigProvider implements AuthConfigurationProvider {
+
+            public String getApplicationId() {
+                return "my-app-id";
+            }
+
+            public String getClientId() {
+                return "my-client-id";
+            }
+
+            public String getClientSecret() {
+                return "my-client-secret";
+            }
+
+            public URL getAuthServiceBaseUrl() {
+                try {
+                    return new URL("https://api.covapp.io/oauth/v1");
+                } catch (MalformedURLException e) {
+                    throw new IllegalStateException(e);
+                }
+            }
+
+        }
+
+        /* The extended person SDK that allows you to override with your custom configuration provider. */
+        class MyPersonSDK extends PersonSDK {
+
+            public MyPersonSDK(String serviceUrl) {
+                super(serviceUrl);
+            }
+
+            protected AuthConfigurationProvider getConfigurationProvider() {
+                return new MyCustomConfigProvider();
+            }
+
+        }
+
+        /* Finally, simply use your custom SDK to generate the client you need. */
+        PersonClient client = new MyPersonSDK("https://api.covapp.io/person/v1").create();
 
     }
 
