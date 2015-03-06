@@ -6,7 +6,9 @@ import java.util.List;
 
 import org.apache.http.protocol.BasicHttpContext;
 
+import com.covisint.core.http.service.core.NamedResourceReference;
 import com.covisint.core.http.service.core.Page;
+import com.covisint.core.http.service.core.ResourceReferenceNode;
 import com.covisint.core.http.service.core.SortCriteria;
 import com.covisint.platform.legacy.address.Address;
 import com.covisint.platform.legacy.phone.Phones;
@@ -15,6 +17,7 @@ import com.covisint.platform.organization.client.organization.OrganizationSDK;
 import com.covisint.platform.organization.core.organization.Organization;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 
 public final class OrganizationSDKSamples {
@@ -98,6 +101,20 @@ public final class OrganizationSDKSamples {
         Organization updated = organizationClient.persist(organization, new BasicHttpContext()).checkedGet();
 
         System.out.println("Successfully update organization's name to " + updated.getName());
+    }
+
+    /** Retrieves an organization hierarchy given a root organization id. */
+    public static void organizationHierarchy() {
+
+        OrganizationClient client = createOrganizationClient();
+
+        String rootOrganizationId = "a1c3de4010a01";
+
+        ResourceReferenceNode<NamedResourceReference> root = client.getHierarchy(rootOrganizationId,
+                new BasicHttpContext()).checkedGet();
+
+        System.out.println("Organization " + rootOrganizationId + " has " + Iterables.size(root.getChildren())
+                + " children.");
     }
 
 }
