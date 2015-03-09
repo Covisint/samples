@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.http.protocol.BasicHttpContext;
 
 import com.covisint.core.http.service.core.Page;
+import com.covisint.core.http.service.core.ResourceReference;
 import com.covisint.core.http.service.core.SortCriteria;
 import com.covisint.platform.legacy.address.Address;
 import com.covisint.platform.legacy.phone.Phones;
@@ -33,7 +34,7 @@ public final class PersonSDKSamples {
         Person person = new Person();
 
         // Set the person's parent organization.
-        person.setOrganization("7d1e0d1abe7d");
+        person.setOrganization(new ResourceReference("7d1e0d1abe7d", "organization"));
 
         // Set basic preferences.
         person.setPreferredCurrency("USD");

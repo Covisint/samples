@@ -50,7 +50,7 @@ public final class PersonRequestSDKSamples {
 
         // First, need to create the person record.
         Person person = new Person()
-                .setOrganization("737e9ad36cc2")
+                .setOrganization(new ResourceReference("737e9ad36cc2", "organization"))
                 .setPreferredCurrency("USD")
                 .setPreferredLanguage("en")
                 .setPreferredTimezone("America/New_York")
