@@ -14,3 +14,6 @@ Here all sample portlets compatible with Liferay Portal 6.1 CE are available for
 ## Android
 ### Open Registration
 This sample application demonstrates how to utilize microservices to implement an Open Registration flow of user registration use case.
+## PHP
+### Open Registration
+This sample application demonstrates how to utilize microservices to implement an Open Registration flow of user registration use case.
