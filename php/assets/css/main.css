@@ -1,0 +1,125 @@
+/**
+ * Copyright (C) 2015 Covisint.
+ * Author: Pradeep Patro <pradeep.patro@happiestminds.com>
+ */
+
+* {
+  -webkit-font-smoothing: antialiased;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+  -webkit-transition: all 0.4s ease 0s;
+  -moz-transition: all 0.4s ease 0s;
+  transition: all 0.4s ease 0s;
+}
+.typeahead { z-index: 1051;}
+.navbar ul.nav > li > a {
+  color: #d3d3d3;
+  font-size: medium;
+}
+.navbar ul.nav > li > a:hover,
+.navbar ul.nav > li > a:focus {
+  text-decoration: underline;
+}
+/* Footer
+ * -------------------------------------------------- */
+
+.footer {
+  position: relative;
+  padding: 10px 0;
+  margin-top: 10px;
+  bottom: -50px;
+  background: #414243;
+}
+.footer p, .footer p > a {
+  text-align: center;
+  color: #efefef;
+  font-size: small;
+  margin-top: 10px;
+}
+.footer p > a:hover,
+.footer p > a:focus {
+  color: #fff;
+}
+
+
+/* Responsive
+ * -------------------------------------------------- */
+
+/* Desktop large
+ * ------------------------- */
+@media (min-width: 1200px) {
+}
+/* Desktop
+ * ------------------------- */
+@media (max-width: 980px) {
+
+  /* Unfloat brand */
+  body > .navbar-static-top .brand {
+    padding-left: 10px;
+  }
+}
+
+/* Tablet to desktop
+ * ------------------------- */
+@media (min-width: 768px) and (max-width: 980px) {
+  /* Remove any padding from the body */
+  .brand {
+    margin-left: 10px!important;
+  }
+}
+
+/* Tablet
+ * ------------------------- */
+@media (max-width: 767px) {
+  .brand {
+    margin-left: 50px!important;
+  }
+  /* Unfloat the back to top link in footer */
+  .footer {
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+  .footer p {
+    margin-bottom: 9px;
+  }
+}
+
+/* Landscape phones
+ * ------------------------- */
+@media (max-width: 480px) {
+  /* Change up some type stuff */
+  h2 small {
+    display: block;
+  }
+
+  /* Tighten up footer */
+  .footer {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+
+.navbar.navbar-static-top > .navbar-inner {
+  background-color: #414243;
+  padding-top: 30px;
+  padding-bottom: 10px;
+  background-repeat: repeat;
+  background: rgb(102,102,102); /* Old browsers */
+  /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzY2NjY2NiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMzMzMzMzMiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+  background: -moz-linear-gradient(top, rgba(102,102,102,1) 0%, rgba(51,51,51,1) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(102,102,102,1)), color-stop(100%,rgba(51,51,51,1))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, rgba(102,102,102,1) 0%,rgba(51,51,51,1) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, rgba(102,102,102,1) 0%,rgba(51,51,51,1) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, rgba(102,102,102,1) 0%,rgba(51,51,51,1) 100%); /* IE10+ */
+  background: linear-gradient(to bottom, rgba(102,102,102,1) 0%,rgba(51,51,51,1) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#666666', endColorstr='#333333',GradientType=0 ); /* IE6-8 */
+}
+
+body > .navbar .brand {
+  background-image: url('../img/logo.png');
+  background-repeat: no-repeat;
+  background-color: transparent;
+  bottom: -20px;
+  padding: 8px 80px 7px 80px;
+  position: relative;
+}
