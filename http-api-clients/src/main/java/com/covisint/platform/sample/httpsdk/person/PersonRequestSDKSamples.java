@@ -5,20 +5,17 @@ package com.covisint.platform.sample.httpsdk.person;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.http.protocol.BasicHttpContext;
-
 import com.covisint.core.http.service.core.Page;
 import com.covisint.core.http.service.core.ResourceReference;
-import com.covisint.core.http.service.core.SortCriteria;
 import com.covisint.platform.legacy.address.Address;
 import com.covisint.platform.legacy.phone.Phones;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
-import com.covisint.platform.user.client.person.PersonClient;
-import com.covisint.platform.user.client.person.PersonSDK;
-import com.covisint.platform.user.client.person.account.password.PasswordAccountClient;
-import com.covisint.platform.user.client.person.account.password.PasswordAccountSDK;
-import com.covisint.platform.user.client.person.request.PersonRequestClient;
-import com.covisint.platform.user.client.person.request.PersonRequestSDK;
+import com.covisint.platform.user.client.sdk.PasswordAccountSDK;
+import com.covisint.platform.user.client.sdk.PasswordAccountSDK.PasswordAccountClient;
+import com.covisint.platform.user.client.sdk.PersonRequestSDK;
+import com.covisint.platform.user.client.sdk.PersonRequestSDK.PersonRequestClient;
+import com.covisint.platform.user.client.sdk.PersonSDK;
+import com.covisint.platform.user.client.sdk.PersonSDK.PersonClient;
 import com.covisint.platform.user.core.person.Person;
 import com.covisint.platform.user.core.person.account.password.PasswordAccount;
 import com.covisint.platform.user.core.person.request.PersonRequest;
@@ -29,15 +26,15 @@ import com.google.common.collect.Multimap;
 public final class PersonRequestSDKSamples {
 
     private static PersonClient createPersonClient() {
-        return new PersonSDK(ServiceUrl.PERSON_V1.getValue()).create();
+        return new PersonSDK(ServiceUrl.PERSON_V1.getValue()).newClient();
     }
 
     private static PasswordAccountClient createPasswordAccountClient() {
-        return new PasswordAccountSDK(ServiceUrl.PERSON_V1.getValue()).create();
+        return new PasswordAccountSDK(ServiceUrl.PERSON_V1.getValue()).newClient();
     }
 
     private static PersonRequestClient createPersonRequestClient() {
-        return new PersonRequestSDK(ServiceUrl.PERSON_V1.getValue()).create();
+        return new PersonRequestSDK(ServiceUrl.PERSON_V1.getValue()).newClient();
     }
 
     /** Perform CRUD operations (as well as search) on person request resources. */
@@ -62,7 +59,7 @@ public final class PersonRequestSDKSamples {
                                 .setPostal("48226").setCountry("US")).setPhones(new Phones().setMain("313.961.4100"));
 
         // Go ahead and create our person now.
-        Person createdPerson = personClient.add(person, new BasicHttpContext()).checkedGet();
+        Person createdPerson = personClient.add(person).checkedGet();
 
         // Next, set the username/password for this person.
         PasswordAccount account = new PasswordAccount().setUsername(UUID.randomUUID().toString())
@@ -70,7 +67,7 @@ public final class PersonRequestSDKSamples {
                 .setAuthnPolicyId("8fe701224ecd").setPasswordPolicyId("3d7555e782a5").setVersion(1L);
 
         // Persist the credentials.
-        passwordClient.persist(account, new BasicHttpContext()).checkedGet();
+        passwordClient.updatePasswordAccount(account).checkedGet();
 
         // Set up the person request object.
         String registrantId = createdPerson.getId();
@@ -80,7 +77,7 @@ public final class PersonRequestSDKSamples {
         request.setJustification("Need access.");
 
         // Create the person request.
-        PersonRequest created = client.add(request, new BasicHttpContext()).checkedGet();
+        PersonRequest created = client.add(request).checkedGet();
 
         System.out.println("Created person request " + created.getId());
 
@@ -90,7 +87,7 @@ public final class PersonRequestSDKSamples {
         String requestId = "bcfba3b9a42b";
 
         // Execute the call.
-        request = client.get(requestId, new BasicHttpContext()).checkedGet();
+        request = client.get(requestId).checkedGet();
 
         System.out.println("Retrieved person request: " + request);
 
@@ -99,14 +96,13 @@ public final class PersonRequestSDKSamples {
         filter.put("registrantId", request.getRegistrant().getId());
 
         // Execute the search.
-        List<PersonRequest> results = client.search(filter, SortCriteria.NONE, Page.DEFAULT, new BasicHttpContext())
-                .checkedGet();
+        List<PersonRequest> results = client.search(request.getRegistrant().getId(), Page.DEFAULT).checkedGet();
 
         System.out.println(Iterables.size(results) + " requests have been made by registrant "
                 + request.getRegistrant().getId());
 
         // Delete the request.
-        client.delete("abf886c7505a", new BasicHttpContext()).checkedGet();
+        client.delete("abf886c7505a").checkedGet();
 
         System.out.println("Deleted person request " + requestId);
     }
@@ -121,7 +117,7 @@ public final class PersonRequestSDKSamples {
         String requestId = "f4daa39948db";
 
         // Approve the request.
-        client.approve(requestId, new BasicHttpContext()).checkedGet();
+        client.approve(requestId).checkedGet();
 
         System.out.println("Approved person request " + requestId);
     }

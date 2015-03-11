@@ -3,13 +3,10 @@ package com.covisint.platform.sample.httpsdk.service;
 
 import java.util.List;
 
-import org.apache.http.protocol.BasicHttpContext;
-
 import com.covisint.core.http.service.core.Page;
-import com.covisint.core.http.service.core.SortCriteria;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
-import com.covisint.platform.service.client.service.grant.ServicePackageGrantClient;
-import com.covisint.platform.service.client.service.grant.ServicePackageGrantSDK;
+import com.covisint.platform.service.client.sdk.ServicePackageGrantSDK;
+import com.covisint.platform.service.client.sdk.ServicePackageGrantSDK.ServicePackageGrantClient;
 import com.covisint.platform.service.core.service.grant.ServicePackageGrant;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
@@ -18,7 +15,7 @@ import com.google.common.collect.Multimap;
 public class ServicePackageGrantSDKSamples {
 
     private static ServicePackageGrantClient createServicePackageGrantClient() {
-        return new ServicePackageGrantSDK(ServiceUrl.SERVICE_V1.getValue()).create();
+        return new ServicePackageGrantSDK(ServiceUrl.SERVICE_V1.getValue()).newClient();
     }
 
     /** View, assign and revoke person package grants. */
@@ -31,19 +28,17 @@ public class ServicePackageGrantSDKSamples {
         String packageId = "120da010c33de";
 
         // Assign the grant.
-        ServicePackageGrant grant = client.assignPersonGrant(personId, packageId, new BasicHttpContext()).checkedGet();
+        ServicePackageGrant grant = client.assignPersonGrant(personId, packageId).checkedGet();
 
         System.out.println("Granted person package: " + grant);
 
         // Get the grant we just issued.
-        ServicePackageGrant retrievedGrant = client.getPersonGrant(personId, packageId, new BasicHttpContext())
-                .checkedGet();
+        ServicePackageGrant retrievedGrant = client.getPersonGrant(personId, packageId).checkedGet();
 
         System.out.println("Retrieved person package grant: " + retrievedGrant);
 
         // Let's find all package grants issued to this person.
-        Iterable<ServicePackageGrant> results = client.searchPersonGrants(personId, new BasicHttpContext())
-                .checkedGet();
+        Iterable<ServicePackageGrant> results = client.listPersonGrants(personId).checkedGet();
 
         System.out.println(Iterables.size(results) + " packages granted to person " + personId);
     }
@@ -58,20 +53,17 @@ public class ServicePackageGrantSDKSamples {
         String packageId = "001cbd314d01d";
 
         // Assign the grant.
-        ServicePackageGrant grant = client.assignOrganizationGrant(organizationId, packageId, new BasicHttpContext())
-                .checkedGet();
+        ServicePackageGrant grant = client.assignOrganizationGrant(organizationId, packageId).checkedGet();
 
         System.out.println("Granted organization package: " + grant);
 
         // Get the grant we just issued.
-        ServicePackageGrant retrievedGrant = client.getOrganizationGrant(organizationId, packageId,
-                new BasicHttpContext()).checkedGet();
+        ServicePackageGrant retrievedGrant = client.getOrganizationGrant(organizationId, packageId).checkedGet();
 
         System.out.println("Retrieved organization package grant: " + retrievedGrant);
 
-        // Let's find all package grants issued to this person.
-        Iterable<ServicePackageGrant> results = client.searchOrganizationGrants(organizationId, new BasicHttpContext())
-                .checkedGet();
+        // Let's find all package grants issued to this organization.
+        Iterable<ServicePackageGrant> results = client.listOrganizationGrants(organizationId).checkedGet();
 
         System.out.println(Iterables.size(results) + " packages granted to organization " + organizationId);
     }
@@ -88,8 +80,7 @@ public class ServicePackageGrantSDKSamples {
         filter.put("grantedPackageId", packageId);
 
         // Now list all grants for that package.
-        List<ServicePackageGrant> grants = client.search(filter, SortCriteria.NONE, Page.DEFAULT,
-                new BasicHttpContext()).checkedGet();
+        List<ServicePackageGrant> grants = client.search(packageId, null, Page.DEFAULT).checkedGet();
 
         System.out.println("Retrieved " + grants.size() + " grants issued for package " + packageId);
     }

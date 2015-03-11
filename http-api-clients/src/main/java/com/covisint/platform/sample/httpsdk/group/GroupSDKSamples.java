@@ -2,32 +2,34 @@
 
 package com.covisint.platform.sample.httpsdk.group;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.http.protocol.BasicHttpContext;
-
 import com.covisint.core.http.service.core.Page;
 import com.covisint.core.http.service.core.ResourceReference;
-import com.covisint.core.http.service.core.SortCriteria;
-import com.covisint.platform.group.client.group.GroupClient;
-import com.covisint.platform.group.client.group.GroupSDK;
+import com.covisint.platform.group.client.sdk.GroupSDK;
+import com.covisint.platform.group.client.sdk.GroupSDK.GroupClient;
 import com.covisint.platform.group.core.group.Group;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
 import com.google.common.collect.ArrayListMultimap;
 
 public final class GroupSDKSamples {
 
+    public static void main(String[] args) {
+        groupCRUD();
+    }
+
     private static GroupClient createGroupClient() {
-        return new GroupSDK(ServiceUrl.GROUP_V1.getValue()).create();
+        return new GroupSDK(ServiceUrl.GROUP_V1.getValue()).newClient();
     }
 
     /** Demonstrate CRUD operations (and also search) on group resources. */
     public static void groupCRUD() {
 
         // First, get an instance of the group client.
-        GroupClient client = createGroupClient();
+        GroupClient groupClient = createGroupClient();
 
         // Start by creating a new group.
         Group group = new Group();
@@ -51,12 +53,12 @@ public final class GroupSDKSamples {
         group.setOwner(new ResourceReference(groupOwnerId, "person"));
 
         // Create the group.
-        Group createdGroup = client.add(group, new BasicHttpContext()).checkedGet();
+        Group createdGroup = groupClient.add(group).checkedGet();
 
         System.out.println("Created group " + createdGroup.getId());
 
         // Let's retrieve the group we just created, from the server.
-        Group retrievedGroup = client.get(createdGroup.getId(), new BasicHttpContext()).checkedGet();
+        Group retrievedGroup = groupClient.get(createdGroup.getId(), true).checkedGet();
 
         System.out.println("Retrieved group: " + retrievedGroup);
 
@@ -70,7 +72,7 @@ public final class GroupSDKSamples {
         retrievedGroup.setDescription(newDesc);
 
         // Persist the changes.
-        Group updatedGroup = client.persist(retrievedGroup, new BasicHttpContext()).checkedGet();
+        Group updatedGroup = groupClient.update(retrievedGroup).checkedGet();
 
         System.out.println("Updated group with new name/description, new resource version is "
                 + updatedGroup.getVersion());
@@ -80,7 +82,7 @@ public final class GroupSDKSamples {
         filter.put("name", "Questo è iTunes Media Library di Sam");
 
         // Perform the search.
-        List<Group> results = client.search(filter, SortCriteria.NONE, Page.DEFAULT, new BasicHttpContext())
+        List<Group> results = groupClient.search(new ArrayList<String>(), new ArrayList<String>(), true, Page.DEFAULT)
                 .checkedGet();
 
         System.out.println("Group search result size: " + results.size());

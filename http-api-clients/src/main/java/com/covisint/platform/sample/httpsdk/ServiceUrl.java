@@ -4,17 +4,17 @@ package com.covisint.platform.sample.httpsdk;
 
 public enum ServiceUrl {
 
-    PERSON_V1("https://api.covisintrnd.com/person/v1"),
+    PERSON_V1("https://api.covapp.io/person/v1"),
 
-    GROUP_V1("https://api.covisintrnd.com/group/v1"),
+    GROUP_V1("https://api.covapp.io/group/v1"),
 
-    ORG_V1("https://api.covisintrnd.com/organization/v1"),
+    ORG_V1("https://api.covapp.io/organization/v1"),
 
-    OAUTH_V1("https://api.covisintrnd.com/oauth/v1"),
+    OAUTH_V1("https://api.covapp.io/oauth/v1"),
 
-    SERVICE_V1("https://api.covisintrnd.com/service/v1"),
+    SERVICE_V1("https://api.covapp.io/service/v1"),
 
-    AUTHN_V2("https://api.covisintrnd.com/authn/v2");
+    AUTHN_V2("https://api.covapp.io/authn/v2");
 
     private final String value;
 

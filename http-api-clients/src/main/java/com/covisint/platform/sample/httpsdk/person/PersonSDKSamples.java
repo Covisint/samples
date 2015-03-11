@@ -4,24 +4,19 @@ package com.covisint.platform.sample.httpsdk.person;
 
 import java.util.List;
 
-import org.apache.http.protocol.BasicHttpContext;
-
 import com.covisint.core.http.service.core.Page;
 import com.covisint.core.http.service.core.ResourceReference;
-import com.covisint.core.http.service.core.SortCriteria;
 import com.covisint.platform.legacy.address.Address;
 import com.covisint.platform.legacy.phone.Phones;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
-import com.covisint.platform.user.client.person.PersonClient;
-import com.covisint.platform.user.client.person.PersonSDK;
+import com.covisint.platform.user.client.sdk.PersonSDK;
+import com.covisint.platform.user.client.sdk.PersonSDK.PersonClient;
 import com.covisint.platform.user.core.person.Person;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 
 public final class PersonSDKSamples {
 
     private static PersonClient createPersonClient() {
-        return new PersonSDK(ServiceUrl.PERSON_V1.getValue()).create();
+        return new PersonSDK(ServiceUrl.PERSON_V1.getValue()).newClient();
     }
 
     /** Performs CRUD operations (as well as search) on person resources. */
@@ -64,7 +59,7 @@ public final class PersonSDKSamples {
         person.setPhones(phones);
 
         // Create the person.
-        Person createdPerson = personClient.add(person, new BasicHttpContext()).checkedGet();
+        Person createdPerson = personClient.add(person).checkedGet();
 
         System.out.println("Created person ID is " + createdPerson.getId());
 
@@ -74,7 +69,7 @@ public final class PersonSDKSamples {
         String personId = "04ce20c7a824";
 
         // Retrieve the person.
-        person = personClient.get(personId, new BasicHttpContext()).checkedGet();
+        person = personClient.get(personId).checkedGet();
 
         System.out.println("Retrieved person: " + person.getGivenName() + " " + person.getSurname());
 
@@ -82,17 +77,12 @@ public final class PersonSDKSamples {
         person.setJobTitle("SVP, Operations");
 
         // Persist the changes.
-        Person updated = personClient.persist(person, new BasicHttpContext()).checkedGet();
+        Person updated = personClient.update(person).checkedGet();
 
         System.out.println("Successfully update person's job title to " + updated.getJobTitle());
 
         // Search by a person's username.
-        Multimap<String, String> filter = ArrayListMultimap.<String, String> create();
-        filter.put("username", "johnsmith");
-
-        // Execute the search.
-        List<Person> search = personClient.search(filter, SortCriteria.NONE, Page.DEFAULT, new BasicHttpContext())
-                .checkedGet();
+        List<Person> search = personClient.search(null, null, "johnsmith", null, Page.DEFAULT).checkedGet();
 
         System.out.println("Search produced " + search.size() + " results.");
     }
@@ -105,7 +95,7 @@ public final class PersonSDKSamples {
         // The id of the person to activate.
         String personId = "c2e91ba21450";
 
-        personClient.activate(personId, new BasicHttpContext()).checkedGet();
+        personClient.activate(personId).checkedGet();
 
         System.out.println("Activated person " + personId);
     }
@@ -118,7 +108,7 @@ public final class PersonSDKSamples {
         // The id of the person to suspend.
         String personId = "29df4895f735";
 
-        personClient.suspend(personId, new BasicHttpContext()).checkedGet();
+        personClient.suspend(personId).checkedGet();
 
         System.out.println("Suspended person " + personId);
     }
@@ -131,7 +121,7 @@ public final class PersonSDKSamples {
         // The id of the person to unsuspend.
         String personId = "31ae112f13be";
 
-        personClient.unsuspend(personId, new BasicHttpContext()).checkedGet();
+        personClient.unsuspend(personId).checkedGet();
 
         System.out.println("Unsuspended person " + personId);
     }

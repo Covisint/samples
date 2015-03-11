@@ -2,18 +2,16 @@
 
 package com.covisint.platform.sample.httpsdk.person;
 
-import org.apache.http.protocol.BasicHttpContext;
-
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
-import com.covisint.platform.user.client.person.account.password.PasswordAccountClient;
-import com.covisint.platform.user.client.person.account.password.PasswordAccountSDK;
+import com.covisint.platform.user.client.sdk.PasswordAccountSDK;
+import com.covisint.platform.user.client.sdk.PasswordAccountSDK.PasswordAccountClient;
 import com.covisint.platform.user.core.person.Person;
 import com.covisint.platform.user.core.person.account.password.PasswordAccount;
 
 public final class PasswordAccountSDKSamples {
 
     private static PasswordAccountClient createPasswordAccountClient() {
-        return new PasswordAccountSDK(ServiceUrl.PERSON_V1.getValue()).create();
+        return new PasswordAccountSDK(ServiceUrl.PERSON_V1.getValue()).newClient();
     }
 
     /** Retrieve a person's password account. */
@@ -26,7 +24,7 @@ public final class PasswordAccountSDKSamples {
         String personId = "e4d7e969af82";
 
         // Retrieve the account.
-        PasswordAccount account = client.get(personId, new BasicHttpContext()).checkedGet();
+        PasswordAccount account = client.getPasswordAccount(personId).checkedGet();
 
         System.out.println("Retrieved password account for username: " + account.getUsername());
     }
@@ -51,7 +49,7 @@ public final class PasswordAccountSDKSamples {
         account.setVersion(1L);
 
         // Update the account.
-        PasswordAccount updated = client.persist(account, new BasicHttpContext()).checkedGet();
+        PasswordAccount updated = client.updatePasswordAccount(account).checkedGet();
 
         System.out.println("Updated or specified password account for " + updated.getUsername());
     }

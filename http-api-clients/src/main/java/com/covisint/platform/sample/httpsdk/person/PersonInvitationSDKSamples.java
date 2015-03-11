@@ -2,16 +2,14 @@
 
 package com.covisint.platform.sample.httpsdk.person;
 
+import java.util.Arrays;
 import java.util.List;
-
-import org.apache.http.protocol.BasicHttpContext;
 
 import com.covisint.core.http.service.core.Page;
 import com.covisint.core.http.service.core.ResourceReference;
-import com.covisint.core.http.service.core.SortCriteria;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
-import com.covisint.platform.user.client.person.invitation.PersonInvitationClient;
-import com.covisint.platform.user.client.person.invitation.PersonInvitationSDK;
+import com.covisint.platform.user.client.sdk.PersonInvitationSDK;
+import com.covisint.platform.user.client.sdk.PersonInvitationSDK.PersonInvitationClient;
 import com.covisint.platform.user.core.person.invitation.PersonInvitation;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -19,7 +17,7 @@ import com.google.common.collect.Multimap;
 public final class PersonInvitationSDKSamples {
 
     private static PersonInvitationClient createPersonInvitationClient() {
-        return new PersonInvitationSDK(ServiceUrl.PERSON_V1.getValue()).create();
+        return new PersonInvitationSDK(ServiceUrl.PERSON_V1.getValue()).newClient();
     }
 
     /** Performs CRUD (and search) operations on person invitation resources. */
@@ -40,7 +38,7 @@ public final class PersonInvitationSDKSamples {
         invite.setInvitee(new ResourceReference(inviteeId, "person"));
 
         // Create the person invitation.
-        PersonInvitation invitation = client.add(invite, new BasicHttpContext()).checkedGet();
+        PersonInvitation invitation = client.add(invite).checkedGet();
 
         System.out.println("Created invitation id " + invitation.getId());
 
@@ -50,7 +48,7 @@ public final class PersonInvitationSDKSamples {
         String inviteId = "a5be357f1a45";
 
         // Retrieve the person invitation.
-        invitation = client.get(inviteId, new BasicHttpContext()).checkedGet();
+        invitation = client.get(inviteId).checkedGet();
 
         System.out.println("Retrieved invitation: " + invitation.toString());
 
@@ -61,13 +59,12 @@ public final class PersonInvitationSDKSamples {
         filter.put("inviteeId", inviteeId);
 
         // Execute the search.
-        List<PersonInvitation> results = client.search(filter, SortCriteria.NONE, Page.DEFAULT, new BasicHttpContext())
-                .checkedGet();
+        List<PersonInvitation> results = client.search(Arrays.asList(inviteeId), null, Page.DEFAULT).checkedGet();
 
         System.out.println("Search result size: " + results.size());
 
         // Delete our invitation.
-        client.delete(inviteId, new BasicHttpContext()).checkedGet();
+        client.delete(inviteId).checkedGet();
 
         System.out.println("Deleted person invitation " + inviteId);
     }
@@ -85,7 +82,7 @@ public final class PersonInvitationSDKSamples {
         String inviteeId = "a2937a4c8ad8";
 
         // Process the accept task.
-        client.accept(inviteId, inviteeId, new BasicHttpContext()).checkedGet();
+        client.accept(inviteId, inviteeId).checkedGet();
 
         System.out.println("Accepted person invitation " + inviteId);
     }

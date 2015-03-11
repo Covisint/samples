@@ -2,28 +2,24 @@
 
 package com.covisint.platform.sample.httpsdk.organization;
 
+import java.util.Arrays;
 import java.util.List;
-
-import org.apache.http.protocol.BasicHttpContext;
 
 import com.covisint.core.http.service.core.NamedResourceReference;
 import com.covisint.core.http.service.core.Page;
 import com.covisint.core.http.service.core.ResourceReferenceNode;
-import com.covisint.core.http.service.core.SortCriteria;
 import com.covisint.platform.legacy.address.Address;
 import com.covisint.platform.legacy.phone.Phones;
-import com.covisint.platform.organization.client.organization.OrganizationClient;
-import com.covisint.platform.organization.client.organization.OrganizationSDK;
+import com.covisint.platform.organization.client.sdk.OrganizationSDK;
+import com.covisint.platform.organization.client.sdk.OrganizationSDK.OrganizationClient;
 import com.covisint.platform.organization.core.organization.Organization;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Multimap;
 
 public final class OrganizationSDKSamples {
 
     private static OrganizationClient createOrganizationClient() {
-        return new OrganizationSDK(ServiceUrl.ORG_V1.getValue()).create();
+        return new OrganizationSDK(ServiceUrl.ORG_V1.getValue()).newClient();
     }
 
     /** Performs CRUD (and search) on organization resources. */
@@ -58,7 +54,7 @@ public final class OrganizationSDKSamples {
         organization.setEmail("sales@covisint.com");
 
         // Create the org.
-        Organization createdOrganization = organizationClient.add(organization, new BasicHttpContext()).checkedGet();
+        Organization createdOrganization = organizationClient.add(organization).checkedGet();
 
         System.out.println("Created organization ID is " + createdOrganization.getId());
 
@@ -68,37 +64,31 @@ public final class OrganizationSDKSamples {
         String organizationId = "04ce20c7a824";
 
         // Retrieve the person.
-        organization = organizationClient.get(organizationId, new BasicHttpContext()).checkedGet();
+        organization = organizationClient.get(organizationId).checkedGet();
 
         System.out.println("Retrieved organization: " + organization);
 
         /* Search organizations by name. */
 
-        // Build the filter criteria.
-        Multimap<String, String> filter = ArrayListMultimap.<String, String> create();
-        filter.put("name", "My Organization");
-
-        // Don't sort the results.
-        SortCriteria sort = SortCriteria.NONE;
-
         // Don't apply any special pagination params.
         Page page = Page.DEFAULT;
 
         // Execute the search.
-        List<Organization> search = organizationClient.search(filter, sort, page, new BasicHttpContext()).checkedGet();
+        List<Organization> search = organizationClient.search(Arrays.asList("My Organization"), null, null, page)
+                .checkedGet();
 
         System.out.println("Search produced " + search.size() + " results.");
 
         /* Update person details. */
 
         // Retrieve the person to be updated.
-        organization = organizationClient.get("04ce20c7a824", new BasicHttpContext()).checkedGet();
+        organization = organizationClient.get("04ce20c7a824").checkedGet();
 
         // Update org name.
         organization.setName("ABC Org");
 
         // Persist the changes.
-        Organization updated = organizationClient.persist(organization, new BasicHttpContext()).checkedGet();
+        Organization updated = organizationClient.update(organization).checkedGet();
 
         System.out.println("Successfully update organization's name to " + updated.getName());
     }
@@ -110,8 +100,7 @@ public final class OrganizationSDKSamples {
 
         String rootOrganizationId = "a1c3de4010a01";
 
-        ResourceReferenceNode<NamedResourceReference> root = client.getHierarchy(rootOrganizationId,
-                new BasicHttpContext()).checkedGet();
+        ResourceReferenceNode<NamedResourceReference> root = client.getHierarchy(rootOrganizationId).checkedGet();
 
         System.out.println("Organization " + rootOrganizationId + " has " + Iterables.size(root.getChildren())
                 + " children.");

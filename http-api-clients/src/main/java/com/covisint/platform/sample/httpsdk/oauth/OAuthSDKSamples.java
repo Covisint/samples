@@ -4,35 +4,30 @@ package com.covisint.platform.sample.httpsdk.oauth;
 
 import java.util.List;
 
-import org.apache.http.protocol.BasicHttpContext;
-
 import com.covisint.core.http.service.core.Page;
-import com.covisint.core.http.service.core.SortCriteria;
-import com.covisint.platform.oauth.client.granttype.clientsecret.ClientSecretGrantTypeClient;
-import com.covisint.platform.oauth.client.granttype.clientsecret.ClientSecretGrantTypeSDK;
-import com.covisint.platform.oauth.client.subject.SubjectClient;
-import com.covisint.platform.oauth.client.subject.SubjectSDK;
-import com.covisint.platform.oauth.client.token.TokenClient;
-import com.covisint.platform.oauth.client.token.TokenSDK;
+import com.covisint.platform.oauth.client.sdk.ClientSecretGrantTypeSDK;
+import com.covisint.platform.oauth.client.sdk.ClientSecretGrantTypeSDK.ClientSecretGrantTypeClient;
+import com.covisint.platform.oauth.client.sdk.SubjectSDK;
+import com.covisint.platform.oauth.client.sdk.SubjectSDK.SubjectClient;
+import com.covisint.platform.oauth.client.sdk.TokenSDK;
+import com.covisint.platform.oauth.client.sdk.TokenSDK.TokenClient;
 import com.covisint.platform.oauth.core.domain.ClientSecretGrantType;
 import com.covisint.platform.oauth.core.domain.Subject;
 import com.covisint.platform.oauth.core.token.Token;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 
 public final class OAuthSDKSamples {
 
     private static TokenClient createTokenClient() {
-        return new TokenSDK(ServiceUrl.OAUTH_V1.getValue()).create();
+        return new TokenSDK(ServiceUrl.OAUTH_V1.getValue()).newClient();
     }
 
     private static ClientSecretGrantTypeClient createClientSecretGrantClient() {
-        return new ClientSecretGrantTypeSDK(ServiceUrl.OAUTH_V1.getValue()).create();
+        return new ClientSecretGrantTypeSDK(ServiceUrl.OAUTH_V1.getValue()).newClient();
     }
 
     private static SubjectClient createSubjectClient() {
-        return new SubjectSDK(ServiceUrl.OAUTH_V1.getValue()).create();
+        return new SubjectSDK(ServiceUrl.OAUTH_V1.getValue()).newClient();
     }
 
     /** Retrieves an OAuth access token for a given set of client credentials. */
@@ -45,7 +40,7 @@ public final class OAuthSDKSamples {
         String secret = "7ee0419fb281";
 
         // Exchange the given client id and secret for a token.
-        Token token = client.getToken(clientId, secret, new BasicHttpContext()).checkedGet();
+        Token token = client.getToken(clientId, secret).checkedGet();
 
         System.out.println("Retrieved access token: " + token.getEncodedToken());
     }
@@ -62,23 +57,22 @@ public final class OAuthSDKSamples {
         subject.setVersion(1L);
 
         // Create the subject.
-        Subject createdSubject = client.persist(subject, new BasicHttpContext()).checkedGet();
+        Subject createdSubject = client.update(subject).checkedGet();
 
         System.out.println("Created subject:" + createdSubject);
 
         // Now retrieve the subject from the server.
-        Subject retrievedSubject = client.get(createdSubject.getId(), new BasicHttpContext()).checkedGet();
+        Subject retrievedSubject = client.get(createdSubject.getId()).checkedGet();
 
         System.out.println("Retrieved subject:" + retrievedSubject);
 
         // Perform a search for all subjects that exist.
-        List<Subject> allSubjects = client.search(ArrayListMultimap.<String, String> create(), SortCriteria.NONE,
-                Page.DEFAULT, new BasicHttpContext()).checkedGet();
+        List<Subject> allSubjects = client.search(Page.DEFAULT).checkedGet();
 
         System.out.println("Found " + allSubjects.size() + " subjects.");
 
         // Finally, lets delete our subject.
-        client.delete(retrievedSubject.getId(), new BasicHttpContext()).checkedGet();
+        client.delete(retrievedSubject.getId()).checkedGet();
 
         System.out.println("Successfully deleted subject.");
     }
@@ -101,26 +95,22 @@ public final class OAuthSDKSamples {
         grant.setAppId(appId);
 
         // Create the new grant for the subject.
-        ClientSecretGrantType created = client.add(subjectId, grant, new BasicHttpContext()).checkedGet();
+        ClientSecretGrantType created = client.add(subjectId, grant).checkedGet();
 
         System.out.println("Created client id/secret grant type: " + created);
 
         // Now retrieve it from the server.
-        ClientSecretGrantType retrieved = client.get(subjectId, created.getId(), new BasicHttpContext()).checkedGet();
+        ClientSecretGrantType retrieved = client.get(subjectId, created.getId()).checkedGet();
 
         System.out.println("Retrieved client id/secret grant type: " + retrieved);
 
-        // Let's search for all grants issued for this subject. No filter criteria requested.
-        Multimap<String, String> filter = ArrayListMultimap.<String, String> create();
-
-        // Search.
-        List<ClientSecretGrantType> allGrants = client.search(subjectId, filter, SortCriteria.NONE, Page.DEFAULT,
-                new BasicHttpContext()).checkedGet();
+        // Let's search for all grants issued for this subject.
+        List<ClientSecretGrantType> allGrants = client.listClientSecretGrants(subjectId, Page.DEFAULT).checkedGet();
 
         System.out.println("Found " + allGrants.size() + " grants for subject " + subjectId);
 
         // Delete the grant.
-        client.delete(subjectId, retrieved.getId(), new BasicHttpContext()).checkedGet();
+        client.delete(subjectId, retrieved.getId()).checkedGet();
 
         System.out.println("Successfully deleted client id/secret grant type.");
     }

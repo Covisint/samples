@@ -5,30 +5,25 @@ package com.covisint.platform.sample.httpsdk.authentication;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.http.protocol.BasicHttpContext;
-
 import com.covisint.core.http.service.core.Page;
 import com.covisint.core.http.service.core.ResourceReference;
-import com.covisint.core.http.service.core.SortCriteria;
-import com.covisint.platform.authn.client.account.securityquestion.SecurityQuestionAccountClient;
-import com.covisint.platform.authn.client.account.securityquestion.SecurityQuestionAccountSDK;
-import com.covisint.platform.authn.client.securityquestion.SecurityQuestionClient;
-import com.covisint.platform.authn.client.securityquestion.SecurityQuestionSDK;
+import com.covisint.platform.authn.client.sdk.SecurityQuestionAccountSDK;
+import com.covisint.platform.authn.client.sdk.SecurityQuestionAccountSDK.SecurityQuestionAccountClient;
+import com.covisint.platform.authn.client.sdk.SecurityQuestionSDK;
+import com.covisint.platform.authn.client.sdk.SecurityQuestionSDK.SecurityQuestionClient;
 import com.covisint.platform.authn.core.account.securityquestion.SecurityQuestionAccount;
 import com.covisint.platform.authn.core.account.securityquestion.SecurityQuestionAccount.Question;
 import com.covisint.platform.authn.core.securityquestion.SecurityQuestion;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 
 public final class SecurityQuestionAccountSDKSamples {
 
     private static SecurityQuestionAccountClient createAccountClient() {
-        return new SecurityQuestionAccountSDK(ServiceUrl.AUTHN_V2.getValue()).create();
+        return new SecurityQuestionAccountSDK(ServiceUrl.AUTHN_V2.getValue()).newClient();
     }
 
     private static SecurityQuestionClient createSecurityQuestionClient() {
-        return new SecurityQuestionSDK(ServiceUrl.AUTHN_V2.getValue()).create();
+        return new SecurityQuestionSDK(ServiceUrl.AUTHN_V2.getValue()).newClient();
     }
 
     /** Retrieve a person's security question account. */
@@ -41,7 +36,7 @@ public final class SecurityQuestionAccountSDKSamples {
         String personId = "e4d7e969af82";
 
         // Retrieve the account.
-        SecurityQuestionAccount account = client.get(personId, new BasicHttpContext()).checkedGet();
+        SecurityQuestionAccount account = client.get(personId).checkedGet();
 
         System.out.println("Retrieved security question account: " + account);
     }
@@ -58,20 +53,14 @@ public final class SecurityQuestionAccountSDKSamples {
 
         // First, let's perform a search on available questions. We will request to those questions defined for the
         // given organization.
-        String organizationId = "612aae4bc62a";
-        Multimap<String, String> filter = ArrayListMultimap.<String, String> create();
-        filter.put("owner.id", organizationId);
-        filter.put("owner.type", "organization");
-
-        // Don't sort results.
-        SortCriteria noSort = SortCriteria.NONE;
+        String ownerId = "612aae4bc62a";
+        String ownerType = "organization";
 
         // Retrieve default page of results.
         Page page = Page.DEFAULT;
 
         // Perform the search on available questions.
-        List<SecurityQuestion> availableQuestions = questionClient.search(filter, noSort, page, new BasicHttpContext())
-                .checkedGet();
+        List<SecurityQuestion> availableQuestions = questionClient.search(ownerId, ownerType, page).checkedGet();
 
         // Let's just assume the person wants to answer the first two questions in the search results.
         ResourceReference firstQuestion = new ResourceReference(availableQuestions.get(0).getId(), "securityQuestion");
@@ -89,7 +78,7 @@ public final class SecurityQuestionAccountSDKSamples {
         account.setVersion(1L);
 
         // Create or update the account.
-        SecurityQuestionAccount updated = accountClient.persist(account, new BasicHttpContext()).checkedGet();
+        SecurityQuestionAccount updated = accountClient.update(personId, account).checkedGet();
 
         System.out.println("Updated or specified security question account: " + updated);
     }

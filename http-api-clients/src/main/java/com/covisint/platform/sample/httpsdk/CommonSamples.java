@@ -4,22 +4,23 @@ package com.covisint.platform.sample.httpsdk;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-
-import org.apache.http.protocol.BasicHttpContext;
 
 import com.covisint.core.http.service.client.CacheSpec;
 import com.covisint.core.http.service.client.CacheSpec.ExpirationMode;
 import com.covisint.core.http.service.core.Page;
 import com.covisint.core.http.service.core.ServiceException;
-import com.covisint.core.http.service.core.SortCriteria;
+import com.covisint.platform.group.client.sdk.GroupSDK;
+import com.covisint.platform.group.client.sdk.GroupSDK.GroupClient;
+import com.covisint.platform.group.client.sdk.GroupSDK.GroupClient.Sort;
+import com.covisint.platform.group.core.group.Group;
 import com.covisint.platform.oauth.client.token.sdk.AuthConfigurationProvider;
-import com.covisint.platform.user.client.person.PersonClient;
-import com.covisint.platform.user.client.person.PersonSDK;
+import com.covisint.platform.user.client.sdk.PersonSDK;
+import com.covisint.platform.user.client.sdk.PersonSDK.PersonClient;
 import com.covisint.platform.user.core.person.Person;
 import com.google.common.base.Charsets;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import com.google.common.util.concurrent.CheckedFuture;
 
 public class CommonSamples {
@@ -31,7 +32,7 @@ public class CommonSamples {
          * Create a new, basic SDK for the "person" service. This example, although minimal, is fully configured with
          * preset default values and is ready to create clients.
          */
-        PersonSDK sdk = new PersonSDK(ServiceUrl.PERSON_V1.getValue());
+        PersonSDK sdk = new PersonSDK("https://api.covapp.io/person/v1");
 
         /*
          * We will configure this client to cache returned entity bodies. If no caching is desired, simply omit the
@@ -85,36 +86,24 @@ public class CommonSamples {
         sdk.setContentCharSet(Charsets.UTF_8);
 
         /* We are done configuring the SDK to our preferences, now call #create to get our person client instance. */
-        PersonClient personClient = sdk.create();
+        PersonClient personClient = sdk.newClient();
 
         /* And now we may invoke its methods. */
-        personClient.activate("a15cab31e2a1", new BasicHttpContext());
+        personClient.activate("a15cab31e2a1");
     }
 
     /** Demonstrates the capabilities of the search APIs. */
     public static void searchOptions() {
 
         /* Build the client as needed. */
-        PersonClient client = null;
+        GroupClient client = new GroupSDK("https://api.covapp.io/group/v1").newClient();
 
         /*
-         * Set up the filter criteria for our search. A multimap is used for the cases where multiple parameter values
-         * can be supplied, for example, search with an array of resource ids. Keys and values are always string types,
-         * to make things simpler to work with.
-         * 
-         * In this case, we are going to set up an empty person search, which will simply return all users available in
-         * the system.
+         * The group search method allows you to filter on group name(s) and description(s). In this example, we will
+         * show how to search for a given group name.
          */
-        Multimap<String, String> searchCriteria = ArrayListMultimap.<String, String> create();
-
-        /*
-         * We can optionally request that the results be sorted. Multiple sort fields may be passed, in which case the
-         * sort is applied in that specific order. By default, no prefix is required and the sort on the unprefixed
-         * field will be applied ascending. If a descending sort is required, as shown below, then a '-' prefix must be
-         * specified before the field name. In this case, we are requesting to sort the results in order of descending
-         * creation instant (newest first). If we don't require a sort, we use the utility value SortCriteria.NONE
-         */
-        SortCriteria sortCriteria = SortCriteria.builder().parseSortField("-creation").build();
+        Collection<String> names = Arrays.asList("My Group Name");
+        boolean includeEntitlements = false;
 
         /*
          * Pagination on results is applied with the Page object. The first constructor argument is the page index,
@@ -123,16 +112,22 @@ public class CommonSamples {
          */
         Page page = new Page(1, 30);
 
-        /* Now we pass the search, sort and paging criteria to the search method. */
-        List<Person> firstPage = client.search(searchCriteria, sortCriteria, page, new BasicHttpContext()).checkedGet();
+        // You could also say page = Page.DEFAULT to return the default initial page of 50 resources.
+
+        /*
+         * Now we pass the search criteria to the search method. Note that the trailing method arguments is a varargs of
+         * Sort enum values, which allows for sorting of result records.
+         */
+        List<Group> firstPage = client.search(names, null, includeEntitlements, page, Sort.CREATION.descending())
+                .checkedGet();
 
         if (firstPage.size() == 30) {
             /*
              * If we have more results to show, then continue by fetching the next set of results to display the second
-             * page.
+             * page. Make sure to pass the exact same search criteria, and only change the pagination argument.
              */
-            List<Person> secondPage = client.search(searchCriteria, sortCriteria, new Page(2, 30),
-                    new BasicHttpContext()).checkedGet();
+            List<Group> secondPage = client.search(names, null, includeEntitlements, new Page(2, 30),
+                    Sort.CREATION.descending()).checkedGet();
         }
     }
 
@@ -174,6 +169,7 @@ public class CommonSamples {
                 super(serviceUrl);
             }
 
+            /** {@inheritDoc} */
             protected AuthConfigurationProvider getConfigurationProvider() {
                 return new MyCustomConfigProvider();
             }
@@ -181,7 +177,7 @@ public class CommonSamples {
         }
 
         /* Finally, simply use your custom SDK to generate the client you need. */
-        PersonClient client = new MyPersonSDK("https://api.covapp.io/person/v1").create();
+        PersonClient client = new MyPersonSDK("https://api.covapp.io/person/v1").newClient();
 
     }
 
@@ -189,11 +185,11 @@ public class CommonSamples {
     public static void errorHandling() {
 
         /* Build the client as needed. */
-        PersonClient client = null;
+        PersonClient client = new PersonSDK("https://api.covapp.io/person/v1").newClient();
 
         try {
             /* Each client method (activate, in this case) throws a ServiceException with the details. */
-            client.activate("b1acee3510a01", new BasicHttpContext()).checkedGet();
+            client.activate("b1acee3510a01").checkedGet();
         } catch (ServiceException e) {
             /* If we get here, there has been a service exception thrown. Let's do something meaningful with it. */
 
@@ -234,17 +230,17 @@ public class CommonSamples {
         PersonClient client = null;
 
         /* Execute 3 non-blocking calls to the person service. */
-        CheckedFuture<Person, ServiceException> getFuture = client.get("100ae20131cdbe1", new BasicHttpContext());
+        CheckedFuture<Person, ServiceException> getFuture = client.get("100ae20131cdbe1");
 
-        CheckedFuture<List<Person>, ServiceException> searchFuture = client.search(
-                ArrayListMultimap.<String, String> create(), SortCriteria.NONE, Page.DEFAULT, new BasicHttpContext());
+        CheckedFuture<List<Person>, ServiceException> searchFuture = client.search(null, null, "johnsmith", null,
+                Page.DEFAULT);
 
-        CheckedFuture<Person, ServiceException> deleteFuture = client.delete("55e10ee23cb10de", new BasicHttpContext());
+        CheckedFuture<Void, ServiceException> activateFuture = client.activate("55e10ee23cb10de");
 
         // Now retrieve them asynchronously.
         Person person = getFuture.checkedGet();
         List<Person> results = searchFuture.checkedGet();
-        deleteFuture.checkedGet();
+        activateFuture.checkedGet();
     }
 
 }
