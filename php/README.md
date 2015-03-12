@@ -8,7 +8,7 @@
   2. Follow Instruction to install at http://php.net/manual/en/install.unix.apache2.php
   
 ## Clone the app repository
-git clone https://{USER}@{git-url}
+git clone https://github.com/Covisint/samples.git
 
 ## Configure property files
 #### put app_id, client_id and client_secret
