@@ -1,6 +1,7 @@
 
 package com.covisint.platform.sample.httpsdk.service;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,12 +142,12 @@ public class ServiceSDKSamples {
         System.out.println("Found " + Iterables.size(members) + " member services of package " + packageId);
 
         // Add new service membership.
-        client.assignServiceMembership(packageId, serviceId).checkedGet();
+        client.assignServiceMemberships(packageId, Arrays.asList(serviceId)).checkedGet();
 
         System.out.println("Successfully added service " + serviceId + " as member of package " + packageId);
 
         // Remove that service membership.
-        client.removeServiceMembership(packageId, serviceId).checkedGet();
+        client.removeServiceMemberships(packageId, Arrays.asList(serviceId)).checkedGet();
 
         System.out.println("Successfully removed service membership of " + serviceId + " from package " + packageId);
     }
