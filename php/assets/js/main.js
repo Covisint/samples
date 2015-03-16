@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2015 Covisint.
- * Author: Pradeep Patro <pradeep.patro@happiestminds.com>
+ * Author: Covisint
  */
 
 $(document).ready(function () {

@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright (C) 2015 Covisint.
- * Author: Pradeep Patro <pradeep.patro@happiestminds.com>
+ * Author: Covisint
  */
 
 Class userInformationController Extends baseController {
@@ -168,6 +168,7 @@ Class userInformationController Extends baseController {
           if (array_key_exists('apiMessage', $userCreatedResponse) && $userCreatedResponse['status'] == 400) {
             $errors['resp'] = $userCreatedResponse['apiMessage'];
             $this->registry->template->errors = $errors;
+			$this->registry->template->submitted = $_POST;
           } else {
             $_SESSION['covisint']['user_inf'] = $userCreatedResponse;
             $_SESSION['covisint']['completed_steps']['user_inf'] = true;
