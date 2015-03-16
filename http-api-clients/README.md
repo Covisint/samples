@@ -1,0 +1,2 @@
+# http-api-clients
+This project contains code samples showcasing the various Java-based platform SDKs available for use.  For each API, there is a related snippet of code that demonstrates how to set up and make the call, and how to consume the response.  Additionally, there exists code samples that show how to perform common operations with the SDK library, such as constructing requests, configuration, extension, error handling, and so on. 
