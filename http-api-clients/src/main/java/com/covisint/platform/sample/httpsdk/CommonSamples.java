@@ -5,7 +5,6 @@ package com.covisint.platform.sample.httpsdk;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import com.covisint.core.http.service.client.CacheSpec;
@@ -102,7 +101,7 @@ public class CommonSamples {
          * The group search method allows you to filter on group name(s) and description(s). In this example, we will
          * show how to search for a given group name.
          */
-        Collection<String> names = Arrays.asList("My Group Name");
+        List<String> names = Arrays.asList("My Group Name");
         boolean includeEntitlements = false;
 
         /*
