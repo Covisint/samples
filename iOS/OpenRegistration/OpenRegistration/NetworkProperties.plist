@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Get Token</key>
+	<dict>
+		<key>application-id</key>
+		<string>jlmMCCGIqTl4AOo3qN1xKlb11AZliXGO</string>
+		<key>Client Id</key>
+		<string>59cf3f49-0a21-4e13-898d-f447441b88ad</string>
+		<key>Client Secret</key>
+		<string>ec898026-0175-45b5-a4a4-8b9d90800b86</string>
+		<key>Url</key>
+		<string>https://api.covisintlabs.com/oauth/v1/token</string>
+		<key>Accept</key>
+		<string>application/vnd.com.covisint.platform.oauth.token.v1+json</string>
+		<key>type</key>
+		<string>client_credentials</string>
+	</dict>
+	<key>Get Organizations</key>
+	<dict>
+		<key>Url</key>
+		<string>https://api.covisintlabs.com/organization/v1/organizations</string>
+		<key>Accept</key>
+		<string>application/vnd.com.covisint.platform.organization.v1+json</string>
+		<key>Authorization</key>
+		<string>Bearer %@</string>
+	</dict>
+</dict>
+</plist>
