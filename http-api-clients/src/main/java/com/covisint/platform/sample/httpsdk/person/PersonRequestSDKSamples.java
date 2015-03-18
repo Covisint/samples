@@ -64,7 +64,8 @@ public final class PersonRequestSDKSamples {
         // Next, set the username/password for this person.
         PasswordAccount account = new PasswordAccount().setUsername(UUID.randomUUID().toString())
                 .setPassword("Covisint$2015").setOwner(new Person().setId(createdPerson.getId()))
-                .setAuthnPolicyId("8fe701224ecd").setPasswordPolicyId("3d7555e782a5").setVersion(1L);
+                .setAuthnPolicy(new ResourceReference("8fe701224ecd", "authenticationPolicy"))
+                .setPasswordPolicy(new ResourceReference("3d7555e782a5", "passwordPolicy")).setVersion(1L);
 
         // Persist the credentials.
         passwordClient.updatePasswordAccount(account).checkedGet();

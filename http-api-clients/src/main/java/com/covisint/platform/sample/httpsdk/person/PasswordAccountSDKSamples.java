@@ -2,6 +2,7 @@
 
 package com.covisint.platform.sample.httpsdk.person;
 
+import com.covisint.core.http.service.core.ResourceReference;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
 import com.covisint.platform.user.client.sdk.PasswordAccountSDK;
 import com.covisint.platform.user.client.sdk.PasswordAccountSDK.PasswordAccountClient;
@@ -44,8 +45,8 @@ public final class PasswordAccountSDKSamples {
         account.setUsername("johnsmith");
         account.setPassword("$up3r_SecR3t");
         account.setOwner(owner);
-        account.setAuthnPolicyId("4e9a64577378");
-        account.setPasswordPolicyId("ee0b54dceb9a");
+        account.setAuthnPolicy(new ResourceReference("4e9a64577378", "authenticationPolicy"));
+        account.setPasswordPolicy(new ResourceReference("ee0b54dceb9a", "passwordPolicy"));
         account.setVersion(1L);
 
         // Update the account.
