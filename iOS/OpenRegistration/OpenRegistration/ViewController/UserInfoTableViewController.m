@@ -76,20 +76,17 @@
 
 -(void) countrySelected {
     NSInteger row = [self.countryPicker selectedRowInComponent:0];
-    [self.countryTextField setText:[self.countryValues objectAtIndex:row]];
+    NSString *countryName = [self.countryValues objectAtIndex:row];
+    NSString *isdCode = [[Utils sharedInstance] getISDForCountry:countryName];
+    NSString *sampleNumber = [[Utils sharedInstance] getSampleNumberForCountry:countryName];
+    [self.countryTextField setText:countryName];
+    [self.phoneISDField setText:isdCode];
+    [self.phoneField setText:sampleNumber];
+    [self.mobileISDField setText:isdCode];
+    [self.mobileField setText:sampleNumber];
+    [self.faxISDField setText:isdCode];
+    [self.faxField setText:sampleNumber];
     [self.countryTextField resignFirstResponder];
-}
-
--(void) populateCountries {
-    NSArray *countryArray = [NSLocale ISOCountryCodes];
-    NSMutableArray *sortedCountryArray = [[NSMutableArray alloc] init];
-    for (NSString* countryCode in countryArray) {
-        NSString *identifier = [NSLocale localeIdentifierFromComponents: [NSDictionary dictionaryWithObject: countryCode forKey: NSLocaleCountryCode]];
-        NSString *country = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"] displayNameForKey: NSLocaleIdentifier value: identifier];
-        [sortedCountryArray addObject: country];
-    }
-    [sortedCountryArray sortUsingSelector:@selector(localizedCompare:)];
-    self.countryValues = sortedCountryArray;
 }
 
 - (void) populateTimeZones {
@@ -138,7 +135,7 @@
     
     //Adding picker for country selection
     if (self.countryValues == nil || self.countryValues.count <= 0) {
-        [self populateCountries];
+        self.countryValues = [[Utils sharedInstance] getCountries];
     }
     self.countryPicker = [[UIPickerView alloc] init];
     [self addPickerForValues:self.countryValues andPicker:self.countryPicker forTextField:self.countryTextField withDelegate:@selector(countrySelected)];

@@ -21,5 +21,8 @@
 
 - (void) showAlert : (NSString*) title withMessage:(NSString*) message  withButtonTexts:(NSArray*) buttonTexts andDelegate:(id)requestor;
 - (void) dismissAlertWithClickedButtonIndex : (NSInteger) index;
+- (NSMutableArray*) getCountries;
+- (NSString *) getISDForCountry : (NSString*) country;
+- (NSString *) getSampleNumberForCountry : (NSString*) country;
 
 @end

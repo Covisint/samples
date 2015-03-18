@@ -11,6 +11,8 @@
 		843266381AB04E1B008C7092 /* SecurityQuestionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 843266361AB04E1B008C7092 /* SecurityQuestionTableViewController.m */; };
 		84329C5C1AB07A0300569AAF /* PackageSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84329C5B1AB07A0300569AAF /* PackageSelectionTableViewController.m */; };
 		84329C5D1AB07A0300569AAF /* PackageSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84329C5B1AB07A0300569AAF /* PackageSelectionTableViewController.m */; };
+		843B97231AB969B400082213 /* CountriesLangISDSampleNumber.plist in Resources */ = {isa = PBXBuildFile; fileRef = 843B97221AB969B400082213 /* CountriesLangISDSampleNumber.plist */; };
+		843B97241AB969B400082213 /* CountriesLangISDSampleNumber.plist in Resources */ = {isa = PBXBuildFile; fileRef = 843B97221AB969B400082213 /* CountriesLangISDSampleNumber.plist */; };
 		84C22D961AA6E02200D084B2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C22D951AA6E02200D084B2 /* main.m */; };
 		84C22D991AA6E02200D084B2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C22D981AA6E02200D084B2 /* AppDelegate.m */; };
 		84C22D9F1AA6E02200D084B2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84C22D9D1AA6E02200D084B2 /* Main.storyboard */; };
@@ -49,6 +51,7 @@
 		843266361AB04E1B008C7092 /* SecurityQuestionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SecurityQuestionTableViewController.m; path = ViewController/SecurityQuestionTableViewController.m; sourceTree = "<group>"; };
 		84329C5A1AB07A0300569AAF /* PackageSelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PackageSelectionTableViewController.h; path = ViewController/PackageSelectionTableViewController.h; sourceTree = "<group>"; };
 		84329C5B1AB07A0300569AAF /* PackageSelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PackageSelectionTableViewController.m; path = ViewController/PackageSelectionTableViewController.m; sourceTree = "<group>"; };
+		843B97221AB969B400082213 /* CountriesLangISDSampleNumber.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CountriesLangISDSampleNumber.plist; sourceTree = "<group>"; };
 		84C22D901AA6E02200D084B2 /* OpenRegistration.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenRegistration.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84C22D941AA6E02200D084B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84C22D951AA6E02200D084B2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -134,6 +137,7 @@
 				84C22DB91AA6E46600D084B2 /* splash.jpg */,
 				84C22D941AA6E02200D084B2 /* Info.plist */,
 				84C22D951AA6E02200D084B2 /* main.m */,
+				843B97221AB969B400082213 /* CountriesLangISDSampleNumber.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -268,6 +272,7 @@
 				84C22DBA1AA6E46700D084B2 /* splash.jpg in Resources */,
 				84C22D9F1AA6E02200D084B2 /* Main.storyboard in Resources */,
 				84C22DE31AADD0ED00D084B2 /* NetworkProperties.plist in Resources */,
+				843B97231AB969B400082213 /* CountriesLangISDSampleNumber.plist in Resources */,
 				84C22DA41AA6E02200D084B2 /* LaunchScreen.xib in Resources */,
 				84C22DA11AA6E02200D084B2 /* Images.xcassets in Resources */,
 			);
@@ -278,6 +283,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84C22DE41AADD0ED00D084B2 /* NetworkProperties.plist in Resources */,
+				843B97241AB969B400082213 /* CountriesLangISDSampleNumber.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

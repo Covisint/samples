@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string>AC,+247,1234</string>
+	<string>AF,+93,72-123-4567</string>
+    <string>AL,+355,72-123-4567</string>
+    <string>DZ,+213,72-123-4567 72-123-456</string>
+    <string>AS,+1,123-456-7890</string>
+    <string>AD,+376,123-456</string>
+    <string>AO,+244,123-456-7890</string>
+    <string>AI,+1,123-456-7890</string>
+    <string>AG,+1,123-456-7890</string>
+    <string>AN,+599,9-1234-222-333</string>
+    <string>AR,+54,9-11-2345-6789</string>
+    <string>AM,+374,933-33-333 92-333-333</string>
+    <string>AW,+297,333-333</string>
+    <string>AU,+61,4-1234-5678</string>
+    <string>AT,+43,612-345-6789</string>
+    <string>AZ,+994,22-333-4444</string>
+    <string>BS,+1,123-456-7890</string>
+    <string>BH,+973,1234-56789</string>
+    <string>BD,+880,12-4444-4444</string>
+    <string>BB,+1,123-456-7890</string>
+    <string>BY,+375,12-123-4567 123-456-789</string>
+    <string>BE,+32,400-123-456</string>
+    <string>BZ,+501,123-4567</string>
+    <string>BJ,+229,1234-5678 12-345-678</string>
+    <string>BM,+1,123-456-7890</string>
+    <string>BT,+975,12-123-1234 1-234-567</string>
+    <string>BO,+591,1234-5678 1-234-5678</string>
+    <string>BA,+387,12-345-678</string>
+    <string>BW,+267,1234-1234 123-4567</string>
+    <string>BR,+55,11-2345-6789</string>
+    <string>BN,+673,123-4567</string>
+    <string>BG,+359,43-123-1456</string>
+    <string>BF,+226,12-123-123</string>
+    <string>BI,+257,1234-4567</string>
+    <string>KH,+855,12-333-456</string>
+    <string>CM,+237,1234-5678</string>
+    <string>CA,+1,204-234-5678</string>
+    <string>CV,+238,123-4567</string>
+    <string>KY,+1,123-456-7890</string>
+    <string>CF,+236,12-23-45-56</string>
+    <string>TD,+235,12-23-45-56</string>
+    <string>CL,+56,2-123-4567</string>
+    <string>CN,+86,130-1234-5678</string>
+    <string>CX,+61</string>
+    <string>CC,+61</string>
+    <string>CO,+57,300-123-4567</string>
+    <string>KM,+269,123-4567</string>
+    <string>CD,+243</string>
+    <string>CK,+682,12-345</string>
+    <string>CR,+506,1234-5678</string>
+    <string>CI,+225,1234-5678</string>
+    <string>HR,+385,12-345-6789</string>
+    <string>CU,+53,5-12-3562 123-2356</string>
+    <string>CY,+357,357-99-816999</string>
+    <string>CZ,+420,212-345-678</string>
+    <string>DK,+45,32-12-34-56</string>
+    <string>DJ,+253,12-34-56</string>
+    <string>DM,+1,123-456-7890</string>
+    <string>DO,+1,123-456-7890</string>
+    <string>TL,+670,123-4567</string>
+    <string>EC,+593</string>
+    <string>EG,+20,10-456-7890</string>
+    <string>SV,+503,1234-1234</string>
+    <string>GQ,+240,123-456-789</string>
+    <string>ER,+291,1-234-567</string>
+    <string>EE,+372,1-123-4567, 123-4567</string>
+    <string>ET,+251,12-345-6789</string>
+    <string>FO,+298,123-456</string>
+    <string>FJ,+679,123-4567</string>
+    <string>FI,+358,50-123-4567</string>
+    <string>FR,+33,600-123-456</string>
+    <string>GF,+594,123-456-789</string>
+    <string>PF,+689,123-456</string>
+    <string>GA,+241,12-123-456, 123-456</string>
+    <string>GM,+220,123-4567</string>
+    <string>GE,+995,8-32-12-34-56</string>
+    <string>DE,+49,100-1234-5678</string>
+    <string>GH,+233,12-123-4567</string>
+    <string>GI,+350,1234-5678</string>
+    <string>GR,+30,21-2345-6789</string>
+    <string>GL,+299,123-456</string>
+    <string>GD,+1,123-456-7890</string>
+    <string>GP,+590,123-12-34-56</string>
+    <string>GU,+1,123-456-4789</string>
+    <string>GT,+502,1234-5678</string>
+    <string>GG,+44</string>
+    <string>GN,+224,1234-4567</string>
+    <string>GW,+245,123-4567</string>
+    <string>GY,+592,123-4567</string>
+    <string>HT,+509,1234-5678</string>
+    <string>HN,+504,1234-5678</string>
+    <string>HK,+852,2123-4567</string>
+    <string>HU,+36,1-234-5678</string>
+    <string>IS,+354,123-456-789, 123-4567</string>
+    <string>IN,+91,011-2345-6789</string>
+    <string>ID,+62,061-2345678</string>
+    <string>IR,+98,123-456-4789</string>
+    <string>IQ,+964,123-456-7894, 12-123-456</string>
+    <string>IE,+353,80-123 4567</string>
+    <string>IM,+44</string>
+    <string>IL,+972,50-123-4567</string>
+    <string>IT,+39,300 123 4567</string>
+    <string>JM,+1,123-456-7890</string>
+    <string>JP,+81,3-9999-9999</string>
+    <string>JE,+44</string>
+    <string>JO,+962,1-1234-5678, 1-123-4567</string>
+    <string>KZ,+7,123-345-6789</string>
+    <string>KE,+254,123-456-789</string>
+    <string>KI,+686,12-345</string>
+    <string>KW,+965,1234-5678</string>
+    <string>KG,+996,123-456-789</string>
+    <string>LA,+856,12-23-45-56, 12-345-568</string>
+    <string>LV,+371,61-234-567</string>
+    <string>LB,+961,70-123-456</string>
+    <string>LS,+266,12-234-456</string>
+    <string>LR,+231,1-234-256, 1-234-5698</string>
+    <string>LY,+218,12-235-689</string>
+    <string>LI,+423,123-4567</string>
+    <string>LT,+370,8-312-34-567</string>
+    <string>LU,+352,1-2356-4567, 123-456-789</string>
+    <string>MO,+853,1234-4567</string>
+    <string>MK,+389,70-221-2345</string>
+    <string>MG,+261,12-23-456-45</string>
+    <string>MW,+265,12-256-4578</string>
+    <string>MY,+60,03-1234 5678</string>
+    <string>MV,+960,123-4567</string>
+    <string>ML,+223,1234-5678</string>
+    <string>MT,+356,1234-5678</string>
+    <string>MH,+692,123-5678</string>
+    <string>MQ,+596,123-12-45-56</string>
+    <string>MR,+222,1234-5678</string>
+    <string>MU,+230,123-5678</string>
+    <string>YT,+262,123-412-678</string>
+    <string>MX,+52,1 222 123 4567</string>
+    <string>FM,+691,123-5678</string>
+    <string>MD,+373,123-14-678</string>
+    <string>MC,+377,1234-5678, 1234-56781</string>
+    <string>MN,+976,1234-5678</string>
+    <string>ME,+382,12-134-578</string>
+    <string>MS,+1,123-456-5678</string>
+    <string>MA,+212,60 123-4567</string>
+    <string>MZ,+258,12-145-5678</string>
+    <string>MM,+95,1-123-4567</string>
+    <string>NA,+264,23-456-7894, 12-345-567</string>
+    <string>NR,+674,123-5678</string>
+    <string>NP,+977,12-1234-5678, 12-345-678</string>
+    <string>NL,+31,6 1234 5678</string>
+    <string>NC,+687,123-567</string>
+    <string>NZ,+64,2-234 5678</string>
+    <string>NI,+505</string>
+    <string>NE,+227,1234-5678</string>
+    <string>NG,+234,70-1234-5678</string>
+    <string>NU,+683,1234</string>
+    <string>NF,+6723,23-123</string>
+    <string>KP,+850</string>
+    <string>MP,+1-670</string>
+    <string>NO,+47,21 23 45 67</string>
+    <string>OM,+968,23 123456</string>
+    <string>PK,+92,(30) 12345678</string>
+    <string>PW,+680,123-4567</string>
+    <string>PS,+970,12-356-4567</string>
+    <string>PA,+507,1234-5678</string>
+    <string>PG,+675,123-45-567, 123-5678</string>
+    <string>PY,+595,123-456-567, 34-5678</string>
+    <string>PE,+51,123-456-678</string>
+    <string>PH,+63,900-123-4567</string>
+    <string>PL,+48,12 345 67 89</string>
+    <string>PT,+351,212-345-678</string>
+    <string>PR,+1,700-123-4567</string>
+    <string>QA,+974,70-123-456</string>
+    <string>RE,+262,701-123-456</string>
+    <string>RO,+40,700-123-456</string>
+    <string>RU,+7,8-301-123-45-67</string>
+    <string>RW,+250,70-123-456</string>
+    <string>PM,+508</string>
+    <string>SH,+290,12-45</string>
+    <string>KN,+1,700-123-4560</string>
+    <string>LC,+1,700-123-4560</string>
+    <string>VC,+1,700-123-4560</string>
+    <string>WS,+685,700-4560, 70-4560</string>
+    <string>SM,+378,700-123-4560</string>
+    <string>ST,+239,70-45601</string>
+    <string>SA,+966,5-1234-5678</string>
+    <string>SN,+221,70-123-4560</string>
+    <string>RS,+381,60 123 456</string>
+    <string>SC,+248,7-12-45</string>
+    <string>SL,+232,70-123-456</string>
+    <string>SG,+65,6123-4567</string>
+    <string>SK,+421,900-123-456</string>
+    <string>SI,+386,30-123-456</string>
+    <string>SB,+677,70-12-45</string>
+    <string>SO,+252,70-123-456</string>
+    <string>ZA,+27,70-123-4567</string>
+    <string>KR,+82,22123456</string>
+    <string>GE,+995,8-32-12-34-56</string>
+    <string>ES,+34,812-34-56-78</string>
+    <string>LK,+94,70-123-4560</string>
+    <string>SD,+249,70-123-4560</string>
+    <string>SR,+597,700-4560</string>
+    <string>SJ,+47</string>
+    <string>SZ,+268,7001-4560</string>
+    <string>SE,+46</string>
+    <string>CH,+41</string>
+    <string>SY,+963</string>
+    <string>TJ,+992</string>
+    <string>TZ,+255</string>
+    <string>TW,+886</string>
+    <string>TH,+66</string>
+    <string>TG,+228</string>
+    <string>TK,+690</string>
+    <string>TO,+676</string>
+    <string>TT,+1</string>
+    <string>TN,+216</string>
+    <string>TR,+90</string>
+    <string>TM,+993</string>
+    <string>TC,+1</string>
+    <string>TV,+688</string>
+    <string>UG,+256</string>
+    <string>UA,+380,48 234-56-78</string>
+    <string>AE,+971,70-123-4560, 7-123-4560</string>
+    <string>GB,+44,121-234-5678</string>
+    <string>US,+1,201-234-5678</string>
+    <string>UY,+598,7-123-4560</string>
+    <string>UZ,+998,70-123-4560</string>
+    <string>VU,+678,70-560, 700-4560</string>
+    <string>VA,+379,700-123-4560</string>
+    <string>VE,+58</string>
+    <string>VN,+84,100-1234-567</string>
+    <string>VG,+1,700-123-4560</string>
+    <string>WF,+681,700-123</string>
+    <string>YE,+967,700-123-456</string>
+    <string>ZM,+260,70-123-4560</string>
+    <string>ZW,+263,70-123-4560</string>
+</array>
+</plist>

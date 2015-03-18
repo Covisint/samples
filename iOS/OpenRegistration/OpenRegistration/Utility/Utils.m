@@ -8,11 +8,19 @@
 
 #import "Utils.h"
 
+@interface Utils ()
+@property NSMutableDictionary *countryCountryCodeMap;
+@property NSMutableDictionary *countryCodeISDMap;
+@property NSArray *countryValues;
+@end
+
 @implementation Utils
 
 @synthesize indicator;
 @synthesize waitingAlert;
 @synthesize dialogAlert;
+@synthesize countryCountryCodeMap;
+@synthesize countryCodeISDMap;
 
 static Utils *sharedInstance;
 
@@ -37,6 +45,22 @@ static Utils *sharedInstance;
         [waitingAlert setValue:indicator forKey:@"accessoryView"];
 
         dialogAlert = [[UIAlertView alloc] initWithTitle:@"" message:@"" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
+        [self populateCountries];
+        NSString *countriesLangISDSampleNumberPlistPath = [[NSBundle mainBundle] pathForResource:@"CountriesLangISDSampleNumber" ofType:@"plist"];
+        NSArray *countryCodeISDSamples = [[NSArray alloc] initWithContentsOfFile:countriesLangISDSampleNumberPlistPath];
+        countryCodeISDMap = [[NSMutableDictionary alloc] init];
+        for (NSString *entry in countryCodeISDSamples) {
+            NSArray* splitedEntry = [entry componentsSeparatedByString:@","];
+            int i = 0;
+            if (splitedEntry[i++]) {
+                NSMutableArray *isdNSampleArray = [[NSMutableArray alloc] init];
+                while (i < splitedEntry.count) {
+                    [isdNSampleArray addObject:[splitedEntry objectAtIndex:i]];
+                    i++;
+                }
+                [countryCodeISDMap setObject:isdNSampleArray forKey:splitedEntry[0]];
+            }
+        }
     }
     return self;
 }
@@ -66,4 +90,41 @@ static Utils *sharedInstance;
     [dialogAlert dismissWithClickedButtonIndex:index animated:NO];
 }
 
+-(void) populateCountries {
+    self.countryCountryCodeMap = [[NSMutableDictionary alloc] init];
+    NSArray *countryArray = [NSLocale ISOCountryCodes];
+    NSMutableArray *sortedCountryArray = [[NSMutableArray alloc] init];
+    for (NSString* countryCode in countryArray) {
+        NSString *identifier = [NSLocale localeIdentifierFromComponents: [NSDictionary dictionaryWithObject: countryCode forKey: NSLocaleCountryCode]];
+        NSString *country = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"] displayNameForKey: NSLocaleIdentifier value: identifier];
+        [sortedCountryArray addObject: country];
+        [self.countryCountryCodeMap setObject:countryCode forKey:country];
+    }
+    [sortedCountryArray sortUsingSelector:@selector(localizedCompare:)];
+    self.countryValues = sortedCountryArray;
+}
+
+-(NSArray*) getCountries {
+    return self.countryValues;
+}
+
+- (NSString *) getISDForCountry:(NSString *)country {
+    NSString *isd = nil;
+    NSString *countryCode = [self.countryCountryCodeMap objectForKey:country];
+    NSArray * isdSample = [self.countryCodeISDMap objectForKey:countryCode];
+    if (isdSample.count > 0) {
+        isd = [isdSample objectAtIndex:0];
+    }
+    return isd;
+}
+
+- (NSString *) getSampleNumberForCountry:(NSString *)country {
+    NSString *sampleNumber = nil;
+    NSString *countryCode = [self.countryCountryCodeMap objectForKey:country];
+    NSArray * isdSample = [self.countryCodeISDMap objectForKey:countryCode];
+    if (isdSample.count > 1) {
+        sampleNumber = [isdSample objectAtIndex:1];
+    }
+    return sampleNumber;
+}
 @end
