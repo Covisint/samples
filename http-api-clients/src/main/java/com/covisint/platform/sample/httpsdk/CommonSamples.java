@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.covisint.core.http.service.client.CacheSpec;
+import com.covisint.core.http.service.client.HttpProxySpec;
 import com.covisint.core.http.service.client.CacheSpec.ExpirationMode;
 import com.covisint.core.http.service.core.Page;
 import com.covisint.core.http.service.core.ServiceException;
@@ -83,6 +84,10 @@ public class CommonSamples {
 
         /* Set the content charset. Defaults to UTF-8. */
         sdk.setContentCharSet(Charsets.UTF_8);
+        
+        /* Set the HTTP proxy settings. */
+        HttpProxySpec proxyConfig = new HttpProxySpec("10.1.0.50", 3128).setCredentials("jsmith", "P@ssW0rd");
+        sdk.setHttpProxySpec(proxyConfig);
 
         /* We are done configuring the SDK to our preferences, now call #create to get our person client instance. */
         PersonClient personClient = sdk.newClient();
