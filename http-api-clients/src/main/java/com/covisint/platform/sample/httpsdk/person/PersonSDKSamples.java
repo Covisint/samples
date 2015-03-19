@@ -5,7 +5,6 @@ package com.covisint.platform.sample.httpsdk.person;
 import java.util.List;
 
 import com.covisint.core.http.service.core.Page;
-import com.covisint.core.http.service.core.ResourceReference;
 import com.covisint.platform.legacy.address.Address;
 import com.covisint.platform.legacy.phone.Phones;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
@@ -29,7 +28,7 @@ public final class PersonSDKSamples {
         Person person = new Person();
 
         // Set the person's parent organization.
-        person.setOrganization(new ResourceReference("7d1e0d1abe7d", "organization"));
+        person.setOrganizationId("7d1e0d1abe7d");
 
         // Set basic preferences.
         person.setPreferredCurrency("USD");

@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.covisint.core.http.service.core.Page;
-import com.covisint.core.http.service.core.ResourceReference;
 import com.covisint.platform.authn.client.sdk.SecurityQuestionAccountSDK;
 import com.covisint.platform.authn.client.sdk.SecurityQuestionAccountSDK.SecurityQuestionAccountClient;
 import com.covisint.platform.authn.client.sdk.SecurityQuestionSDK;
@@ -63,15 +62,15 @@ public final class SecurityQuestionAccountSDKSamples {
         List<SecurityQuestion> availableQuestions = questionClient.search(ownerId, ownerType, page).checkedGet();
 
         // Let's just assume the person wants to answer the first two questions in the search results.
-        ResourceReference firstQuestion = new ResourceReference(availableQuestions.get(0).getId(), "securityQuestion");
-        ResourceReference secondQuestion = new ResourceReference(availableQuestions.get(1).getId(), "securityQuestion");
+        String firstQuestionId = availableQuestions.get(0).getId();
+        String secondQuestionId = availableQuestions.get(1).getId();
 
         // The id of the person whose account is being set up.
         String personId = "3792c2000ad5";
 
         // Build the account object.
-        Question firstAnswer = new Question().setQuestion(firstQuestion).setAnswer("Answer to first question.");
-        Question secondAnswer = new Question().setQuestion(secondQuestion).setAnswer("Answer to second question.");
+        Question firstAnswer = Question.withAnswer(firstQuestionId, "Answer to first question.");
+        Question secondAnswer = Question.withAnswer(secondQuestionId, "Answer to second question.");
 
         SecurityQuestionAccount account = new SecurityQuestionAccount().setId(personId);
         account.setQuestions(Arrays.asList(firstAnswer, secondAnswer));

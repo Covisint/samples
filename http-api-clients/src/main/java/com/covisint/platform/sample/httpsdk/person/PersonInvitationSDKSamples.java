@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.covisint.core.http.service.core.Page;
-import com.covisint.core.http.service.core.ResourceReference;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
 import com.covisint.platform.user.client.sdk.PersonInvitationSDK;
 import com.covisint.platform.user.client.sdk.PersonInvitationSDK.PersonInvitationClient;
@@ -33,9 +32,9 @@ public final class PersonInvitationSDKSamples {
         // Build the invitation object.
         PersonInvitation invite = new PersonInvitation();
         invite.setEmail("joe@covisint.com");
-        invite.setTargetOrganization(new ResourceReference(organizationId, "organization"));
-        invite.setInvitor(new ResourceReference(invitorId, "person"));
-        invite.setInvitee(new ResourceReference(inviteeId, "person"));
+        invite.setTargetOrganizationId(organizationId);
+        invite.setInvitorId(invitorId);
+        invite.setInviteeId(inviteeId);
 
         // Create the person invitation.
         PersonInvitation invitation = client.add(invite).checkedGet();

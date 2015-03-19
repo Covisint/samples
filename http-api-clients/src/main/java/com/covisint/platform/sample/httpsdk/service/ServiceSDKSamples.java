@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.covisint.core.http.service.core.Page;
-import com.covisint.core.http.service.core.ResourceReference;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
 import com.covisint.platform.service.client.sdk.ServiceMembershipSDK;
 import com.covisint.platform.service.client.sdk.ServiceMembershipSDK.ServiceMembershipClient;
@@ -61,7 +60,7 @@ public class ServiceSDKSamples {
 
         // Packages must be owned by an organization. Set that here.
         String ownerOrganizationId = "aea612bcd32";
-        pkg.setOwningOrganization(new ResourceReference(ownerOrganizationId, "organization"));
+        pkg.setOwningOrganizationId(ownerOrganizationId);
 
         // Now create the package.
         ServicePackage createdPackage = client.add(pkg).checkedGet();
@@ -105,7 +104,7 @@ public class ServiceSDKSamples {
 
         // Packages must be owned by an organization. Set that here.
         final String ownerOrganizationId = "aea612bcd32";
-        service.setOwningOrganization(new ResourceReference(ownerOrganizationId, "organization"));
+        service.setOwningOrganizationId(ownerOrganizationId);
 
         // Now create the service.
         Service createdService = client.add(service).checkedGet();

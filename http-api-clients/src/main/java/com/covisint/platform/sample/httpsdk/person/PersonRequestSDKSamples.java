@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.UUID;
 
 import com.covisint.core.http.service.core.Page;
-import com.covisint.core.http.service.core.ResourceReference;
 import com.covisint.platform.legacy.address.Address;
 import com.covisint.platform.legacy.phone.Phones;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
@@ -47,7 +46,7 @@ public final class PersonRequestSDKSamples {
 
         // First, need to create the person record.
         Person person = new Person()
-                .setOrganization(new ResourceReference("737e9ad36cc2", "organization"))
+                .setOrganizationId("737e9ad36cc2")
                 .setPreferredCurrency("USD")
                 .setPreferredLanguage("en")
                 .setPreferredTimezone("America/New_York")
@@ -64,8 +63,7 @@ public final class PersonRequestSDKSamples {
         // Next, set the username/password for this person.
         PasswordAccount account = new PasswordAccount().setUsername(UUID.randomUUID().toString())
                 .setPassword("Covisint$2015").setOwner(new Person().setId(createdPerson.getId()))
-                .setAuthnPolicy(new ResourceReference("8fe701224ecd", "authenticationPolicy"))
-                .setPasswordPolicy(new ResourceReference("3d7555e782a5", "passwordPolicy")).setVersion(1L);
+                .setAuthnPolicyId("8fe701224ecd").setPasswordPolicyId("3d7555e782a5").setVersion(1L);
 
         // Persist the credentials.
         passwordClient.updatePasswordAccount(account).checkedGet();
@@ -73,7 +71,7 @@ public final class PersonRequestSDKSamples {
         // Set up the person request object.
         String registrantId = createdPerson.getId();
         PersonRequest request = new PersonRequest();
-        request.setRegistrant(new ResourceReference(registrantId, "person"));
+        request.setRegistrant(registrantId);
         request.setPackageId("a4ad06e9190a");
         request.setJustification("Need access.");
 

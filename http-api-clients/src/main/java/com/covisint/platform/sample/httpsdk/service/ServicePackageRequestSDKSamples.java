@@ -4,11 +4,10 @@ package com.covisint.platform.sample.httpsdk.service;
 import java.util.List;
 
 import com.covisint.core.http.service.core.Page;
-import com.covisint.core.http.service.core.ResourceReference;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
 import com.covisint.platform.service.client.sdk.ServicePackageRequestSDK;
 import com.covisint.platform.service.client.sdk.ServicePackageRequestSDK.ServicePackageRequestClient;
-import com.covisint.platform.service.client.sdk.ServicePackageRequestSDK.ServicePackageRequestClient.RequestorType;
+import com.covisint.platform.service.core.service.RequestorType;
 import com.covisint.platform.service.core.service.request.ServicePackageRequest;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -32,10 +31,10 @@ public class ServicePackageRequestSDKSamples {
         ServicePackageRequest request = new ServicePackageRequest();
 
         // Specify the package requestor.
-        request.setRequestor(new ResourceReference(personId, "person"));
+        request.setRequestor(personId, RequestorType.PERSON);
 
         // Specify the requested package.
-        request.setRequestedPackage(new ResourceReference(packageId, "servicePackage"));
+        request.setRequestedPackageId(packageId);
 
         // Create the package request.
         ServicePackageRequest createdRequest = client.add(request).checkedGet();
