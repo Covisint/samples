@@ -21,42 +21,36 @@
             <groupId>com.covisint.platform.user.client</groupId>
             <artifactId>user-client</artifactId>
             <version>1.0.0.BUILD-SNAPSHOT</version>
-            <classifier>all</classifier>
         </dependency>
 
         <dependency>
             <groupId>com.covisint.platform.oauth.client</groupId>
             <artifactId>oauth-client</artifactId>
             <version>1.0.0.BUILD-SNAPSHOT</version>
-            <classifier>all</classifier>
         </dependency>
 
         <dependency>
             <groupId>com.covisint.platform.service.client</groupId>
             <artifactId>service-client</artifactId>
             <version>1.0.0.BUILD-SNAPSHOT</version>
-            <classifier>all</classifier>
         </dependency>
 
         <dependency>
             <groupId>com.covisint.platform.organization.client</groupId>
             <artifactId>organization-client</artifactId>
             <version>1.0.0.BUILD-SNAPSHOT</version>
-            <classifier>all</classifier>
         </dependency>
 
         <dependency>
             <groupId>com.covisint.platform.authn.client</groupId>
             <artifactId>authn-client</artifactId>
             <version>2.0.0.BUILD-SNAPSHOT</version>
-            <classifier>all</classifier>
         </dependency>
 
         <dependency>
             <groupId>com.covisint.platform.group.client</groupId>
             <artifactId>group-client</artifactId>
             <version>1.0.0.BUILD-SNAPSHOT</version>
-            <classifier>all</classifier>
         </dependency>
 
         <dependency>
