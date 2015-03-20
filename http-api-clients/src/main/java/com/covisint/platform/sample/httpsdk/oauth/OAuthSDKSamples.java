@@ -67,7 +67,7 @@ public final class OAuthSDKSamples {
         System.out.println("Retrieved subject:" + retrievedSubject);
 
         // Perform a search for all subjects that exist.
-        List<Subject> allSubjects = client.search(Page.DEFAULT).checkedGet();
+        List<Subject> allSubjects = client.search(null, Page.DEFAULT).checkedGet();
 
         System.out.println("Found " + allSubjects.size() + " subjects.");
 
