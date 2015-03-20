@@ -8,8 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.covisint.core.http.service.client.CacheSpec;
-import com.covisint.core.http.service.client.HttpProxySpec;
 import com.covisint.core.http.service.client.CacheSpec.ExpirationMode;
+import com.covisint.core.http.service.client.HttpProxySpec;
 import com.covisint.core.http.service.core.Page;
 import com.covisint.core.http.service.core.ServiceException;
 import com.covisint.platform.group.client.sdk.GroupSDK;
@@ -84,7 +84,7 @@ public class CommonSamples {
 
         /* Set the content charset. Defaults to UTF-8. */
         sdk.setContentCharSet(Charsets.UTF_8);
-        
+
         /* Set the HTTP proxy settings. */
         HttpProxySpec proxyConfig = new HttpProxySpec("10.1.0.50", 3128).setCredentials("jsmith", "P@ssW0rd");
         sdk.setHttpProxySpec(proxyConfig);
@@ -166,22 +166,11 @@ public class CommonSamples {
 
         }
 
-        /* The extended person SDK that allows you to override with your custom configuration provider. */
-        class MyPersonSDK extends PersonSDK {
-
-            public MyPersonSDK(String serviceUrl) {
-                super(serviceUrl);
-            }
-
-            /** {@inheritDoc} */
-            protected AuthConfigurationProvider getConfigurationProvider() {
-                return new MyCustomConfigProvider();
-            }
-
-        }
+        AuthConfigurationProvider provider = new MyCustomConfigProvider();
 
         /* Finally, simply use your custom SDK to generate the client you need. */
-        PersonClient client = new MyPersonSDK("https://api.covapp.io/person/v1").newClient();
+        PersonClient client = new PersonSDK("https://api.covapp.io/person/v1").setAuthConfigProvider(provider)
+                .newClient();
 
     }
 
