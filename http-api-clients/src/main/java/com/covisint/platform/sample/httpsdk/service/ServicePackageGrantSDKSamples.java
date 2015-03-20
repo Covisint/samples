@@ -38,7 +38,7 @@ public class ServicePackageGrantSDKSamples {
         System.out.println("Retrieved person package grant: " + retrievedGrant);
 
         // Let's find all package grants issued to this person.
-        Iterable<ServicePackageGrant> results = client.listPersonGrants(personId,Page.ALL).checkedGet();
+        Iterable<ServicePackageGrant> results = client.listPersonGrants(personId, Page.ALL).checkedGet();
 
         System.out.println(Iterables.size(results) + " packages granted to person " + personId);
     }
@@ -63,7 +63,7 @@ public class ServicePackageGrantSDKSamples {
         System.out.println("Retrieved organization package grant: " + retrievedGrant);
 
         // Let's find all package grants issued to this organization.
-        Iterable<ServicePackageGrant> results = client.listOrganizationGrants(organizationId,Page.ALL).checkedGet();
+        Iterable<ServicePackageGrant> results = client.listOrganizationGrants(organizationId, Page.ALL).checkedGet();
 
         System.out.println(Iterables.size(results) + " packages granted to organization " + organizationId);
     }
