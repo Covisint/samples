@@ -11,6 +11,7 @@ import com.covisint.core.http.service.core.Page;
 import com.covisint.core.http.service.core.ResourceReference;
 import com.covisint.platform.group.client.sdk.GroupSDK;
 import com.covisint.platform.group.client.sdk.GroupSDK.GroupClient;
+import com.covisint.platform.group.client.sdk.GroupSDK.GroupClient.Sort;
 import com.covisint.platform.group.core.group.Group;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
 import com.google.common.collect.ArrayListMultimap;
@@ -81,9 +82,9 @@ public final class GroupSDKSamples {
         ArrayListMultimap<String, String> filter = ArrayListMultimap.<String, String> create();
         filter.put("name", "Questo è iTunes Media Library di Sam");
 
-        // Perform the search.
-        List<Group> results = groupClient.search(new ArrayList<String>(), new ArrayList<String>(), true, Page.DEFAULT)
-                .checkedGet();
+        // Perform the search, sorting by creation time descending order.
+        List<Group> results = groupClient.search(new ArrayList<String>(), new ArrayList<String>(), true, Page.DEFAULT,
+                Sort.CREATION_DESC).checkedGet();
 
         System.out.println("Group search result size: " + results.size());
     }

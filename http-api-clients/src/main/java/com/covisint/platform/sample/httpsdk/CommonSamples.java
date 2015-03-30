@@ -122,7 +122,7 @@ public class CommonSamples {
          * Now we pass the search criteria to the search method. Note that the trailing method arguments is a varargs of
          * Sort enum values, which allows for sorting of result records.
          */
-        List<Group> firstPage = client.search(names, null, includeEntitlements, page, Sort.CREATION.descending())
+        List<Group> firstPage = client.search(names, null, includeEntitlements, page, Sort.CREATION_DESC)
                 .checkedGet();
 
         if (firstPage.size() == 30) {
@@ -131,7 +131,7 @@ public class CommonSamples {
              * page. Make sure to pass the exact same search criteria, and only change the pagination argument.
              */
             List<Group> secondPage = client.search(names, null, includeEntitlements, new Page(2, 30),
-                    Sort.CREATION.descending()).checkedGet();
+                    Sort.CREATION_DESC).checkedGet();
         }
     }
 
