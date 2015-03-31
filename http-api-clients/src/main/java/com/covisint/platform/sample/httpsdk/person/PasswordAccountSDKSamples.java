@@ -5,7 +5,6 @@ package com.covisint.platform.sample.httpsdk.person;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
 import com.covisint.platform.user.client.sdk.PasswordAccountSDK;
 import com.covisint.platform.user.client.sdk.PasswordAccountSDK.PasswordAccountClient;
-import com.covisint.platform.user.core.person.Person;
 import com.covisint.platform.user.core.person.account.password.PasswordAccount;
 
 public final class PasswordAccountSDKSamples {
@@ -35,21 +34,16 @@ public final class PasswordAccountSDKSamples {
         // Create a new instance of the client.
         PasswordAccountClient client = createPasswordAccountClient();
 
-        // The owner of the password account.
-        Person owner = new Person();
-        owner.setId("3792c2000ad5");
-
         // Build the account object.
         PasswordAccount account = new PasswordAccount();
         account.setUsername("johnsmith");
         account.setPassword("$up3r_SecR3t");
-        account.setOwner(owner);
         account.setAuthnPolicyId("4e9a64577378");
         account.setPasswordPolicyId("ee0b54dceb9a");
         account.setVersion(1L);
 
         // Update the account.
-        PasswordAccount updated = client.updatePasswordAccount(account).checkedGet();
+        PasswordAccount updated = client.updatePasswordAccount("3792c2000ad5", account).checkedGet();
 
         System.out.println("Updated or specified password account for " + updated.getUsername());
     }
