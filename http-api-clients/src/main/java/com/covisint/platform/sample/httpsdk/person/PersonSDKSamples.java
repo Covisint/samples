@@ -48,7 +48,7 @@ public final class PersonSDKSamples {
         address.setCity("Detroit");
         address.setState("MI");
         address.setPostal("48226");
-        address.setCountry("USA");
+        address.setCountry("US");
         person.setMainAddress(address);
 
         // Set person's phone numbers.
