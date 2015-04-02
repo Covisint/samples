@@ -49,7 +49,7 @@ public final class PasswordAccountSDKSamples {
         account.setVersion(1L);
 
         // Update the account.
-        PasswordAccount updated = client.updatePasswordAccount(owner.getId(), account).checkedGet();
+        PasswordAccount updated = client.updatePasswordAccount(account).checkedGet();
 
         System.out.println("Updated or specified password account for " + updated.getUsername());
     }
