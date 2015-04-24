@@ -5,12 +5,16 @@ package com.covisint.platform.sample.httpsdk.person;
 import java.util.List;
 
 import com.covisint.core.http.service.core.Page;
+import com.covisint.core.http.service.core.ServiceException;
 import com.covisint.platform.legacy.address.Address;
 import com.covisint.platform.legacy.phone.Phones;
 import com.covisint.platform.sample.httpsdk.ServiceUrl;
 import com.covisint.platform.user.client.sdk.PersonSDK;
 import com.covisint.platform.user.client.sdk.PersonSDK.PersonClient;
+import com.covisint.platform.user.client.sdk.PersonSDK.PersonClient.FilterSpec;
+import com.covisint.platform.user.client.sdk.PersonSDK.PersonClient.Sort;
 import com.covisint.platform.user.core.person.Person;
+import com.google.common.util.concurrent.CheckedFuture;
 
 public final class PersonSDKSamples {
 
@@ -123,6 +127,20 @@ public final class PersonSDKSamples {
         personClient.unsuspend(personId).checkedGet();
 
         System.out.println("Unsuspended person " + personId);
+    }
+
+    /** Search a person. */
+    public static void searchPerson() {
+
+        final PersonClient personClient = createPersonClient();
+
+        final FilterSpec filter = new FilterSpec();
+
+        filter.setEmail("abc@def.com", "def@hig.com");
+
+        final CheckedFuture<List<Person>, ServiceException> persons = personClient.search(filter, Page.ALL, Sort.NONE);
+
+        System.out.println("Persons : " + persons.checkedGet());
     }
 
 }
