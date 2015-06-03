@@ -28,7 +28,14 @@ We will also need the person and organization SDKs for the search operations, so
 </dependency>
 ```
 
-Now that we have our dependencies imported, the next step is to search for the grantees.  Lets start with jsmith users:
+The Java SDKs perform auto-authentication with our OAuth servers.  To specify the credentials used to retrieve access tokens, we will create a file named <strong>client.conf</strong> with the following contents, and place it at the root of the application's classpath:
+
+    authServiceBaseUrl=https://api.covapp.io/oauth/v1
+    applicationId=<your app id>
+    clientId=<your client id>
+    clientSecret=<your client secret>
+    
+Now that we have our dependencies imported and configured, the next step is to search for the grantees.  Lets start with jsmith users:
 
 ```java
 PersonClient personClient = // set up the person client
