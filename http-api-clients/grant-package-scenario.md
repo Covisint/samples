@@ -28,19 +28,19 @@ We will also need the person and organization SDKs for the search operations, so
 </dependency>
 ```
 
-The Java SDKs perform auto-authentication with our OAuth servers.  To specify the credentials used to retrieve access tokens, we will create a file named <strong>client.conf</strong> with the following contents, and place it at the root of the application's classpath:
+The Java SDKs perform auto-authentication with our OAuth servers.  To specify the credentials they will use to fetch an access token, we will create a file named <strong>client.conf</strong> with the following contents, and place it at the root of the application's classpath:
 
     authServiceBaseUrl=https://api.covapp.io/oauth/v1
     applicationId=<your app id>
     clientId=<your client id>
     clientSecret=<your client secret>
     
-Now that we have our dependencies imported and configured, the next step is to search for the grantees.  Lets start with jsmith users:
+Now that we have our dependencies imported and configured, the next step is to search for the grantees.  Lets start by searching for "jsmith" users:
 
 ```java
 PersonClient personClient = // set up the person client
 String username = "jsmith";
-List<Person> allJsmith = personClient.search(null, null, username, null, Page.DEFAULT).checkedGet();
+List<Person> allJsmiths = personClient.search(null, null, username, null, Page.DEFAULT).checkedGet();
 ```
 
 We will now assign the package grant to each person returned from the search...
@@ -49,7 +49,7 @@ We will now assign the package grant to each person returned from the search...
 ServicePackageGrantClient grantClient = // set up the package grant client
 String packageId = // the id of the package to grant
 
-for (Person person : allJsmith) {
+for (Person person : allJsmiths) {
   grantClient.assignPersonGrant(person.getId(), packageId);
 }
 ```
@@ -59,9 +59,18 @@ We have granted this package to all jsmith users.  Next we will issue the grant 
 ```java
 OrganizationClient orgClient = // set up the organization client
 String orgName = "Covisint";
-List<Organization> allCovisint = orgClient.search(Arrays.asList(orgName), null, null, Page.DEFAULT).checkedGet();
+List<Organization> allOrgs = orgClient.search(Arrays.asList(orgName), null, null, Page.DEFAULT).checkedGet();
 
-for (Organization org : allCovisint) {
+for (Organization org : allOrgs) {
     grantClient.assignOrganizationGrant(org.getId(), packageId);
 }
 ```
+
+And thats it.  We have granted the package to all persons with username jsmith as well as organizations named Covisint.  If we now want to retrieve the package grants for a given person or organization, its as simple as:
+
+```java
+String personId = allJsmiths.get(0).getId(); // Lets get all grants for the first jsmith in our list above
+Iterable<ServicePackageGrant> grants = grantClient.listPersonGrants(personId, Page.DEFAULT).checkedGet();
+```
+
+The next release of the Package Grant API will add support for revoking package grants from persons and organizations.  This walkthrough will be updated to show how to do that as well.
