@@ -1,6 +1,6 @@
 # User Registration Flow
 
-This guide demonstrates the major steps involved in registering user in the Covisint Platform. Let's see how this is done using the Platform SDKs. Our pretend story will be that we want to register a person with username "jsmith" and also to the organization(s) with name "Covisint".
+This guide demonstrates the major steps involved in registering a user in the Covisint Platform. Let's see how this is done using the Platform SDKs. Our pretend story will be that we want to register a person with username "jsmith" belonging to the organization with name "Covisint".
 
 First, we will import the person SDK library from Maven Central.
 
@@ -12,7 +12,7 @@ First, we will import the person SDK library from Maven Central.
 </dependency>
 ```
 
-We will also need the authn SDK to create password account for the person, so pull those in as well.
+We will also need the authentication SDK to create password account for the person, so pull those in as well.
 
 ```xml
 <dependency>
@@ -33,7 +33,6 @@ Now that we have our dependencies imported and configured, the next step is to s
 
 ```java
 PersonClient personClient = // set up the person client
-
 Person personToAdd = null; // set up the new person being registered
 
 Person addedPerson = personClient.add(personToAdd).checkedGet();
@@ -44,12 +43,12 @@ Now we will add a password account for the created person.
 
 ```java
 PasswordAccountClient passwordAccountClient = // set up the password account client
+
 String passwordPolicyId = // the password policy id.
 String authenticationPolicyId = // the authentication policy id.
 PasswordAccount passwordAccount = new PasswordAccount().setUsername(addedPerson.getUsername())
-           .setPassword("$up3r$3creT").setAuthnPolicyId(authenticationPolicyId)
-											.setPasswordPolicyId(passwordPolicyId)
-           .setVersion(1L); // add password account for created person
+                .setPassword("$up3r$3creT").setAuthnPolicyId(authenticationPolicyId)
+                .setPasswordPolicyId(passwordPolicyId).setVersion(1L); // add password account for created person
 
 passwordAccountClient.updatePasswordAccount(newPersonId, passwordAccount); 
 
@@ -65,8 +64,9 @@ String secondSecurityQuestionId = // second security question id.
 Question firstAnswer = Question.withAnswer(firstSecurityQuestionId, "Answer to first question.");
 Question secondAnswer = Question.withAnswer(secondSecurityQuestionId, "Answer to second question.");
 
-SecurityQuestionAccount account = new SecurityQuestionAccount().setId(personId).setVersion(1L)
-       .setQuestions(Arrays.asList(firstAnswer, secondAnswer)); // add security question account for created person.
+SecurityQuestionAccount account = new SecurityQuestionAccount().setId(personId)
+                .setQuestions(Arrays.asList(firstAnswer, secondAnswer)).
+                .setVersion(1L)  // add security question account for created person.
 
 securityQuestionAccountClient.update(newPersonId, securityQuestionAccount).checkedGet();
 
