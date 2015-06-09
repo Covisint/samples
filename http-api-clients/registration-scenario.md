@@ -16,9 +16,9 @@ We will also need the authn SDKs to create password account for the person, so p
 
 ```xml
 <dependency>
-				<groupId>com.covisint.platform.authn.client</groupId>
-				<artifactId>authn-client</artifactId>
-				<version>2.0.0.RELEASE</version>
+  <groupId>com.covisint.platform.authn.client</groupId>
+  <artifactId>authn-client</artifactId>
+  <version>2.0.0.RELEASE</version>
 </dependency>
 ```
 
@@ -43,9 +43,11 @@ String newPersonId = addedPerson.getId();
 Now we will create password account for the created person.
 
 ```java
+String passwordPolicyId = //The password policy id.
+String authenticationPolicyId = //The authentication policy id.
 PasswordAccount passwordAccount = new PasswordAccount().setUsername(addedPerson.getUsername())
-                .setPassword("$up3r$3creT").setAuthnPolicyId("8fe701224ecd").setPasswordPolicyId("3d7555e782a5")
-                .setVersion(1L); //Set up password account for created person
+           .setPassword("$up3r$3creT").setAuthnPolicyId(authenticationPolicyId).setPasswordPolicyId(passwordPolicyId)
+           .setVersion(1L); //Set up password account for created person
 
 passwordAccountClient.updatePasswordAccount(newPersonId, passwordAccount); 
 
@@ -53,12 +55,13 @@ passwordAccountClient.updatePasswordAccount(newPersonId, passwordAccount);
 Now we will create security question account for the created person.
 
 ```java
-String firstSecurityQuestionId = "3ea1221b"; // first security question id.
-String secondSecurityQuestionId = "b1c2e31c"; // second security question id.
+String firstSecurityQuestionId = // first security question id.
+String secondSecurityQuestionId = // second security question id.
 
 Question firstAnswer = Question.withAnswer(firstSecurityQuestionId, "Answer to first question.");
 Question secondAnswer = Question.withAnswer(secondSecurityQuestionId, "Answer to second question.");
 
+//Create security question account for created person.
 SecurityQuestionAccount securityQuestionAccount = new SecurityQuestionAccount();
 securityQuestionAccount.setId(newPersonId);
 securityQuestionAccount.setVersion(1L);
