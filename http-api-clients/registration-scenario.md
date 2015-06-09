@@ -44,16 +44,17 @@ Now we will add a password account for the created person.
 
 ```java
 PasswordAccountClient passwordAccountClient = // set up the password account client
-String passwordPolicyId = //The password policy id.
-String authenticationPolicyId = //The authentication policy id.
+String passwordPolicyId = // the password policy id.
+String authenticationPolicyId = // the authentication policy id.
 PasswordAccount passwordAccount = new PasswordAccount().setUsername(addedPerson.getUsername())
-           .setPassword("$up3r$3creT").setAuthnPolicyId(authenticationPolicyId).setPasswordPolicyId(passwordPolicyId)
-           .setVersion(1L); //Set up password account for created person
+           .setPassword("$up3r$3creT").setAuthnPolicyId(authenticationPolicyId)
+											.setPasswordPolicyId(passwordPolicyId)
+           .setVersion(1L); // add password account for created person
 
 passwordAccountClient.updatePasswordAccount(newPersonId, passwordAccount); 
 
 ```
-Now we will create security question account for the created person.
+Now we will add security question account for the created person.
 
 ```java
 SecurityQuestionAccountClient securityQuestionAccountClient = // set up the security question client
@@ -65,7 +66,7 @@ Question firstAnswer = Question.withAnswer(firstSecurityQuestionId, "Answer to f
 Question secondAnswer = Question.withAnswer(secondSecurityQuestionId, "Answer to second question.");
 
 SecurityQuestionAccount account = new SecurityQuestionAccount().setId(personId).setVersion(1L)
-                .setQuestions(Arrays.asList(firstAnswer, secondAnswer)); //Create security question account for created person.
+       .setQuestions(Arrays.asList(firstAnswer, secondAnswer)); // add security question account for created person.
 
 securityQuestionAccountClient.update(newPersonId, securityQuestionAccount).checkedGet();
 
