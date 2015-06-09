@@ -12,7 +12,7 @@ First, we will import the person SDK library from Maven Central.
 </dependency>
 ```
 
-We will also need the authn SDKs to create password account for the person, so pull those in as well.
+We will also need the authn SDK to create password account for the person, so pull those in as well.
 
 ```xml
 <dependency>
@@ -40,9 +40,10 @@ Person addedPerson = personClient.add(personToAdd).checkedGet();
 String newPersonId = addedPerson.getId();
 
 ```
-Now we will create password account for the created person.
+Now we will add a password account for the created person.
 
 ```java
+PasswordAccountClient passwordAccountClient = // set up the password account client
 String passwordPolicyId = //The password policy id.
 String authenticationPolicyId = //The authentication policy id.
 PasswordAccount passwordAccount = new PasswordAccount().setUsername(addedPerson.getUsername())
@@ -55,17 +56,16 @@ passwordAccountClient.updatePasswordAccount(newPersonId, passwordAccount);
 Now we will create security question account for the created person.
 
 ```java
+SecurityQuestionAccountClient securityQuestionAccountClient = // set up the security question client
+
 String firstSecurityQuestionId = // first security question id.
 String secondSecurityQuestionId = // second security question id.
 
 Question firstAnswer = Question.withAnswer(firstSecurityQuestionId, "Answer to first question.");
 Question secondAnswer = Question.withAnswer(secondSecurityQuestionId, "Answer to second question.");
 
-//Create security question account for created person.
-SecurityQuestionAccount securityQuestionAccount = new SecurityQuestionAccount();
-securityQuestionAccount.setId(newPersonId);
-securityQuestionAccount.setVersion(1L);
-securityQuestionAccount.setQuestions(Arrays.asList(firstAnswer, secondAnswer));
+SecurityQuestionAccount account = new SecurityQuestionAccount().setId(personId).setVersion(1L)
+                .setQuestions(Arrays.asList(firstAnswer, secondAnswer)); //Create security question account for created person.
 
 securityQuestionAccountClient.update(newPersonId, securityQuestionAccount).checkedGet();
 
@@ -77,4 +77,4 @@ And finally activate the created person.
 personClient.activate(newPersonId);
 
 ```
-Now user is registred and activated in the Covisint Platform.
+Now user is registered and activated in the Covisint Platform.
