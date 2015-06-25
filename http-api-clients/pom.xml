@@ -52,6 +52,12 @@
             <artifactId>group-client</artifactId>
             <version>1.0.0.RELEASE</version>
         </dependency>
+		
+		<dependency>
+            <groupId>com.covisint.platform.device.client</groupId>
+            <artifactId>device-client</artifactId>
+            <version>1.0.0.RELEASE</version>
+        </dependency>
 
         <dependency>
             <groupId>log4j</groupId>
