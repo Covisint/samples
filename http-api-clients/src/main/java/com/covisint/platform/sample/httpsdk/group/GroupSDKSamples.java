@@ -87,6 +87,9 @@ public final class GroupSDKSamples {
                 Sort.CREATION_DESC).checkedGet();
 
         System.out.println("Group search result size: " + results.size());
+		
+		// Perform the delete operation on the created group.
+		groupClient.delete(createdGroup.getId()).checkedGet();
     }
 
 }
