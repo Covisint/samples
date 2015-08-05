@@ -14,9 +14,7 @@ public enum ServiceUrl {
 
     SERVICE_V1("https://api.covapp.io/service/v1"),
 
-    AUTHN_V2("https://api.covapp.io/authn/v2"),
-
-    DEVICE_V1("https://api.covapp.io/device/v1");
+    AUTHN_V2("https://api.covapp.io/authn/v2");
 
     private final String value;
 
